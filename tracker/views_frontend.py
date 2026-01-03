@@ -173,16 +173,20 @@ def contact(request):
 
 def about(request):
     """About page"""
+    from .models import Leadership
+
     services_count = ResearchService.objects.filter(is_active=True).count()
     consultancy_count = ConsultancySubService.objects.filter(is_active=True).count()
     clients_count = Customer.objects.count()
     completed_count = ServiceRequest.objects.filter(status='completed').count()
-    
+    leadership_members = Leadership.objects.filter(is_active=True).order_by('display_order')
+
     context = {
         'services_count': services_count,
         'consultancy_count': consultancy_count,
         'clients_count': clients_count,
         'completed_count': completed_count,
+        'leadership_members': leadership_members,
     }
     return render(request, 'about.html', context)
 
