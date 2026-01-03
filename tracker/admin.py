@@ -255,3 +255,44 @@ class CompanyProfileAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
+
+
+@admin.register(Leadership)
+class LeadershipAdmin(admin.ModelAdmin):
+    list_display = ('name', 'title', 'photo_preview', 'display_order', 'is_active')
+    list_filter = ('is_active', 'display_order')
+    search_fields = ('name', 'title', 'affiliation', 'bio')
+    readonly_fields = ('created_at', 'updated_at', 'photo_preview')
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('name', 'title', 'affiliation', 'bio')
+        }),
+        ('Photo', {
+            'fields': ('photo', 'photo_preview'),
+            'description': 'Upload a professional photo (recommended size: 400x500px)'
+        }),
+        ('Contact Information', {
+            'fields': ('email', 'phone'),
+            'classes': ('collapse',)
+        }),
+        ('Social Media', {
+            'fields': ('facebook', 'twitter', 'linkedin', 'instagram'),
+            'classes': ('collapse',)
+        }),
+        ('Display Settings', {
+            'fields': ('display_order', 'is_active')
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
+    def photo_preview(self, obj):
+        if obj.photo:
+            return format_html(
+                '<img src="{}" width="100" height="125" style="object-fit: cover; border-radius: 4px;" />',
+                obj.photo.url
+            )
+        return "No photo"
+    photo_preview.short_description = "Photo Preview"
