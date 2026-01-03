@@ -69,6 +69,17 @@ def home(request):
 
 def services(request):
     """Services listing page"""
+    # Default placeholder images for services
+    default_images = {
+        'concept_proposal': 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop',
+        'thesis': 'https://images.unsplash.com/photo-1507842217343-583f20270319?w=600&h=400&fit=crop',
+        'articles': 'https://images.unsplash.com/photo-1455390883262-7f6f25510923?w=600&h=400&fit=crop',
+        'data_analysis': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
+        'research_design': 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&h=400&fit=crop',
+        'training_capacity': 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop',
+        'default': 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=600&h=400&fit=crop',
+    }
+
     # Separate Academic Writing Services and Training & Capacity Building
     academic_services = ResearchService.objects.filter(
         is_active=True
@@ -103,10 +114,19 @@ def services(request):
     for service in all_services_list:
         service_videos[service.id] = service.tutorial_videos.filter(is_published=True).order_by('display_order')
 
-    # Get featured images
+    # Get featured images with fallbacks
     service_images = {}
+    service_image_urls = {}
     for service in all_services_list:
-        service_images[service.id] = service.images.filter(is_featured=True).first()
+        featured = service.images.filter(is_featured=True).first()
+        service_images[service.id] = featured
+
+        # Set image URL with fallback
+        if featured:
+            service_image_urls[service.id] = featured.image.url
+        else:
+            # Use default image based on category
+            service_image_urls[service.id] = default_images.get(service.category, default_images['default'])
 
     context = {
         'research_services': academic_services,
@@ -116,6 +136,7 @@ def services(request):
         'service_faqs': service_faqs,
         'service_videos': service_videos,
         'service_images': service_images,
+        'service_image_urls': service_image_urls,
     }
     return render(request, 'services.html', context)
 
