@@ -5,230 +5,294 @@
 {% block extra_css %}
 <style>
     :root {
-        --primary: #1e3c72;
-        --primary-light: #2a5298;
-        --accent: #ff7e5f;
-        --dark: #2c3e50;
-        --light-gray: #f8f9fa;
-        --success: #28a745;
-        --warning: #ffc107;
-        --danger: #dc3545;
+        --auth-primary: #1e40af;
+        --auth-primary-light: #3b82f6;
+        --auth-secondary: #7c3aed;
+        --auth-accent: #f59e0b;
+        --auth-success: #10b981;
+        --auth-danger: #ef4444;
+        --auth-dark: #1f2937;
+        --auth-light: #f9fafb;
     }
 
-    .auth-wrapper {
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
+    }
+
+    .login-wrapper {
+        min-height: calc(100vh - 76px);
         display: flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 20px;
+        padding: 40px 20px;
         position: relative;
         overflow: hidden;
     }
 
-    .auth-wrapper::before {
+    .login-wrapper::before {
         content: '';
         position: absolute;
         width: 300%;
         height: 300%;
-        background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
-        animation: float 20s infinite linear;
+        background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08) 0%, transparent 50%);
+        animation: orbit 30s infinite linear;
     }
 
-    @keyframes float {
+    @keyframes orbit {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
 
-    .auth-container {
-        display: grid;
-        grid-template-columns: 1fr 1.2fr;
-        gap: 0;
-        width: 100%;
-        max-width: 1000px;
+    .login-container {
         background: white;
-        border-radius: 20px;
+        border-radius: 25px;
         overflow: hidden;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        animation: slideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 1100px;
+        display: grid;
+        grid-template-columns: 1.3fr 1fr;
+        gap: 0;
         position: relative;
         z-index: 1;
+        animation: slideInUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    .auth-image {
-        background: linear-gradient(135deg, rgba(30, 60, 114, 0.9) 0%, rgba(42, 82, 152, 0.9) 100%), 
-                    url('https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg');
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .login-visual {
+        background: linear-gradient(135deg, rgba(30, 64, 175, 0.95) 0%, rgba(124, 58, 237, 0.95) 100%),
+                    url('https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=800&fit=crop');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
+        padding: 80px 50px;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         color: white;
-        padding: 60px 40px;
+        text-align: center;
         position: relative;
         overflow: hidden;
     }
 
-    .auth-image::before {
+    .login-visual::before {
         content: '';
         position: absolute;
         top: -50%;
         right: -50%;
         width: 600px;
         height: 600px;
-        background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-        animation: shimmer 3s infinite linear;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+        animation: float-shape 6s ease-in-out infinite;
     }
 
-    @keyframes shimmer {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+    @keyframes float-shape {
+        0%, 100% {
+            transform: translateY(0) scale(1);
+        }
+        50% {
+            transform: translateY(-30px) scale(1.05);
+        }
     }
 
-    .auth-image-content {
+    .login-visual::after {
+        content: '';
+        position: absolute;
+        bottom: -50%;
+        left: -50%;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+        animation: float-shape 8s ease-in-out infinite;
+    }
+
+    .login-visual-content {
         position: relative;
         z-index: 2;
-        text-align: center;
-        backdrop-filter: blur(10px);
-        background: rgba(255, 255, 255, 0.1);
-        padding: 40px;
-        border-radius: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        max-width: 90%;
     }
 
-    .auth-image-icon {
-        font-size: 4.5rem;
-        margin-bottom: 25px;
-        display: block;
-        background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.8) 100%);
+    .login-visual-icon {
+        font-size: 6rem;
+        margin-bottom: 30px;
+        background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.9) 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
+        animation: float-icon 3.5s ease-in-out infinite;
+        display: inline-block;
     }
 
-    .auth-image h2 {
-        font-size: 2.2rem;
-        margin-bottom: 15px;
+    @keyframes float-icon {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+
+    .login-visual h2 {
+        font-size: 2.5rem;
         font-weight: 800;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        margin-bottom: 20px;
+        line-height: 1.1;
+        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        letter-spacing: -0.5px;
     }
 
-    .auth-image p {
-        font-size: 1.1rem;
+    .login-visual p {
+        font-size: 1.2rem;
         opacity: 0.95;
-        margin: 0;
         line-height: 1.8;
+        margin: 0;
         font-weight: 300;
-        letter-spacing: 0.5px;
     }
 
-    .auth-form {
-        padding: 60px 50px;
+    .login-form-wrapper {
+        padding: 70px 50px;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        background: var(--light-gray);
+        background: var(--auth-light);
         position: relative;
     }
 
-    .auth-form::before {
+    .login-form-wrapper::before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+        height: 5px;
+        background: linear-gradient(90deg, var(--auth-primary) 0%, var(--auth-secondary) 50%, var(--auth-accent) 100%);
     }
 
-    .auth-header {
-        margin-bottom: 45px;
+    .login-form-header {
+        margin-bottom: 50px;
         text-align: center;
     }
 
-    .auth-header h1 {
-        color: var(--primary);
-        font-size: 2.2rem;
+    .login-form-header h1 {
+        font-size: 2.3rem;
         font-weight: 800;
-        margin-bottom: 10px;
+        color: var(--auth-dark);
+        margin-bottom: 12px;
         position: relative;
         display: inline-block;
     }
 
-    .auth-header h1::after {
+    .login-form-header h1::after {
         content: '';
         position: absolute;
-        bottom: -10px;
+        bottom: -15px;
         left: 50%;
         transform: translateX(-50%);
-        width: 60px;
-        height: 3px;
-        background: var(--accent);
+        width: 70px;
+        height: 4px;
+        background: var(--auth-accent);
         border-radius: 2px;
+        animation: expandWidth 0.6s ease-out;
     }
 
-    .auth-header p {
-        color: #666;
+    @keyframes expandWidth {
+        from {
+            width: 0;
+        }
+        to {
+            width: 70px;
+        }
+    }
+
+    .login-form-header p {
         font-size: 1.05rem;
-        margin: 20px 0 0;
-        opacity: 0.8;
+        color: #6b7280;
+        margin: 25px 0 0;
+        font-weight: 500;
+    }
+
+    .login-form-content {
+        animation: fadeIn 0.5s ease-out 0.2s both;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
     }
 
     .form-group {
-        margin-bottom: 25px;
-        position: relative;
+        margin-bottom: 28px;
     }
 
     .form-group label {
         display: block;
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: var(--auth-dark);
         margin-bottom: 10px;
-        color: var(--dark);
-        font-weight: 600;
-        font-size: 0.95rem;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.6px;
     }
 
-    .form-group .input-wrapper {
+    .form-input-wrapper {
         position: relative;
     }
 
-    .form-group .input-wrapper i {
+    .form-input-wrapper i {
         position: absolute;
         left: 16px;
         top: 50%;
         transform: translateY(-50%);
-        color: var(--primary);
-        font-size: 1.2rem;
+        color: var(--auth-primary);
+        font-size: 1.3rem;
         z-index: 1;
+        pointer-events: none;
+        transition: all 0.3s ease;
     }
 
     .form-control {
-        border: 2px solid #e1e8ed;
-        padding: 16px 16px 16px 48px;
+        width: 100%;
+        padding: 16px 16px 16px 50px;
+        border: 2px solid #e5e7eb;
         border-radius: 12px;
         font-size: 1rem;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        width: 100%;
-        box-sizing: border-box;
         background: white;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-sizing: border-box;
     }
 
     .form-control:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 4px rgba(30, 60, 114, 0.15);
         outline: none;
-        transform: translateY(-1px);
+        border-color: var(--auth-primary);
+        box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.12);
+        transform: translateY(-2px);
     }
 
     .form-control.valid {
-        border-color: var(--success);
+        border-color: var(--auth-success);
+        box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.12);
     }
 
     .form-control.invalid {
-        border-color: var(--danger);
+        border-color: var(--auth-danger);
+        box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.12);
     }
 
     .password-toggle {
@@ -238,358 +302,310 @@
         transform: translateY(-50%);
         background: none;
         border: none;
-        color: #666;
         cursor: pointer;
+        color: #6b7280;
         font-size: 1.2rem;
-        padding: 4px;
-        transition: color 0.3s ease;
+        padding: 6px;
+        transition: all 0.3s ease;
+        z-index: 2;
     }
 
     .password-toggle:hover {
-        color: var(--primary);
+        color: var(--auth-primary);
+        transform: translateY(-50%) scale(1.1);
     }
 
-    .form-check {
+    .form-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 20px 0 30px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .form-checkbox {
         display: flex;
         align-items: center;
-        margin-bottom: 25px;
-        gap: 10px;
-        position: relative;
+        gap: 8px;
     }
 
-    .form-check-input {
-        width: 20px;
-        height: 20px;
+    .form-checkbox input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
         cursor: pointer;
-        accent-color: var(--primary);
-        position: relative;
+        accent-color: var(--auth-primary);
         border-radius: 4px;
     }
 
-    .form-check-label {
+    .form-checkbox label {
         margin: 0;
         cursor: pointer;
-        color: #555;
+        color: #6b7280;
         font-size: 0.95rem;
         font-weight: 500;
         user-select: none;
     }
 
-    .help-links {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin: 15px 0 25px;
-    }
-
-    .help-link {
-        color: var(--primary);
+    .form-link {
+        color: var(--auth-primary);
         text-decoration: none;
+        font-weight: 700;
         font-size: 0.95rem;
-        font-weight: 600;
         transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 6px 0;
         position: relative;
     }
 
-    .help-link::after {
+    .form-link::after {
         content: '';
         position: absolute;
-        bottom: 0;
+        bottom: -3px;
         left: 0;
         width: 0;
         height: 2px;
-        background: var(--accent);
+        background: var(--auth-accent);
         transition: width 0.3s ease;
     }
 
-    .help-link:hover {
-        color: var(--accent);
+    .form-link:hover {
+        color: var(--auth-accent);
     }
 
-    .help-link:hover::after {
+    .form-link:hover::after {
         width: 100%;
     }
 
-    .auth-submit-btn {
+    .login-submit-btn {
         width: 100%;
-        padding: 18px;
-        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        padding: 16px 20px;
+        background: linear-gradient(135deg, var(--auth-primary) 0%, var(--auth-primary-light) 100%);
         color: white;
         border: none;
         border-radius: 12px;
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         font-weight: 700;
         cursor: pointer;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        margin-top: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 10px;
-        letter-spacing: 0.5px;
         text-transform: uppercase;
+        letter-spacing: 0.5px;
         position: relative;
         overflow: hidden;
         z-index: 1;
+        margin-top: 15px;
     }
 
-    .auth-submit-btn::before {
+    .login-submit-btn::before {
         content: '';
         position: absolute;
         top: 0;
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
         transition: left 0.7s ease;
+        z-index: -1;
     }
 
-    .auth-submit-btn:hover {
+    .login-submit-btn:hover {
         transform: translateY(-3px);
-        box-shadow: 0 12px 25px rgba(30, 60, 114, 0.4);
+        box-shadow: 0 15px 35px rgba(30, 64, 175, 0.4);
     }
 
-    .auth-submit-btn:hover::before {
+    .login-submit-btn:hover::before {
         left: 100%;
     }
 
-    .auth-submit-btn:active {
+    .login-submit-btn:active {
         transform: translateY(-1px);
-        transition: transform 0.1s;
     }
 
-    .auth-submit-btn.loading {
+    .login-submit-btn.loading {
         pointer-events: none;
         opacity: 0.8;
     }
 
-    .auth-submit-btn.loading i {
-        animation: spin 1s linear infinite;
+    .error-message {
+        background: linear-gradient(135deg, #fee 0%, #fdd 100%);
+        border: 1px solid #fcc;
+        color: #c33;
+        padding: 14px 16px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        animation: shake 0.5s cubic-bezier(.36,.07,.19,.97);
     }
 
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+    @keyframes shake {
+        10%, 90% { transform: translateX(-2px); }
+        20%, 80% { transform: translateX(2px); }
+        30%, 50%, 70% { transform: translateX(-4px); }
+        40%, 60% { transform: translateX(4px); }
     }
 
-    .auth-footer {
+    .success-message {
+        background: linear-gradient(135deg, #efe 0%, #dfd 100%);
+        border: 1px solid #cfc;
+        color: #383;
+        padding: 14px 16px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .login-footer {
         text-align: center;
         margin-top: 35px;
         padding-top: 25px;
-        border-top: 2px solid rgba(0,0,0,0.1);
-        color: #666;
+        border-top: 2px solid rgba(0, 0, 0, 0.08);
+        color: #6b7280;
         font-size: 1rem;
     }
 
-    .auth-footer a {
-        color: var(--primary);
+    .login-footer a {
+        color: var(--auth-primary);
         text-decoration: none;
         font-weight: 700;
         transition: all 0.3s ease;
         position: relative;
-        padding: 0 4px;
+        margin-left: 5px;
     }
 
-    .auth-footer a::after {
+    .login-footer a::after {
         content: '';
         position: absolute;
         bottom: -2px;
         left: 0;
-        width: 100%;
+        width: 0;
         height: 2px;
-        background: var(--accent);
-        transform: scaleX(0);
-        transition: transform 0.3s ease;
+        background: var(--auth-accent);
+        transition: width 0.3s ease;
     }
 
-    .auth-footer a:hover {
-        color: var(--accent);
+    .login-footer a:hover {
+        color: var(--auth-accent);
     }
 
-    .auth-footer a:hover::after {
-        transform: scaleX(1);
-    }
-
-    .error-message {
-        background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
-        border: none;
-        color: white;
-        padding: 15px 20px;
-        border-radius: 12px;
-        margin-bottom: 25px;
-        font-size: 0.95rem;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        box-shadow: 0 4px 15px rgba(255, 126, 95, 0.3);
-        animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
-    }
-
-    .success-message {
-        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-        border: none;
-        color: white;
-        padding: 15px 20px;
-        border-radius: 12px;
-        margin-bottom: 25px;
-        font-size: 0.95rem;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-    }
-
-    @keyframes shake {
-        10%, 90% { transform: translate3d(-1px, 0, 0); }
-        20%, 80% { transform: translate3d(2px, 0, 0); }
-        30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-        40%, 60% { transform: translate3d(4px, 0, 0); }
-    }
-
-    .social-login {
-        margin: 25px 0;
-        text-align: center;
-    }
-
-    .social-login p {
-        color: #666;
-        margin-bottom: 15px;
-        font-size: 0.95rem;
-        position: relative;
-    }
-
-    .social-login p::before,
-    .social-login p::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        width: 30%;
-        height: 1px;
-        background: #e0e0e0;
-    }
-
-    .social-login p::before { left: 0; }
-    .social-login p::after { right: 0; }
-
-    .social-buttons {
-        display: flex;
-        gap: 15px;
-        justify-content: center;
-    }
-
-    .social-btn {
-        padding: 12px 25px;
-        border: 2px solid #e0e0e0;
-        border-radius: 10px;
-        background: white;
-        color: #666;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        flex: 1;
-        justify-content: center;
-        max-width: 150px;
-    }
-
-    .social-btn:hover {
-        border-color: var(--primary);
-        color: var(--primary);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    .login-footer a:hover::after {
+        width: 100%;
     }
 
     @media (max-width: 992px) {
-        .auth-container {
+        .login-container {
             grid-template-columns: 1fr;
-            max-width: 500px;
+            max-width: 550px;
         }
-        
-        .auth-image {
+
+        .login-visual {
             display: none;
         }
-        
-        .auth-form {
-            padding: 40px 30px;
+
+        .login-form-wrapper {
+            padding: 50px 35px;
+        }
+
+        .login-form-header h1 {
+            font-size: 2rem;
         }
     }
 
     @media (max-width: 576px) {
-        .auth-form {
-            padding: 30px 20px;
+        .login-wrapper {
+            padding: 20px 15px;
         }
-        
-        .auth-header h1 {
-            font-size: 1.8rem;
+
+        .login-form-wrapper {
+            padding: 35px 20px;
         }
-        
-        .social-buttons {
+
+        .login-visual {
+            padding: 40px 20px;
+        }
+
+        .login-form-header h1 {
+            font-size: 1.7rem;
+        }
+
+        .login-form-header p {
+            font-size: 0.95rem;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+        }
+
+        .form-control {
+            padding: 14px 14px 14px 44px;
+            font-size: 16px;
+        }
+
+        .form-options {
             flex-direction: column;
-        }
-        
-        .social-btn {
-            max-width: 100%;
+            align-items: flex-start;
         }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="auth-wrapper">
-    <div class="auth-container">
-        <div class="auth-image">
-            <div class="auth-image-content">
-                <i class="ri-login-box-line auth-image-icon"></i>
+<div class="login-wrapper">
+    <div class="login-container">
+        <!-- Visual Section -->
+        <div class="login-visual">
+            <div class="login-visual-content">
+                <i class="ri-login-box-line login-visual-icon"></i>
                 <h2>Welcome Back</h2>
-                <p>Access your research projects and track your progress. Continue your writing journey with us.</p>
+                <p>Access your professional writing projects and track your progress</p>
             </div>
         </div>
-        
-        <div class="auth-form">
-            <div class="auth-header">
+
+        <!-- Form Section -->
+        <div class="login-form-wrapper">
+            <div class="login-form-header">
                 <h1>Sign In</h1>
                 <p>Enter your credentials to continue your journey</p>
             </div>
-            
+
             {% if messages %}
                 {% for message in messages %}
                     {% if message.tags == 'error' %}
                     <div class="error-message">
                         <i class="ri-error-warning-line"></i>
-                        {{ message }}
+                        <span>{{ message }}</span>
                     </div>
                     {% else %}
                     <div class="success-message">
                         <i class="ri-checkbox-circle-line"></i>
-                        {{ message }}
+                        <span>{{ message }}</span>
                     </div>
                     {% endif %}
                 {% endfor %}
             {% endif %}
-            
-            <form method="POST" novalidate id="loginForm">
+
+            <form method="POST" novalidate id="loginForm" class="login-form-content">
                 {% csrf_token %}
 
                 <div class="form-group">
-                    <label for="id_username" class="form-label">
-                        <i class="ri-user-3-line"></i> Username or Email
-                    </label>
-                    <div class="input-wrapper">
+                    <label for="id_username">Username or Email</label>
+                    <div class="form-input-wrapper">
                         <i class="ri-mail-line"></i>
-                        <input type="text" 
-                               id="id_username" 
-                               name="username" 
-                               class="form-control" 
-                               placeholder="Enter username or email" 
-                               required 
+                        <input type="text"
+                               id="id_username"
+                               name="username"
+                               class="form-control"
+                               placeholder="your@email.com"
+                               required
                                autocomplete="username"
                                value="{{ form.username.value|default:'' }}"
                                autofocus>
@@ -597,67 +613,50 @@
                     {% if form.username.errors %}
                         <div class="error-message" style="margin-top: 10px; font-size: 0.9rem; padding: 10px;">
                             <i class="ri-close-circle-line"></i>
-                            {{ form.username.errors.0 }}
+                            <span>{{ form.username.errors.0 }}</span>
                         </div>
                     {% endif %}
                 </div>
 
                 <div class="form-group">
-                    <label for="id_password" class="form-label">
-                        <i class="ri-lock-2-line"></i> Password
-                    </label>
-                    <div class="input-wrapper">
+                    <label for="id_password">Password</label>
+                    <div class="form-input-wrapper">
                         <i class="ri-lock-password-line"></i>
-                        <input type="password" 
-                               id="id_password" 
-                               name="password" 
-                               class="form-control" 
-                               placeholder="Enter your password" 
-                               required 
+                        <input type="password"
+                               id="id_password"
+                               name="password"
+                               class="form-control"
+                               placeholder="Enter your password"
+                               required
                                autocomplete="current-password">
-                        <button type="button" class="password-toggle" id="togglePassword">
+                        <button type="button" class="password-toggle" id="togglePassword" onclick="togglePasswordVisibility('id_password', 'togglePassword')">
                             <i class="ri-eye-line"></i>
                         </button>
                     </div>
                     {% if form.password.errors %}
                         <div class="error-message" style="margin-top: 10px; font-size: 0.9rem; padding: 10px;">
                             <i class="ri-close-circle-line"></i>
-                            {{ form.password.errors.0 }}
+                            <span>{{ form.password.errors.0 }}</span>
                         </div>
                     {% endif %}
                 </div>
 
-                <div class="help-links">
-                    <div class="form-check">
-                        <input type="checkbox" id="id_remember_me" name="remember_me" class="form-check-input">
-                        <label for="id_remember_me" class="form-check-label">
-                            Keep me signed in
-                        </label>
+                <div class="form-options">
+                    <div class="form-checkbox">
+                        <input type="checkbox" id="id_remember_me" name="remember_me">
+                        <label for="id_remember_me">Keep me signed in</label>
                     </div>
-                    <a href="{% url 'password_reset' %}" class="help-link">
+                    <a href="{% url 'password_reset' %}" class="form-link">
                         <i class="ri-question-line"></i> Forgot password?
                     </a>
                 </div>
 
-                <!-- Social Login Section (Optional) -->
-                <div class="social-login">
-                    <p>Or sign in with</p>
-                    <div class="social-buttons">
-                        <button type="button" class="social-btn">
-                            <i class="ri-google-fill"></i> Google
-                        </button>
-                        <button type="button" class="social-btn">
-                            <i class="ri-github-fill"></i> GitHub
-                        </button>
-                    </div>
-                </div>
-
-                <button type="submit" class="auth-submit-btn" id="submitBtn">
+                <button type="submit" class="login-submit-btn" id="submitBtn">
                     <i class="ri-login-circle-line"></i> Sign In
                 </button>
             </form>
-            
-            <div class="auth-footer">
+
+            <div class="login-footer">
                 Don't have an account?
                 <a href="{% url 'register' %}">Create one now</a>
             </div>
@@ -668,20 +667,23 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Password toggle functionality
-        const togglePassword = document.getElementById('togglePassword');
-        const passwordInput = document.getElementById('id_password');
-        const toggleIcon = togglePassword.querySelector('i');
-        
-        togglePassword.addEventListener('click', function() {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            toggleIcon.className = type === 'password' ? 'ri-eye-line' : 'ri-eye-off-line';
-        });
+        function togglePasswordVisibility(inputId, buttonId) {
+            const input = document.getElementById(inputId);
+            const button = document.getElementById(buttonId);
+            const icon = button.querySelector('i');
 
-        // Form validation
+            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+            input.setAttribute('type', type);
+            icon.className = type === 'password' ? 'ri-eye-line' : 'ri-eye-off-line';
+        }
+
+        // Make function global
+        window.togglePasswordVisibility = togglePasswordVisibility;
+
+        // Form submission
         const form = document.getElementById('loginForm');
         const submitBtn = document.getElementById('submitBtn');
-        
+
         form.addEventListener('submit', function() {
             submitBtn.classList.add('loading');
             submitBtn.innerHTML = '<i class="ri-loader-4-line"></i> Signing In...';
@@ -689,7 +691,7 @@
 
         // Real-time validation
         const usernameInput = document.getElementById('id_username');
-        const passwordInputField = document.getElementById('id_password');
+        const passwordInput = document.getElementById('id_password');
 
         function validateInput(input) {
             if (input.value.trim() === '') {
@@ -701,23 +703,27 @@
             }
         }
 
-        usernameInput.addEventListener('input', () => validateInput(usernameInput));
-        passwordInputField.addEventListener('input', () => validateInput(passwordInputField));
+        if (usernameInput) {
+            usernameInput.addEventListener('input', () => validateInput(usernameInput));
+        }
+        if (passwordInput) {
+            passwordInput.addEventListener('input', () => validateInput(passwordInput));
+        }
 
-        // Add focus effects
+        // Focus effects
         const inputs = document.querySelectorAll('.form-control');
         inputs.forEach(input => {
             input.addEventListener('focus', function() {
-                this.parentElement.parentElement.style.transform = 'translateY(-2px)';
+                this.parentElement.parentElement.style.transform = 'scale(1.02)';
             });
-            
+
             input.addEventListener('blur', function() {
-                this.parentElement.parentElement.style.transform = 'translateY(0)';
+                this.parentElement.parentElement.style.transform = 'scale(1)';
             });
         });
 
-        // Auto-focus username field
-        if (usernameInput.value === '') {
+        // Auto-focus username
+        if (usernameInput && usernameInput.value === '') {
             usernameInput.focus();
         }
     });
