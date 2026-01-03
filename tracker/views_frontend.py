@@ -7,7 +7,8 @@ from django.utils import timezone
 from django.db.models import Count, Q
 from .models import (
     ResearchService, ConsultancySubService, ServiceRequest, ClientTestimonial,
-    Workshop, WorkshopRegistration, Customer, ZoomAppointment
+    Workshop, WorkshopRegistration, Customer, ZoomAppointment, ServiceImage,
+    TutorialVideo, ServiceFAQ
 )
 
 
