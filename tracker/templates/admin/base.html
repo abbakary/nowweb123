@@ -665,7 +665,14 @@
                         <span class="sidebar-link-text">Testimonials</span>
                     </a>
                 </li>
-                
+
+                <li class="sidebar-item">
+                    <a href="{% url 'admin_leadership' %}" class="sidebar-link {% if request.resolver_match.url_name == 'admin_leadership' %}active{% endif %}">
+                        <i class="ri-team-line"></i>
+                        <span class="sidebar-link-text">Leadership</span>
+                    </a>
+                </li>
+
                 <!-- Analytics -->
                 <div class="sidebar-menu-title">Analytics</div>
                 
