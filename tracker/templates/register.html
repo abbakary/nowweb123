@@ -299,7 +299,7 @@
 
     .password-toggle {
         position: absolute;
-        right: 14px;
+        right: 16px;
         top: 50%;
         transform: translateY(-50%);
         background: none;
@@ -307,14 +307,18 @@
         cursor: pointer;
         color: #6b7280;
         font-size: 1.1rem;
-        padding: 4px;
+        padding: 6px 8px;
         transition: all 0.3s ease;
         z-index: 2;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .password-toggle:hover {
         color: var(--auth-primary);
-        transform: translateY(-50%) scale(1.1);
     }
 
     .form-text {
