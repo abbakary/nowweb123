@@ -901,6 +901,44 @@ def admin_zoom_appointments(request):
     return render(request, 'admin/zoom_appointments.html', context)
 
 
+@login_required
+def admin_leadership(request):
+    """Admin leadership management"""
+    if not request.user.is_staff:
+        messages.error(request, 'You do not have permission to access this page.')
+        return redirect('home')
+
+    from .models import Leadership
+
+    leadership_members = Leadership.objects.all().order_by('display_order')
+    active_count = Leadership.objects.filter(is_active=True).count()
+
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        member_id = request.POST.get('member_id')
+
+        try:
+            member = Leadership.objects.get(id=member_id)
+
+            if action == 'toggle_active':
+                member.is_active = not member.is_active
+                member.save()
+                messages.success(request, f'Member {"activated" if member.is_active else "deactivated"}.')
+            elif action == 'delete':
+                member.delete()
+                messages.success(request, 'Leadership member deleted.')
+        except Leadership.DoesNotExist:
+            messages.error(request, 'Leadership member not found.')
+
+        return redirect('admin_leadership')
+
+    context = {
+        'leadership_members': leadership_members,
+        'active_count': active_count,
+    }
+    return render(request, 'admin/leadership.html', context)
+
+
 def privacy(request):
     """Privacy policy page"""
     return render(request, 'privacy.html')
