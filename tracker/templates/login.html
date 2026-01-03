@@ -384,8 +384,8 @@
     .login-submit-btn {
         width: 100%;
         padding: 16px 20px;
-        background: linear-gradient(135deg, var(--auth-primary) 0%, var(--auth-primary-light) 100%);
-        color: white;
+        background: linear-gradient(135deg, var(--auth-accent) 0%, #fbbf24 100%);
+        color: var(--auth-dark);
         border: none;
         border-radius: 12px;
         font-size: 1.05rem;
@@ -402,6 +402,7 @@
         overflow: hidden;
         z-index: 1;
         margin-top: 15px;
+        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
     }
 
     .login-submit-btn::before {
@@ -411,14 +412,14 @@
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
         transition: left 0.7s ease;
         z-index: -1;
     }
 
     .login-submit-btn:hover {
         transform: translateY(-3px);
-        box-shadow: 0 15px 35px rgba(30, 64, 175, 0.4);
+        box-shadow: 0 15px 35px rgba(245, 158, 11, 0.5);
     }
 
     .login-submit-btn:hover::before {
