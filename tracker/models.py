@@ -379,3 +379,32 @@ class CompanyProfile(models.Model):
         """Get the company profile (singleton pattern)"""
         profile, _ = cls.objects.get_or_create(pk=1)
         return profile
+
+
+class Leadership(models.Model):
+    """Leadership team members"""
+    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
+    affiliation = models.CharField(max_length=255, blank=True)
+    bio = models.TextField(blank=True, help_text="Brief biography or description")
+    photo = models.ImageField(upload_to='leadership/', null=True, blank=True, help_text="Profile photo - recommended size: 400x500px")
+    email = models.EmailField(blank=True)
+    phone = models.CharField(max_length=20, blank=True)
+    facebook = models.URLField(blank=True)
+    twitter = models.URLField(blank=True)
+    linkedin = models.URLField(blank=True)
+    instagram = models.URLField(blank=True)
+    display_order = models.IntegerField(default=0, help_text="Order of appearance on the website")
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['display_order', 'name']
+        indexes = [
+            models.Index(fields=['is_active']),
+            models.Index(fields=['display_order']),
+        ]
+
+    def __str__(self):
+        return f"{self.name} - {self.title}"
