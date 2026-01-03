@@ -165,3 +165,5 @@ INFO 2026-01-03 12:09:29,937 autoreload 1015 140497751496512 Watching for file c
 INFO 2026-01-03 12:35:39,519 autoreload 917 139783988193088 Watching for file changes with StatReloader
 INFO 2026-01-03 12:47:27,995 autoreload 917 139783988193088 /root/app/code/tracker/models.py changed, reloading.
 INFO 2026-01-03 12:47:28,395 autoreload 1292 140125287577408 Watching for file changes with StatReloader
+INFO 2026-01-03 12:47:33,744 autoreload 1292 140125287577408 /root/app/code/tracker/admin.py changed, reloading.
+INFO 2026-01-03 12:47:34,139 autoreload 1319 140337791670080 Watching for file changes with StatReloader
