@@ -143,6 +143,17 @@ def services(request):
 
 def service_detail(request, pk):
     """Service detail page"""
+    # Default placeholder images for services
+    default_images = {
+        'concept_proposal': 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop',
+        'thesis': 'https://images.unsplash.com/photo-1507842217343-583f20270319?w=600&h=400&fit=crop',
+        'articles': 'https://images.unsplash.com/photo-1455390883262-7f6f25510923?w=600&h=400&fit=crop',
+        'data_analysis': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
+        'research_design': 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&h=400&fit=crop',
+        'training_capacity': 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop',
+        'default': 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=600&h=400&fit=crop',
+    }
+
     service = get_object_or_404(ResearchService, pk=pk, is_active=True)
 
     _auto_generate_testimonials()
@@ -163,6 +174,9 @@ def service_detail(request, pk):
     featured_image = service.images.filter(is_featured=True).first()
     all_images = service.images.all().order_by('display_order')
 
+    # Get featured image URL with fallback
+    featured_image_url = featured_image.image.url if featured_image else default_images.get(service.category, default_images['default'])
+
     # Get tutorial videos
     tutorial_videos = service.tutorial_videos.filter(is_published=True).order_by('display_order')
 
@@ -174,6 +188,7 @@ def service_detail(request, pk):
         'related_services': related_services,
         'testimonials': testimonials,
         'featured_image': featured_image,
+        'featured_image_url': featured_image_url,
         'all_images': all_images,
         'tutorial_videos': tutorial_videos,
         'faqs': faqs,
