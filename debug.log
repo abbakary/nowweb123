@@ -161,3 +161,4 @@ INFO 2026-01-03 11:30:52,725 autoreload 6096 20116 C:\New folder\neww\webapp1234
 INFO 2026-01-03 11:30:55,215 autoreload 10980 7996 Watching for file changes with StatReloader
 INFO 2026-01-03 11:31:05,066 autoreload 10980 7996 C:\New folder\neww\webapp12345\tracker\views.py changed, reloading.
 INFO 2026-01-03 11:31:07,697 autoreload 20168 19440 Watching for file changes with StatReloader
+INFO 2026-01-03 12:09:29,937 autoreload 1015 140497751496512 Watching for file changes with StatReloader
