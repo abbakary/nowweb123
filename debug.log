@@ -163,3 +163,5 @@ INFO 2026-01-03 11:31:05,066 autoreload 10980 7996 C:\New folder\neww\webapp1234
 INFO 2026-01-03 11:31:07,697 autoreload 20168 19440 Watching for file changes with StatReloader
 INFO 2026-01-03 12:09:29,937 autoreload 1015 140497751496512 Watching for file changes with StatReloader
 INFO 2026-01-03 12:35:39,519 autoreload 917 139783988193088 Watching for file changes with StatReloader
+INFO 2026-01-03 12:47:27,995 autoreload 917 139783988193088 /root/app/code/tracker/models.py changed, reloading.
+INFO 2026-01-03 12:47:28,395 autoreload 1292 140125287577408 Watching for file changes with StatReloader
