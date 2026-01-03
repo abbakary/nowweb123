@@ -188,10 +188,11 @@
     .login-form-header h1 {
         font-size: 2.3rem;
         font-weight: 800;
-        color: var(--auth-dark);
+        color: #ffffff;
         margin-bottom: 12px;
         position: relative;
         display: inline-block;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
 
     .login-form-header h1::after {
@@ -202,7 +203,7 @@
         transform: translateX(-50%);
         width: 70px;
         height: 4px;
-        background: var(--auth-accent);
+        background: linear-gradient(90deg, var(--auth-accent), #fbbf24);
         border-radius: 2px;
         animation: expandWidth 0.6s ease-out;
     }
@@ -218,7 +219,7 @@
 
     .login-form-header p {
         font-size: 1.05rem;
-        color: #6b7280;
+        color: rgba(255, 255, 255, 0.9);
         margin: 25px 0 0;
         font-weight: 500;
     }
