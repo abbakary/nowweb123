@@ -1330,3 +1330,4 @@ Traceback (most recent call last):
     return super().execute(query, params)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 django.db.utils.OperationalError: no such table: tracker_leadership
+INFO 2026-01-03 19:51:56,130 autoreload 930 140290343397184 Watching for file changes with StatReloader

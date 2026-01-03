@@ -3,7 +3,7 @@ from django.utils.html import format_html
 from .models import (
     Customer, ResearchService, ConsultancySubService, ServiceRequest,
     Workshop, WorkshopRegistration, ClientTestimonial, UserProfile,
-    Notification, CompanyProfile, Leadership
+    Notification, CompanyProfile, Leadership, ServiceImage, TutorialVideo, ServiceFAQ
 )
 
 
