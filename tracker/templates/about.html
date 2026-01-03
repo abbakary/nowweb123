@@ -88,29 +88,88 @@
     <div class="container-main">
         <h2 style="margin-bottom: 50px; text-align: center;">Leadership</h2>
         <div class="row g-4">
-            {% if company and company.founder_name %}
-            <div class="col-md-6">
-                <div class="service-card" style="text-align: center;">
-                    <div style="width: 120px; height: 120px; margin: 0 auto 20px; border-radius: 50%; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
-                        <i class="ri-user-line"></i>
+            {% if leadership_members %}
+                {% for member in leadership_members %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="service-card" style="text-align: center; height: 100%;">
+                        <div style="width: 150px; height: 180px; margin: 0 auto 20px; border-radius: 8px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; overflow: hidden; border: 3px solid white; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+                            {% if member.photo %}
+                                <img src="{{ member.photo.url }}" alt="{{ member.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                            {% else %}
+                                <i class="ri-user-line"></i>
+                            {% endif %}
+                        </div>
+                        <h4 style="color: var(--primary); font-size: 1.2rem; margin-bottom: 8px; font-weight: 700;">{{ member.name }}</h4>
+                        <p style="color: var(--accent); font-weight: 600; margin-bottom: 8px;">{{ member.title }}</p>
+                        {% if member.affiliation %}
+                            <p style="color: #666; font-size: 0.95rem; margin-bottom: 12px;">{{ member.affiliation }}</p>
+                        {% endif %}
+                        {% if member.bio %}
+                            <p style="color: #666; font-size: 0.9rem; line-height: 1.6; margin-bottom: 15px;">{{ member.bio }}</p>
+                        {% endif %}
+
+                        {% if member.email or member.phone or member.linkedin or member.facebook or member.twitter or member.instagram %}
+                        <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                            {% if member.email %}
+                                <a href="mailto:{{ member.email }}" title="Email" style="width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: white; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.3s ease;">
+                                    <i class="ri-mail-line"></i>
+                                </a>
+                            {% endif %}
+                            {% if member.phone %}
+                                <a href="tel:{{ member.phone }}" title="Phone" style="width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: white; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.3s ease;">
+                                    <i class="ri-phone-line"></i>
+                                </a>
+                            {% endif %}
+                            {% if member.linkedin %}
+                                <a href="{{ member.linkedin }}" target="_blank" rel="noopener noreferrer" title="LinkedIn" style="width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: white; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.3s ease;">
+                                    <i class="ri-linkedin-box-line"></i>
+                                </a>
+                            {% endif %}
+                            {% if member.facebook %}
+                                <a href="{{ member.facebook }}" target="_blank" rel="noopener noreferrer" title="Facebook" style="width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: white; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.3s ease;">
+                                    <i class="ri-facebook-box-line"></i>
+                                </a>
+                            {% endif %}
+                            {% if member.twitter %}
+                                <a href="{{ member.twitter }}" target="_blank" rel="noopener noreferrer" title="Twitter" style="width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: white; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.3s ease;">
+                                    <i class="ri-twitter-x-line"></i>
+                                </a>
+                            {% endif %}
+                            {% if member.instagram %}
+                                <a href="{{ member.instagram }}" target="_blank" rel="noopener noreferrer" title="Instagram" style="width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: white; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.3s ease;">
+                                    <i class="ri-instagram-line"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                        {% endif %}
                     </div>
-                    <h4 style="color: var(--primary); font-size: 1.2rem; margin-bottom: 8px; font-weight: 700;">{{ company.founder_name }}</h4>
-                    <p style="color: var(--accent); font-weight: 600; margin-bottom: 8px;">{{ company.founder_title }}</p>
-                    <p style="color: #666; font-size: 0.95rem;">{{ company.founder_affiliation }}</p>
                 </div>
-            </div>
-            {% endif %}
-            {% if company and company.advisor_name %}
-            <div class="col-md-6">
-                <div class="service-card" style="text-align: center;">
-                    <div style="width: 120px; height: 120px; margin: 0 auto 20px; border-radius: 50%; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
-                        <i class="ri-user-line"></i>
+                {% endfor %}
+            {% else %}
+                {% if company and company.founder_name %}
+                <div class="col-md-6">
+                    <div class="service-card" style="text-align: center;">
+                        <div style="width: 150px; height: 180px; margin: 0 auto 20px; border-radius: 8px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; border: 3px solid white; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+                            <i class="ri-user-line"></i>
+                        </div>
+                        <h4 style="color: var(--primary); font-size: 1.2rem; margin-bottom: 8px; font-weight: 700;">{{ company.founder_name }}</h4>
+                        <p style="color: var(--accent); font-weight: 600; margin-bottom: 8px;">{{ company.founder_title }}</p>
+                        <p style="color: #666; font-size: 0.95rem;">{{ company.founder_affiliation }}</p>
                     </div>
-                    <h4 style="color: var(--primary); font-size: 1.2rem; margin-bottom: 8px; font-weight: 700;">{{ company.advisor_name }}</h4>
-                    <p style="color: var(--accent); font-weight: 600; margin-bottom: 8px;">{{ company.advisor_title }}</p>
-                    <p style="color: #666; font-size: 0.95rem;">{{ company.advisor_affiliation }}</p>
                 </div>
-            </div>
+                {% endif %}
+                {% if company and company.advisor_name %}
+                <div class="col-md-6">
+                    <div class="service-card" style="text-align: center;">
+                        <div style="width: 150px; height: 180px; margin: 0 auto 20px; border-radius: 8px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; border: 3px solid white; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+                            <i class="ri-user-line"></i>
+                        </div>
+                        <h4 style="color: var(--primary); font-size: 1.2rem; margin-bottom: 8px; font-weight: 700;">{{ company.advisor_name }}</h4>
+                        <p style="color: var(--accent); font-weight: 600; margin-bottom: 8px;">{{ company.advisor_title }}</p>
+                        <p style="color: #666; font-size: 0.95rem;">{{ company.advisor_affiliation }}</p>
+                    </div>
+                </div>
+                {% endif %}
             {% endif %}
         </div>
     </div>

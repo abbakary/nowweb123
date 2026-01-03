@@ -173,16 +173,20 @@ def contact(request):
 
 def about(request):
     """About page"""
+    from .models import Leadership
+
     services_count = ResearchService.objects.filter(is_active=True).count()
     consultancy_count = ConsultancySubService.objects.filter(is_active=True).count()
     clients_count = Customer.objects.count()
     completed_count = ServiceRequest.objects.filter(status='completed').count()
-    
+    leadership_members = Leadership.objects.filter(is_active=True).order_by('display_order')
+
     context = {
         'services_count': services_count,
         'consultancy_count': consultancy_count,
         'clients_count': clients_count,
         'completed_count': completed_count,
+        'leadership_members': leadership_members,
     }
     return render(request, 'about.html', context)
 
@@ -899,6 +903,44 @@ def admin_zoom_appointments(request):
         'workshops': workshops,
     }
     return render(request, 'admin/zoom_appointments.html', context)
+
+
+@login_required
+def admin_leadership(request):
+    """Admin leadership management"""
+    if not request.user.is_staff:
+        messages.error(request, 'You do not have permission to access this page.')
+        return redirect('home')
+
+    from .models import Leadership
+
+    leadership_members = Leadership.objects.all().order_by('display_order')
+    active_count = Leadership.objects.filter(is_active=True).count()
+
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        member_id = request.POST.get('member_id')
+
+        try:
+            member = Leadership.objects.get(id=member_id)
+
+            if action == 'toggle_active':
+                member.is_active = not member.is_active
+                member.save()
+                messages.success(request, f'Member {"activated" if member.is_active else "deactivated"}.')
+            elif action == 'delete':
+                member.delete()
+                messages.success(request, 'Leadership member deleted.')
+        except Leadership.DoesNotExist:
+            messages.error(request, 'Leadership member not found.')
+
+        return redirect('admin_leadership')
+
+    context = {
+        'leadership_members': leadership_members,
+        'active_count': active_count,
+    }
+    return render(request, 'admin/leadership.html', context)
 
 
 def privacy(request):

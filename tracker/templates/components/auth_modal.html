@@ -74,7 +74,7 @@
     }
 
     .auth-modal-visual {
-        background: linear-gradient(135deg, rgba(30, 64, 175, 0.95) 0%, rgba(124, 58, 237, 0.95) 100%);
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
         padding: 60px 40px;
         display: flex;
         flex-direction: column;
@@ -237,8 +237,8 @@
 
     .auth-form-input:focus {
         outline: none;
-        border-color: var(--auth-primary);
-        box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.1);
+        border-color: #1e3c72;
+        box-shadow: 0 0 0 4px rgba(30, 60, 114, 0.1);
         transform: translateY(-2px);
     }
 
@@ -261,7 +261,7 @@
         right: 14px;
         top: 50%;
         transform: translateY(-50%);
-        color: var(--auth-primary);
+        color: #1e3c72;
         pointer-events: none;
         transition: all 0.3s ease;
     }
@@ -285,7 +285,7 @@
     }
 
     .auth-password-toggle:hover {
-        color: var(--auth-primary);
+        color: #1e3c72;
     }
 
     .auth-form-checkbox {
@@ -299,7 +299,7 @@
         width: 18px;
         height: 18px;
         cursor: pointer;
-        accent-color: var(--auth-primary);
+        accent-color: #1e3c72;
         border-radius: 4px;
     }
 
@@ -320,7 +320,7 @@
     }
 
     .auth-form-link {
-        color: var(--auth-primary);
+        color: #1e3c72;
         text-decoration: none;
         font-weight: 600;
         transition: all 0.3s ease;
@@ -334,12 +334,12 @@
         left: 0;
         width: 0;
         height: 2px;
-        background: var(--auth-accent);
+        background: #f39c12;
         transition: width 0.3s ease;
     }
 
     .auth-form-link:hover {
-        color: var(--auth-accent);
+        color: #f39c12;
     }
 
     .auth-form-link:hover::after {
@@ -349,7 +349,7 @@
     .auth-submit-btn {
         width: 100%;
         padding: 14px 16px;
-        background: linear-gradient(135deg, var(--auth-primary) 0%, var(--auth-primary-light) 100%);
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
         color: white;
         border: none;
         border-radius: 10px;
@@ -408,7 +408,7 @@
     }
 
     .auth-footer-link {
-        color: var(--auth-primary);
+        color: #1e3c72;
         text-decoration: none;
         font-weight: 700;
         cursor: pointer;
@@ -417,7 +417,7 @@
     }
 
     .auth-footer-link:hover {
-        color: var(--auth-accent);
+        color: #f39c12;
     }
 
     .auth-error-message {
@@ -621,6 +621,15 @@
                     </div>
 
                     <div class="auth-form-group">
+                        <label for="authPhone" class="auth-form-label">Phone Number</label>
+                        <div class="auth-input-icon">
+                            <input type="tel" id="authPhone" name="phone" class="auth-form-input with-icon"
+                                   placeholder="+255 123 456 789" required autocomplete="tel">
+                            <i class="ri-phone-line"></i>
+                        </div>
+                    </div>
+
+                    <div class="auth-form-group">
                         <label for="authRegisterPassword" class="auth-form-label">Password</label>
                         <div class="auth-input-icon" style="position: relative;">
                             <input type="password" id="authRegisterPassword" name="password" class="auth-form-input with-icon"
@@ -810,12 +819,18 @@
             }, 1500);
         } else {
             const email = document.getElementById('authEmail').value.trim();
+            const phone = document.getElementById('authPhone').value.trim();
             const password = document.getElementById('authRegisterPassword').value.trim();
             const passwordConfirm = document.getElementById('authRegisterPasswordConfirm').value.trim();
 
             if (!email) {
                 showAuthError('Please enter your email address');
                 document.getElementById('authEmail').classList.add('error');
+                return;
+            }
+            if (!phone) {
+                showAuthError('Please enter your phone number');
+                document.getElementById('authPhone').classList.add('error');
                 return;
             }
             if (!password) {
@@ -842,7 +857,7 @@
     });
 
     // Clear error on input
-    ['authUsername', 'authPassword', 'authEmail', 'authRegisterPassword', 'authRegisterPasswordConfirm'].forEach(id => {
+    ['authUsername', 'authPassword', 'authEmail', 'authPhone', 'authRegisterPassword', 'authRegisterPasswordConfirm'].forEach(id => {
         const input = document.getElementById(id);
         if (input) {
             input.addEventListener('input', function() {

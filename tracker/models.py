@@ -379,3 +379,98 @@ class CompanyProfile(models.Model):
         """Get the company profile (singleton pattern)"""
         profile, _ = cls.objects.get_or_create(pk=1)
         return profile
+
+
+class Leadership(models.Model):
+    """Leadership team members"""
+    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
+    affiliation = models.CharField(max_length=255, blank=True)
+    bio = models.TextField(blank=True, help_text="Brief biography or description")
+    photo = models.ImageField(upload_to='leadership/', null=True, blank=True, help_text="Profile photo - recommended size: 400x500px")
+    email = models.EmailField(blank=True)
+    phone = models.CharField(max_length=20, blank=True)
+    facebook = models.URLField(blank=True)
+    twitter = models.URLField(blank=True)
+    linkedin = models.URLField(blank=True)
+    instagram = models.URLField(blank=True)
+    display_order = models.IntegerField(default=0, help_text="Order of appearance on the website")
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['display_order', 'name']
+        indexes = [
+            models.Index(fields=['is_active']),
+            models.Index(fields=['display_order']),
+        ]
+
+    def __str__(self):
+        return f"{self.name} - {self.title}"
+
+
+class ServiceImage(models.Model):
+    """Images for services/categories"""
+    service = models.ForeignKey(ResearchService, on_delete=models.CASCADE, related_name='images')
+    title = models.CharField(max_length=255, blank=True)
+    image = models.ImageField(upload_to='services/', help_text="Service/category image - recommended size: 600x400px")
+    description = models.TextField(blank=True)
+    display_order = models.IntegerField(default=0)
+    is_featured = models.BooleanField(default=False, help_text="Show as main image for this service")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['display_order']
+        indexes = [
+            models.Index(fields=['service', 'is_featured']),
+        ]
+
+    def __str__(self):
+        return f"{self.service.name} - {self.title or 'Image'}"
+
+
+class TutorialVideo(models.Model):
+    """Tutorial videos per service category"""
+    service = models.ForeignKey(ResearchService, on_delete=models.CASCADE, related_name='tutorial_videos')
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    video_url = models.URLField(help_text="YouTube video URL or embedded video link")
+    duration = models.CharField(max_length=20, blank=True, help_text="e.g., 5:30")
+    thumbnail = models.ImageField(upload_to='tutorials/', null=True, blank=True, help_text="Video thumbnail - recommended size: 640x360px")
+    display_order = models.IntegerField(default=0)
+    is_published = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['display_order']
+        indexes = [
+            models.Index(fields=['service', 'is_published']),
+        ]
+
+    def __str__(self):
+        return f"{self.service.name} - {self.title}"
+
+
+class ServiceFAQ(models.Model):
+    """Frequently Asked Questions per service"""
+    service = models.ForeignKey(ResearchService, on_delete=models.CASCADE, related_name='faqs')
+    question = models.CharField(max_length=500)
+    answer = models.TextField()
+    display_order = models.IntegerField(default=0)
+    is_published = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['display_order']
+        indexes = [
+            models.Index(fields=['service', 'is_published']),
+        ]
+        verbose_name = "Service FAQ"
+        verbose_name_plural = "Service FAQs"
+
+    def __str__(self):
+        return f"{self.service.name} - {self.question[:50]}"
