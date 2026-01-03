@@ -138,10 +138,24 @@ def service_detail(request, pk):
         is_published=True
     ).order_by('-created_at')[:4]
 
+    # Get service images
+    featured_image = service.images.filter(is_featured=True).first()
+    all_images = service.images.all().order_by('display_order')
+
+    # Get tutorial videos
+    tutorial_videos = service.tutorial_videos.filter(is_published=True).order_by('display_order')
+
+    # Get FAQs
+    faqs = service.faqs.filter(is_published=True).order_by('display_order')
+
     context = {
         'service': service,
         'related_services': related_services,
         'testimonials': testimonials,
+        'featured_image': featured_image,
+        'all_images': all_images,
+        'tutorial_videos': tutorial_videos,
+        'faqs': faqs,
     }
     return render(request, 'service_detail.html', context)
 

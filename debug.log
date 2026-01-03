@@ -1338,3 +1338,5 @@ INFO 2026-01-03 20:03:02,416 autoreload 916 139907260761920 /root/app/code/track
 INFO 2026-01-03 20:03:02,827 autoreload 1219 139664079542080 Watching for file changes with StatReloader
 INFO 2026-01-03 20:03:09,100 autoreload 1219 139664079542080 /root/app/code/tracker/views_frontend.py changed, reloading.
 INFO 2026-01-03 20:03:09,499 autoreload 1234 140646547347264 Watching for file changes with StatReloader
+INFO 2026-01-03 20:03:15,867 autoreload 1234 140646547347264 /root/app/code/tracker/views_frontend.py changed, reloading.
+INFO 2026-01-03 20:03:16,264 autoreload 1243 139635630114624 Watching for file changes with StatReloader
