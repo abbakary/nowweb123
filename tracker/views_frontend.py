@@ -72,11 +72,15 @@ def services(request):
     # Separate Academic Writing Services and Training & Capacity Building
     academic_services = ResearchService.objects.filter(
         is_active=True
-    ).exclude(category__in=['consultancy', 'training_capacity']).order_by('display_order')
+    ).exclude(category__in=['consultancy', 'training_capacity']).prefetch_related(
+        'images', 'tutorial_videos', 'faqs'
+    ).order_by('display_order')
 
     training_services = ResearchService.objects.filter(
         is_active=True,
         category='training_capacity'
+    ).prefetch_related(
+        'images', 'tutorial_videos', 'faqs'
     ).order_by('display_order')
 
     consultancy_services = ConsultancySubService.objects.filter(
@@ -88,11 +92,30 @@ def services(request):
         date__gte=timezone.now()
     ).order_by('date')[:6]
 
+    # Get FAQs that are published
+    all_services_list = list(academic_services) + list(training_services)
+    service_faqs = {}
+    for service in all_services_list:
+        service_faqs[service.id] = service.faqs.filter(is_published=True).order_by('display_order')
+
+    # Get published tutorial videos
+    service_videos = {}
+    for service in all_services_list:
+        service_videos[service.id] = service.tutorial_videos.filter(is_published=True).order_by('display_order')
+
+    # Get featured images
+    service_images = {}
+    for service in all_services_list:
+        service_images[service.id] = service.images.filter(is_featured=True).first()
+
     context = {
         'research_services': academic_services,
         'training_services': training_services,
         'consultancy_services': consultancy_services,
         'workshops': workshops,
+        'service_faqs': service_faqs,
+        'service_videos': service_videos,
+        'service_images': service_images,
     }
     return render(request, 'services.html', context)
 
