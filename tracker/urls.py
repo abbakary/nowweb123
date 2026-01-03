@@ -68,6 +68,7 @@ admin_patterns = [
     path('admin/workshops/', views_frontend.admin_workshops, name='admin_workshops'),
     path('admin/zoom-appointments/', views_frontend.admin_zoom_appointments, name='admin_zoom_appointments'),
     path('admin/testimonials/', views_frontend.admin_testimonials, name='admin_testimonials'),
+    path('admin/leadership/', views_frontend.admin_leadership, name='admin_leadership'),
     path('admin/reports/', views_frontend.admin_reports, name='admin_reports'),
 ]
 
