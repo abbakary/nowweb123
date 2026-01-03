@@ -1,0 +1,823 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - ResearchHub{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #1e3c72;
+        --primary-light: #2a5298;
+        --accent: #ff7e5f;
+        --dark: #2c3e50;
+        --light-gray: #f8f9fa;
+        --glass-bg: rgba(255, 255, 255, 0.95);
+        --shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+    }
+
+    .auth-wrapper {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        position: relative;
+    }
+
+    /* Animated background dots */
+    .auth-wrapper::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            radial-gradient(circle at 10% 20%, rgba(255,255,255,0.1) 2px, transparent 2px),
+            radial-gradient(circle at 90% 80%, rgba(255,255,255,0.1) 2px, transparent 2px),
+            radial-gradient(circle at 50% 50%, rgba(255,255,255,0.05) 2px, transparent 2px);
+        background-size: 50px 50px;
+        animation: float 20s linear infinite;
+    }
+
+    @keyframes float {
+        0% { background-position: 0 0, 0 0, 0 0; }
+        100% { background-position: 50px 50px, -50px -50px, 25px -25px; }
+    }
+
+    .auth-container {
+        width: 100%;
+        max-width: 500px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Top accent bar */
+    .auth-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, var(--primary), var(--accent));
+        border-radius: 24px 24px 0 0;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    .auth-header {
+        padding: 35px 40px 20px;
+        text-align: center;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        color: white;
+        margin-bottom: 0;
+    }
+
+    .auth-header h1 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        letter-spacing: -0.5px;
+    }
+
+    .auth-header p {
+        font-size: 0.95rem;
+        opacity: 0.9;
+        margin: 0;
+        font-weight: 400;
+    }
+
+    .auth-form {
+        padding: 30px 40px;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    /* Custom scrollbar */
+    .auth-form::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .auth-form::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 3px;
+    }
+
+    .auth-form::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 3px;
+    }
+
+    /* Floating label design */
+    .form-group {
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--dark);
+        font-weight: 600;
+        font-size: 0.9rem;
+        letter-spacing: 0.3px;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-wrapper i {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--primary);
+        font-size: 1.1rem;
+        transition: color 0.3s ease;
+    }
+
+    .form-control {
+        border: 2px solid #e2e8f0;
+        padding: 14px 16px 14px 48px;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        width: 100%;
+        box-sizing: border-box;
+        background: white;
+        color: var(--dark);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .form-control:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.15);
+        outline: none;
+        transform: translateY(-1px);
+    }
+
+    .form-control:focus + .input-wrapper i {
+        color: var(--accent);
+    }
+
+    .form-control.error {
+        border-color: var(--danger);
+    }
+
+    /* Password strength meter */
+    .password-strength {
+        margin-top: 10px;
+        font-size: 0.85rem;
+    }
+
+    .strength-bar {
+        height: 6px;
+        background: #e2e8f0;
+        border-radius: 3px;
+        margin: 6px 0;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .strength-indicator {
+        height: 100%;
+        border-radius: 3px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .strength-indicator::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+        0% { left: -100%; }
+        100% { left: 100%; }
+    }
+
+    .strength-indicator.weak {
+        width: 33%;
+        background: linear-gradient(90deg, var(--danger), #f87171);
+    }
+
+    .strength-indicator.fair {
+        width: 66%;
+        background: linear-gradient(90deg, var(--warning), #fbbf24);
+    }
+
+    .strength-indicator.good {
+        width: 85%;
+        background: linear-gradient(90deg, #3b82f6, #60a5fa);
+    }
+
+    .strength-indicator.strong {
+        width: 100%;
+        background: linear-gradient(90deg, var(--success), #34d399);
+    }
+
+    #strengthText {
+        font-weight: 600;
+        display: inline-block;
+        transition: color 0.3s ease;
+    }
+
+    .strength-text.weak { color: var(--danger); }
+    .strength-text.fair { color: var(--warning); }
+    .strength-text.good { color: #3b82f6; }
+    .strength-text.strong { color: var(--success); }
+
+    /* Password requirements */
+    .password-requirements {
+        background: #f8fafc;
+        border-radius: 10px;
+        padding: 12px;
+        margin-top: 10px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .requirement {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 4px 0;
+        font-size: 0.85rem;
+        color: #64748b;
+    }
+
+    .requirement i {
+        font-size: 0.9rem;
+        transition: color 0.3s ease;
+    }
+
+    .requirement.valid {
+        color: var(--success);
+    }
+
+    .requirement.valid i {
+        color: var(--success);
+    }
+
+    .requirement.invalid {
+        color: #94a3b8;
+    }
+
+    .requirement.invalid i {
+        color: #94a3b8;
+    }
+
+    /* Password toggle button */
+    .password-toggle {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #94a3b8;
+        cursor: pointer;
+        font-size: 1.1rem;
+        padding: 4px;
+        transition: color 0.3s ease;
+    }
+
+    .password-toggle:hover {
+        color: var(--primary);
+    }
+
+    /* Submit button */
+    .auth-submit-btn {
+        width: 100%;
+        padding: 16px;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        margin-top: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        letter-spacing: 0.5px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .auth-submit-btn::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.6s ease;
+    }
+
+    .auth-submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(30, 60, 114, 0.3);
+    }
+
+    .auth-submit-btn:hover::after {
+        left: 100%;
+    }
+
+    .auth-submit-btn:active {
+        transform: translateY(0);
+    }
+
+    /* Messages */
+    .error-message {
+        background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
+        color: white;
+        padding: 12px 16px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        animation: slideIn 0.3s ease;
+    }
+
+    .success-message {
+        background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+        color: white;
+        padding: 12px 16px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        animation: slideIn 0.3s ease;
+    }
+
+    .field-error {
+        color: var(--danger);
+        font-size: 0.85rem;
+        margin-top: 6px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Footer */
+    .auth-footer {
+        text-align: center;
+        padding: 20px 40px;
+        border-top: 1px solid #e2e8f0;
+        background: rgba(248, 250, 252, 0.8);
+        color: #64748b;
+        font-size: 0.9rem;
+    }
+
+    .auth-footer a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+        margin-left: 5px;
+        transition: color 0.3s ease;
+    }
+
+    .auth-footer a:hover {
+        color: var(--accent);
+        text-decoration: underline;
+    }
+
+    /* Loading animation */
+    .auth-submit-btn.loading i {
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Terms checkbox */
+    .terms-check {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin: 15px 0;
+    }
+
+    .terms-check input[type="checkbox"] {
+        margin-top: 3px;
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        accent-color: var(--primary);
+    }
+
+    .terms-check label {
+        font-size: 0.9rem;
+        color: #64748b;
+        cursor: pointer;
+        line-height: 1.5;
+    }
+
+    .terms-check a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .terms-check a:hover {
+        text-decoration: underline;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 576px) {
+        .auth-container {
+            max-width: 95%;
+        }
+        
+        .auth-header {
+            padding: 25px 20px 15px;
+        }
+        
+        .auth-form {
+            padding: 20px;
+            max-height: 75vh;
+        }
+        
+        .auth-header h1 {
+            font-size: 1.6rem;
+        }
+        
+        .auth-footer {
+            padding: 15px 20px;
+        }
+        
+        .form-control {
+            padding: 12px 16px 12px 42px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1>Create Account</h1>
+            <p>Join our community of researchers</p>
+        </div>
+        
+        <div class="auth-form">
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == 'error' %}
+                    <div class="error-message">
+                        <i class="ri-alert-line"></i>
+                        {{ message }}
+                    </div>
+                    {% else %}
+                    <div class="success-message">
+                        <i class="ri-check-line"></i>
+                        {{ message }}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            
+            {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                    <div class="error-message">
+                        <i class="ri-error-warning-line"></i>
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            <form method="POST" novalidate id="registerForm">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="{{ form.email.id_for_label }}">Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="ri-mail-line"></i>
+                        {{ form.email }}
+                    </div>
+                    {% if form.email.errors %}
+                        <div class="field-error">
+                            <i class="ri-close-circle-line"></i>
+                            {{ form.email.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.phone.id_for_label }}">Phone Number</label>
+                    <div class="input-wrapper">
+                        <i class="ri-phone-line"></i>
+                        {{ form.phone }}
+                    </div>
+                    {% if form.phone.errors %}
+                        <div class="field-error">
+                            <i class="ri-close-circle-line"></i>
+                            {{ form.phone.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.password1.id_for_label }}">Password</label>
+                    <div class="input-wrapper">
+                        <i class="ri-lock-line"></i>
+                        {{ form.password1 }}
+                        <button type="button" class="password-toggle" id="togglePassword1">
+                            <i class="ri-eye-line"></i>
+                        </button>
+                    </div>
+                    <div class="password-strength">
+                        <div class="strength-bar">
+                            <div class="strength-indicator" id="strengthIndicator"></div>
+                        </div>
+                        <span id="strengthText" class="strength-text">Enter a password</span>
+                    </div>
+                    
+                    <div class="password-requirements" id="passwordRequirements">
+                        <div class="requirement" id="reqLength">
+                            <i class="ri-checkbox-blank-circle-line"></i>
+                            <span>At least 8 characters</span>
+                        </div>
+                        <div class="requirement" id="reqUpper">
+                            <i class="ri-checkbox-blank-circle-line"></i>
+                            <span>One uppercase letter</span>
+                        </div>
+                        <div class="requirement" id="reqLower">
+                            <i class="ri-checkbox-blank-circle-line"></i>
+                            <span>One lowercase letter</span>
+                        </div>
+                        <div class="requirement" id="reqNumber">
+                            <i class="ri-checkbox-blank-circle-line"></i>
+                            <span>One number</span>
+                        </div>
+                        <div class="requirement" id="reqSpecial">
+                            <i class="ri-checkbox-blank-circle-line"></i>
+                            <span>One special character</span>
+                        </div>
+                    </div>
+                    
+                    {% if form.password1.errors %}
+                        <div class="field-error">
+                            <i class="ri-close-circle-line"></i>
+                            {{ form.password1.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+                    <div class="input-wrapper">
+                        <i class="ri-lock-unlock-line"></i>
+                        {{ form.password2 }}
+                        <button type="button" class="password-toggle" id="togglePassword2">
+                            <i class="ri-eye-line"></i>
+                        </button>
+                    </div>
+                    {% if form.password2.errors %}
+                        <div class="field-error">
+                            <i class="ri-close-circle-line"></i>
+                            {{ form.password2.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="terms-check">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">
+                        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="auth-submit-btn" id="submitBtn">
+                    <i class="ri-user-add-line"></i> Create Account
+                </button>
+            </form>
+        </div>
+        
+        <div class="auth-footer">
+            Already have an account?
+            <a href="{% url 'login' %}">Sign in here</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Password toggles
+        const togglePassword1 = document.getElementById('togglePassword1');
+        const togglePassword2 = document.getElementById('togglePassword2');
+        const password1Input = document.getElementById('id_password1');
+        const password2Input = document.getElementById('id_password2');
+        
+        function setupPasswordToggle(toggleBtn, passwordInput) {
+            if (!toggleBtn || !passwordInput) return;
+            
+            toggleBtn.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                const icon = toggleBtn.querySelector('i');
+                icon.className = type === 'password' ? 'ri-eye-line' : 'ri-eye-off-line';
+            });
+        }
+        
+        setupPasswordToggle(togglePassword1, password1Input);
+        setupPasswordToggle(togglePassword2, password2Input);
+
+        // Password strength checker
+        function checkPasswordStrength(password) {
+            if (!password) {
+                return {
+                    strength: 0,
+                    text: 'Enter a password',
+                    class: '',
+                    requirements: {
+                        length: false,
+                        upper: false,
+                        lower: false,
+                        number: false,
+                        special: false
+                    }
+                };
+            }
+            
+            const requirements = {
+                length: password.length >= 8,
+                upper: /[A-Z]/.test(password),
+                lower: /[a-z]/.test(password),
+                number: /[0-9]/.test(password),
+                special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+            };
+            
+            const strength = Object.values(requirements).filter(Boolean).length;
+            
+            let strengthLevel = '';
+            let strengthClass = '';
+            
+            if (strength <= 2) {
+                strengthLevel = 'Weak';
+                strengthClass = 'weak';
+            } else if (strength <= 3) {
+                strengthLevel = 'Fair';
+                strengthClass = 'fair';
+            } else if (strength <= 4) {
+                strengthLevel = 'Good';
+                strengthClass = 'good';
+            } else {
+                strengthLevel = 'Strong';
+                strengthClass = 'strong';
+            }
+            
+            return {
+                strength: strength,
+                text: `Strength: ${strengthLevel}`,
+                class: strengthClass,
+                requirements: requirements
+            };
+        }
+
+        // Update password strength in real-time
+        if (password1Input) {
+            password1Input.addEventListener('input', function() {
+                const password = this.value;
+                const result = checkPasswordStrength(password);
+                
+                // Update strength indicator
+                const indicator = document.getElementById('strengthIndicator');
+                const strengthText = document.getElementById('strengthText');
+                
+                indicator.className = `strength-indicator ${result.class}`;
+                strengthText.textContent = result.text;
+                strengthText.className = `strength-text ${result.class}`;
+                
+                // Update requirements checklist
+                Object.keys(result.requirements).forEach(key => {
+                    const reqElement = document.getElementById(`req${key.charAt(0).toUpperCase() + key.slice(1)}`);
+                    if (reqElement) {
+                        const icon = reqElement.querySelector('i');
+                        const isValid = result.requirements[key];
+                        
+                        reqElement.classList.toggle('valid', isValid);
+                        reqElement.classList.toggle('invalid', !isValid);
+                        icon.className = isValid ? 'ri-checkbox-circle-line' : 'ri-checkbox-blank-circle-line';
+                    }
+                });
+                
+                // Check password match
+                if (password2Input && password2Input.value) {
+                    checkPasswordMatch();
+                }
+            });
+        }
+
+        // Check password match
+        function checkPasswordMatch() {
+            if (!password1Input || !password2Input) return;
+            
+            const password1 = password1Input.value;
+            const password2 = password2Input.value;
+            
+            if (password2 && password1 !== password2) {
+                password2Input.classList.add('error');
+                if (!password2Input.parentElement.querySelector('.match-error')) {
+                    const errorSpan = document.createElement('div');
+                    errorSpan.className = 'field-error match-error';
+                    errorSpan.innerHTML = '<i class="ri-close-circle-line"></i> Passwords do not match';
+                    password2Input.parentElement.parentElement.appendChild(errorSpan);
+                }
+            } else {
+                password2Input.classList.remove('error');
+                const matchError = password2Input.parentElement.parentElement.querySelector('.match-error');
+                if (matchError) {
+                    matchError.remove();
+                }
+            }
+        }
+
+        if (password2Input) {
+            password2Input.addEventListener('input', checkPasswordMatch);
+        }
+
+        // Form submission loading state
+        const form = document.getElementById('registerForm');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        if (form && submitBtn) {
+            form.addEventListener('submit', function() {
+                submitBtn.classList.add('loading');
+                submitBtn.innerHTML = '<i class="ri-loader-4-line"></i> Creating account...';
+                submitBtn.disabled = true;
+            });
+        }
+
+        // Input focus effects
+        const inputs = document.querySelectorAll('.form-control');
+        inputs.forEach(input => {
+            const icon = input.parentElement.querySelector('i');
+            
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-1px)';
+                if (icon) icon.style.color = 'var(--accent)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+                if (icon) icon.style.color = 'var(--primary)';
+            });
+        });
+
+        // Auto-focus first input if empty
+        const emailInput = document.getElementById('id_email');
+        if (emailInput && !emailInput.value) {
+            emailInput.focus();
+        }
+    });
+</script>
+{% endblock %}

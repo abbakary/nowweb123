@@ -1,0 +1,854 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - The Writing Hub Tz{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #2563eb; /* Vibrant blue */
+        --primary-light: #3b82f6;
+        --secondary: #7c3aed; /* Purple */
+        --accent: #f59e0b; /* Amber */
+        --accent-light: #fbbf24;
+        --success: #10b981; /* Emerald */
+        --dark: #1e293b; /* Dark blue-gray */
+        --light: #f8fafc; /* Light gray */
+        --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.12);
+        --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Hero Section */
+    .hero {
+        position: relative;
+        padding: 120px 0 100px;
+        background: var(--gradient-1);
+        color: white;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);
+        animation: float 20s infinite linear;
+    }
+
+    @keyframes float {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 800px;
+        margin: 0 auto;
+        animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .hero h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 20px;
+        line-height: 1.2;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .hero p {
+        font-size: 1.25rem;
+        margin-bottom: 40px;
+        opacity: 0.95;
+        line-height: 1.6;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 40px;
+    }
+
+    .cta-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 16px 36px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 12px;
+        text-decoration: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    .cta-button.primary {
+        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+        color: var(--dark);
+        box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
+    }
+
+    .cta-button.secondary {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        color: white;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .cta-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.7s ease;
+        z-index: -1;
+    }
+
+    .cta-button:hover::before {
+        left: 100%;
+    }
+
+    .cta-button.primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(245, 158, 11, 0.4);
+    }
+
+    .cta-button.secondary:hover {
+        background: rgba(255, 255, 255, 0.25);
+        border-color: rgba(255, 255, 255, 0.5);
+        transform: translateY(-2px);
+    }
+
+    /* Services Section */
+    .services-section {
+        padding: 100px 0;
+        background: var(--light);
+        position: relative;
+    }
+
+    .services-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 150px;
+        background: linear-gradient(to bottom, var(--primary), transparent);
+        opacity: 0.05;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .section-header h2 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--dark);
+        margin-bottom: 15px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .section-header h2::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: var(--accent);
+        border-radius: 2px;
+    }
+
+    .section-header p {
+        font-size: 1.1rem;
+        color: #64748b;
+        max-width: 700px;
+        margin: 20px auto 0;
+        line-height: 1.6;
+    }
+
+    .service-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px 30px;
+        text-align: center;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid #e2e8f0;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .service-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: var(--gradient-1);
+        border-radius: 20px 20px 0 0;
+    }
+
+    .service-card:hover {
+        transform: translateY(-10px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .service-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 25px;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: white;
+        transition: transform 0.3s ease;
+    }
+
+    .service-card:hover .service-icon {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    .service-card h3 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 15px;
+        line-height: 1.3;
+    }
+
+    .service-card p {
+        color: #64748b;
+        line-height: 1.6;
+        margin-bottom: 25px;
+    }
+
+    /* Why Choose Us */
+    .features-section {
+        padding: 100px 0;
+        background: white;
+        position: relative;
+    }
+
+    .features-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 150px;
+        background: linear-gradient(to bottom, var(--light), transparent);
+    }
+
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 50px;
+    }
+
+    .feature-item {
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: var(--shadow-md);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .feature-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+    }
+
+    .feature-item:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        display: inline-block;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .feature-item h4 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 15px;
+    }
+
+    .feature-item p {
+        color: #64748b;
+        line-height: 1.6;
+    }
+
+    /* Testimonials */
+    .testimonials-section {
+        padding: 100px 0;
+        background: var(--light);
+        position: relative;
+    }
+
+    .testimonials-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 150px;
+        background: linear-gradient(to bottom, rgba(255,255,255,0.9), transparent);
+    }
+
+    .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 30px;
+        margin-top: 50px;
+    }
+
+    .testimonial-card {
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: var(--shadow-md);
+        position: relative;
+        transition: all 0.3s ease;
+        border: 1px solid #e2e8f0;
+    }
+
+    .testimonial-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .testimonial-card::before {
+        content: '"';
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        font-size: 5rem;
+        color: var(--primary);
+        opacity: 0.1;
+        font-family: Georgia, serif;
+        line-height: 1;
+    }
+
+    .rating {
+        color: var(--accent);
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        display: flex;
+        gap: 2px;
+    }
+
+    .testimonial-text {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: var(--dark);
+        margin-bottom: 25px;
+        font-style: italic;
+        position: relative;
+        z-index: 1;
+    }
+
+    .testimonial-author {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding-top: 20px;
+        border-top: 2px solid #f1f5f9;
+    }
+
+    .author-avatar {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        font-size: 1.2rem;
+    }
+
+    .author-info h5 {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--dark);
+    }
+
+    .author-info p {
+        margin: 5px 0 0;
+        color: #64748b;
+        font-size: 0.9rem;
+    }
+
+    /* CTA Section */
+    .cta-section {
+        padding: 100px 0;
+        background: var(--gradient-2);
+        color: white;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%);
+        animation: pulse 15s infinite linear;
+    }
+
+    @keyframes pulse {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .cta-content {
+        position: relative;
+        z-index: 2;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .cta-content h2 {
+        font-size: 2.8rem;
+        font-weight: 800;
+        margin-bottom: 20px;
+        line-height: 1.2;
+    }
+
+    .cta-content p {
+        font-size: 1.2rem;
+        opacity: 0.95;
+        margin-bottom: 40px;
+        line-height: 1.6;
+    }
+
+    .cta-button.large {
+        padding: 18px 45px;
+        font-size: 1.2rem;
+        background: white;
+        color: var(--secondary);
+        border-radius: 15px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .cta-button.large:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Stats Section */
+    .stats-section {
+        padding: 80px 0;
+        background: white;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 30px;
+        text-align: center;
+    }
+
+    .stat-item {
+        padding: 30px;
+        position: relative;
+    }
+
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1;
+        margin-bottom: 10px;
+    }
+
+    .stat-label {
+        font-size: 1.1rem;
+        color: var(--dark);
+        font-weight: 600;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+        .hero h1 {
+            font-size: 2.8rem;
+        }
+        
+        .cta-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .cta-button {
+            width: 100%;
+            max-width: 300px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hero {
+            padding: 80px 0 60px;
+        }
+        
+        .hero h1 {
+            font-size: 2.2rem;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+        }
+        
+        .section-header h2 {
+            font-size: 2rem;
+        }
+        
+        .services-section,
+        .features-section,
+        .testimonials-section,
+        .cta-section {
+            padding: 60px 0;
+        }
+        
+        .testimonials-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero h1 {
+            font-size: 1.8rem;
+        }
+        
+        .cta-button {
+            padding: 14px 25px;
+            font-size: 1rem;
+        }
+        
+        .service-card,
+        .feature-item,
+        .testimonial-card {
+            padding: 30px 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container-main">
+        <div class="hero-content">
+            <h1>Transform Your Ideas into Exceptional Results</h1>
+            <p>Professional writing, research, and consultancy services for academic excellence and business success. Trusted by students, professionals, and organizations worldwide.</p>
+            <div class="cta-buttons">
+                <a href="{% url 'services' %}" class="cta-button primary">
+                    <i class="ri-rocket-line"></i> Explore Services
+                </a>
+                <a href="{% url 'contact' %}" class="cta-button secondary">
+                    <i class="ri-calendar-check-line"></i> Free Consultation
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="container-main">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Projects Completed</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">Client Satisfaction</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Expert Consultants</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Support Available</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="services-section">
+    <div class="container-main">
+        <div class="section-header">
+            <h2>Our Premium Services</h2>
+            <p>Comprehensive solutions tailored to your academic and professional needs</p>
+        </div>
+        <div class="row g-4">
+            {% for service in featured_services %}
+            <div class="col-md-6 col-lg-4">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="ri-file-text-line"></i>
+                    </div>
+                    <h3>{{ service.name }}</h3>
+                    <p>{{ service.description|truncatewords:20 }}</p>
+                    <a href="{% url 'service_detail' service.id %}" class="cta-button" style="
+                        font-size: 0.9rem; 
+                        padding: 12px 28px; 
+                        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); 
+                        color: white; 
+                        text-decoration: none;
+                        border-radius: 10px;
+                        font-weight: 600;
+                        display: inline-block;
+                    ">
+                        Learn More <i class="ri-arrow-right-line"></i>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p style="color: #64748b; font-size: 1.1rem;">No services available at the moment.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="features-section">
+    <div class="container-main">
+        <div class="section-header">
+            <h2>Why Choose The Writing Hub?</h2>
+            <p>Experience the difference with our commitment to excellence and client success</p>
+        </div>
+        
+        <div class="feature-grid">
+            <div class="feature-item">
+                <i class="ri-award-line feature-icon"></i>
+                <h4>Proven Excellence</h4>
+                <p>Over 500 successful projects delivered with a 98% client satisfaction rate. We consistently exceed expectations.</p>
+            </div>
+            
+            <div class="feature-item">
+                <i class="ri-team-line feature-icon"></i>
+                <h4>Expert Team</h4>
+                <p>PhD holders and industry professionals with 10+ years of experience in academic writing and business consultancy.</p>
+            </div>
+            
+            <div class="feature-item">
+                <i class="ri-shield-check-line feature-icon"></i>
+                <h4>100% Confidential</h4>
+                <p>Your privacy is our priority. All projects are handled with strict confidentiality and secure data protection.</p>
+            </div>
+            
+            <div class="feature-item">
+                <i class="ri-time-line feature-icon"></i>
+                <h4>On-Time Delivery</h4>
+                <p>We respect deadlines. Get your work delivered promptly, every time, with quality assurance built-in.</p>
+            </div>
+            
+            <div class="feature-item">
+                <i class="ri-customer-service-2-line feature-icon"></i>
+                <h4>24/7 Support</h4>
+                <p>Round-the-clock assistance for urgent queries and project updates. We're always here when you need us.</p>
+            </div>
+            
+            <div class="feature-item">
+                <i class="ri-refresh-line feature-icon"></i>
+                <h4>Unlimited Revisions</h4>
+                <p>Complete satisfaction guaranteed with free revisions until your work meets all your requirements.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="testimonials-section">
+    <div class="container-main">
+        <div class="section-header">
+            <h2>Client Success Stories</h2>
+            <p>See what our satisfied clients have to say about their experience</p>
+        </div>
+        
+        <div class="testimonials-grid">
+            {% for testimonial in testimonials %}
+            <div class="testimonial-card">
+                <div class="rating">
+                    {% for i in "12345" %}
+                        <i class="ri-star-fill"></i>
+                    {% endfor %}
+                </div>
+                <p class="testimonial-text">"{{ testimonial.quote }}"</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">
+                        {{ testimonial.customer.full_name|slice:":1"|upper }}
+                    </div>
+                    <div class="author-info">
+                        <h5>{{ testimonial.customer.full_name }}</h5>
+                        <p>{{ testimonial.customer.profession|default:"Satisfied Client" }}</p>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <div style="background: white; padding: 40px; border-radius: 20px; box-shadow: var(--shadow-md);">
+                    <i class="ri-chat-quote-line" style="font-size: 3rem; color: var(--primary); margin-bottom: 20px; opacity: 0.3;"></i>
+                    <h4 style="color: var(--dark); margin-bottom: 10px;">Be the First to Review!</h4>
+                    <p style="color: #64748b;">No testimonials yet. Your feedback could be featured here!</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container-main">
+        <div class="cta-content">
+            <h2>Ready to Achieve Your Goals?</h2>
+            <p>Join thousands of successful students and professionals who trust us with their most important projects. Let's create something amazing together.</p>
+            <a href="{% url 'contact' %}" class="cta-button large">
+                <i class="ri-calendar-check-line"></i> Start Your Project Now
+            </a>
+            <p style="margin-top: 30px; font-size: 0.9rem; opacity: 0.8;">
+                <i class="ri-shield-check-line"></i> Free consultation • No commitment • 100% confidential
+            </p>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animate stats counting
+        function animateCounters() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach(stat => {
+                const target = parseInt(stat.textContent);
+                let current = 0;
+                const increment = target / 50;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        stat.textContent = target + (stat.textContent.includes('+') ? '+' : stat.textContent.includes('%') ? '%' : '');
+                        clearInterval(timer);
+                    } else {
+                        stat.textContent = Math.floor(current) + (stat.textContent.includes('+') ? '+' : stat.textContent.includes('%') ? '%' : '');
+                    }
+                }, 30);
+            });
+        }
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.classList.contains('stats-section')) {
+                        animateCounters();
+                    }
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe sections for animation
+        const sections = document.querySelectorAll('.services-section, .features-section, .testimonials-section');
+        sections.forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'all 0.6s ease-out';
+            observer.observe(section);
+        });
+
+        // Initialize stats animation
+        const statsSection = document.querySelector('.stats-section');
+        if (statsSection) {
+            statsSection.style.opacity = '0';
+            statsSection.style.transform = 'translateY(20px)';
+            statsSection.style.transition = 'all 0.6s ease-out';
+            observer.observe(statsSection);
+        }
+
+        // Add hover effects to cards
+        const cards = document.querySelectorAll('.service-card, .feature-item, .testimonial-card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                if (!this.classList.contains('hover')) {
+                    this.style.transform = 'translateY(0)';
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

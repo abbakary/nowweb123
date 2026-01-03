@@ -1,0 +1,199 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Manage Services - Admin{% endblock %}
+{% block page_title %}Services Management{% endblock %}
+
+{% block content %}
+<div class="admin-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div class="admin-card-title" style="margin-bottom: 0;">
+            <i class="ri-file-text-line"></i> Research Services
+        </div>
+        <button onclick="openCreateServiceModal()" class="admin-btn admin-btn-primary">
+            <i class="ri-add-line"></i> Add Service
+        </button>
+    </div>
+    
+    {% if services %}
+        <!-- Filter -->
+        <div style="margin-bottom: 20px;">
+            <select class="form-control" style="border-radius: var(--border-radius); max-width: 300px;">
+                <option value="">All Categories</option>
+                <option value="concept_proposal">Concept Proposal</option>
+                <option value="thesis">Thesis Writing</option>
+                <option value="articles">Article Writing</option>
+                <option value="data_analysis">Data Analysis</option>
+                <option value="research_design">Research Design</option>
+            </select>
+        </div>
+        
+        <div style="overflow-x: auto;">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Service Name</th>
+                        <th>Category</th>
+                        <th>Price Range</th>
+                        <th>Turnaround</th>
+                        <th>Status</th>
+                        <th style="text-align: center;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for service in services %}
+                    <tr>
+                        <td>
+                            <strong>{{ service.name }}</strong><br>
+                            <small style="color: #999;">{{ service.description|truncatewords:10 }}</small>
+                        </td>
+                        <td>
+                            <span class="admin-badge" style="background: #e3f2fd; color: #1976d2;">
+                                {{ service.get_category_display }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if service.price_from and service.price_to %}
+                                ${{ service.price_from }} - ${{ service.price_to }}
+                            {% elif service.price_from %}
+                                From ${{ service.price_from }}
+                            {% else %}
+                                <span style="color: #999;">Custom</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ service.turnaround_time|default:"—" }}</td>
+                        <td>
+                            {% if service.is_active %}
+                                <span class="admin-badge admin-badge-success">
+                                    <i class="ri-check-line"></i> Active
+                                </span>
+                            {% else %}
+                                <span class="admin-badge admin-badge-danger">
+                                    <i class="ri-close-line"></i> Inactive
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="admin-table-actions">
+                                <form method="POST" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="service_id" value="{{ service.id }}">
+                                    <input type="hidden" name="action" value="delete">
+                                    <button type="submit" class="admin-btn admin-btn-danger admin-btn-small" title="Delete" onclick="return confirm('Are you sure you want to delete this service?');">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <i class="ri-file-text-line"></i>
+            <p>No services created yet</p>
+            <button onclick="openCreateServiceModal()" class="admin-btn admin-btn-primary" style="margin-top: 20px;">
+                <i class="ri-add-line"></i> Create First Service
+            </button>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Service Stats -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 30px;">
+    <div class="stat-card">
+        <div class="stat-label"><i class="ri-file-list-line"></i> Total Services</div>
+        <div class="stat-value">{{ services|length|default:"0" }}</div>
+    </div>
+    
+    <div class="stat-card accent">
+        <div class="stat-label"><i class="ri-check-double-line"></i> Active Services</div>
+        <div class="stat-value">{{ active_services|default:"0" }}</div>
+    </div>
+    
+    <div class="stat-card success">
+        <div class="stat-label"><i class="ri-mail-line"></i> Total Requests</div>
+        <div class="stat-value">{{ total_requests|default:"0" }}</div>
+    </div>
+</div>
+
+<!-- Create Service Modal -->
+<div id="createServiceModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+    <div style="background: white; padding: 30px; border-radius: var(--border-radius); width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="color: var(--primary); margin: 0;">
+                <i class="ri-add-circle-line"></i> Add New Service
+            </h3>
+            <button onclick="closeCreateServiceModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">
+                <i class="ri-close-line"></i>
+            </button>
+        </div>
+        
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="create">
+            
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600;">Service Name *</label>
+                <input type="text" name="name" required class="form-control" placeholder="e.g., Thesis Writing" style="border-radius: var(--border-radius);">
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600;">Category *</label>
+                <select name="category" required class="form-control" style="border-radius: var(--border-radius);">
+                    <option value="">Select a category</option>
+                    <option value="concept_proposal">Concept Proposal</option>
+                    <option value="thesis">Thesis Writing</option>
+                    <option value="articles">Article Writing</option>
+                    <option value="data_analysis">Data Analysis</option>
+                    <option value="research_design">Research Design</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600;">Description *</label>
+                <textarea name="description" required class="form-control" rows="4" placeholder="Service description" style="border-radius: var(--border-radius);"></textarea>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                <div>
+                    <label style="display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600;">Price From ($)</label>
+                    <input type="number" name="price_from" step="0.01" class="form-control" placeholder="0.00" style="border-radius: var(--border-radius);">
+                </div>
+                <div>
+                    <label style="display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600;">Price To ($)</label>
+                    <input type="number" name="price_to" step="0.01" class="form-control" placeholder="0.00" style="border-radius: var(--border-radius);">
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600;">Turnaround Time</label>
+                <input type="text" name="turnaround_time" class="form-control" placeholder="e.g., 5-7 business days" style="border-radius: var(--border-radius);">
+            </div>
+
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button type="button" onclick="closeCreateServiceModal()" class="admin-btn admin-btn-secondary">Cancel</button>
+                <button type="submit" class="admin-btn admin-btn-primary">Create Service</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function openCreateServiceModal() {
+    document.getElementById('createServiceModal').style.display = 'flex';
+}
+
+function closeCreateServiceModal() {
+    document.getElementById('createServiceModal').style.display = 'none';
+}
+
+window.onclick = function(event) {
+    let modal = document.getElementById('createServiceModal');
+    if (event.target == modal) {
+        modal.style.display = 'none';
+    }
+}
+</script>
+{% endblock %}

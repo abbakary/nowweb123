@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Us - The Writing Hub Tz{% endblock %}
+
+{% block content %}
+<section>
+    <div class="container-main">
+        <div class="row">
+            <div class="col-lg-8">
+                <h2>Get In Touch</h2>
+                <p style="font-size: 1.1rem; color: #666; margin-bottom: 30px;">
+                    Have questions about our services? We're here to help. Fill out the form below or contact us directly.
+                </p>
+
+                <form method="POST" class="form-container">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="full_name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="full_name" name="full_name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="phone" class="form-label">Phone (Optional)</label>
+                            <input type="tel" class="form-control" id="phone" name="phone">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="service" class="form-label">Service of Interest</label>
+                            <select class="form-control" id="service" name="service">
+                                <option value="">Select a service...</option>
+                                {% for service in services %}
+                                    <option value="{{ service.id }}">{{ service.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="subject" class="form-label">Subject</label>
+                        <input type="text" class="form-control" id="subject" name="subject" required>
+                    </div>
+
+                    <div>
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control" id="message" name="message" rows="6" required></textarea>
+                    </div>
+
+                    <button type="submit" class="cta-button" style="width: 100%; padding: 15px;">
+                        <i class="ri-send-plane-line"></i> Send Message
+                    </button>
+                </form>
+            </div>
+
+            <!-- Contact Information Sidebar -->
+            <div class="col-lg-4">
+                <div style="margin-bottom: 30px;">
+                    <h4 style="color: var(--primary); margin-bottom: 20px;">Contact Information</h4>
+                    
+                    <div style="background: var(--light); padding: 20px; border-radius: var(--border-radius); margin-bottom: 15px;">
+                        <h6 style="color: var(--primary); margin-bottom: 10px;">
+                            <i class="ri-phone-line"></i> Phone
+                        </h6>
+                        <p>{% if company %}{{ company.phone }}{% else %}+255 717 313 797{% endif %}</p>
+                        <p style="font-size: 0.9rem; color: #666;">Available 9 AM - 6 PM EAT</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 20px; border-radius: var(--border-radius); margin-bottom: 15px;">
+                        <h6 style="color: var(--primary); margin-bottom: 10px;">
+                            <i class="ri-mail-line"></i> Email
+                        </h6>
+                        <p>{% if company %}{{ company.email }}{% else %}thewritinghubtz@gmail.com{% endif %}</p>
+                        <p style="font-size: 0.9rem; color: #666;">Response within 24 hours</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 20px; border-radius: var(--border-radius); margin-bottom: 15px;">
+                        <h6 style="color: var(--primary); margin-bottom: 10px;">
+                            <i class="ri-map-pin-line"></i> Address
+                        </h6>
+                        {% if company and company.address %}
+                            {{ company.address|linebreaks }}
+                        {% else %}
+                            <p>9 Floor, Elite Towers</p>
+                            <p>Azikiwe St, Dar es Salaam, Tanzania</p>
+                        {% endif %}
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); color: white; padding: 20px; border-radius: var(--border-radius);">
+                        <h6 style="margin-bottom: 10px;">
+                            <i class="ri-time-line"></i> Business Hours
+                        </h6>
+                        <ul style="list-style: none; padding: 0; font-size: 0.9rem;">
+                            <li>Monday - Friday: 9 AM - 6 PM</li>
+                            <li>Saturday: 10 AM - 4 PM</li>
+                            <li>Sunday: Closed</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- FAQ -->
+                <div>
+                    <h4 style="color: var(--primary); margin-bottom: 15px;">Quick Answers</h4>
+                    <div style="background: var(--light); padding: 20px; border-radius: var(--border-radius);">
+                        <p style="margin-bottom: 15px;">
+                            <strong>How long does a typical project take?</strong><br>
+                            <span style="font-size: 0.9rem; color: #666;">Project duration varies based on scope. We discuss timelines during our consultation.</span>
+                        </p>
+                        <p style="margin-bottom: 15px;">
+                            <strong>What's your revision policy?</strong><br>
+                            <span style="font-size: 0.9rem; color: #666;">We offer unlimited revisions until you're completely satisfied with the work.</span>
+                        </p>
+                        <p>
+                            <strong>Do you offer rush services?</strong><br>
+                            <span style="font-size: 0.9rem; color: #666;">Yes! Contact us to discuss rush deadlines and pricing.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

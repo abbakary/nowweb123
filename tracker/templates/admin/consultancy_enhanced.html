@@ -1,0 +1,183 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Manage Consultancy Hub - Admin{% endblock %}
+{% block page_title %}Consultancy Hub Management{% endblock %}
+
+{% block content %}
+<div class="admin-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <div class="admin-card-title" style="margin-bottom: 0;">
+            <i class="ri-briefcase-line"></i> Consultancy Hub Services
+        </div>
+        <button onclick="openCreateConsultancyModal()" class="admin-btn admin-btn-primary">
+            <i class="ri-add-line"></i> Add Service
+        </button>
+    </div>
+    
+    {% if consultancy_services %}
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px;">
+            {% for service in consultancy_services %}
+            <div class="consultancy-card" style="background: white; border-radius: var(--border-radius); padding: 20px; border: 2px solid #e0e0e0; transition: all 0.3s ease;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div style="font-size: 2.5rem; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                            <i class="{{ service.icon }}"></i>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--primary); margin: 0 0 5px 0; font-weight: 700;">{{ service.name }}</h4>
+                            <span class="admin-badge" style="background: #e3f2fd; color: #1976d2;">{{ service.get_consultancy_type_display }}</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button onclick="openEditConsultancyModal({{ service.id }}, '{{ service.name|escapejs }}', '{{ service.consultancy_type }}', '{{ service.description|escapejs }}', '{{ service.icon }}', '{{ service.hourly_rate|default:'' }}', '{{ service.features|escapejs }}')" class="admin-btn admin-btn-secondary admin-btn-small" title="Edit">
+                            <i class="ri-edit-line"></i>
+                        </button>
+                        <form method="POST" style="display: inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="service_id" value="{{ service.id }}">
+                            <input type="hidden" name="action" value="delete">
+                            <button type="submit" class="admin-btn admin-btn-danger admin-btn-small" title="Delete" onclick="return confirm('Are you sure?');">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <p style="color: #666; margin-bottom: 15px; font-size: 0.95rem;">{{ service.description }}</p>
+                
+                {% if service.get_features_list %}
+                <div style="background: #f5f5f5; padding: 12px; border-radius: 8px; margin-bottom: 15px;">
+                    <strong style="font-size: 0.85rem; color: var(--primary);">Features:</strong>
+                    <ul style="margin: 8px 0 0 0; padding-left: 20px; font-size: 0.9rem;">
+                        {% for feature in service.get_features_list %}
+                        <li style="color: #555; margin: 4px 0;">{{ feature }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid #eee;">
+                    <div>
+                        {% if service.hourly_rate %}
+                            <span style="color: var(--accent); font-weight: 600;">{{ service.hourly_rate }}/hr</span>
+                        {% endif %}
+                    </div>
+                    <span class="admin-badge" style="{% if service.is_active %}background: #c8e6c9; color: #2e7d32;{% else %}background: #ffcdd2; color: #c62828;{% endif %}">
+                        {% if service.is_active %}Active{% else %}Inactive{% endif %}
+                    </span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state" style="padding: 60px 20px; text-align: center;">
+            <i class="ri-briefcase-line" style="font-size: 3rem; color: #ccc;"></i>
+            <p style="margin-top: 20px;">No consultancy services yet</p>
+            <button onclick="openCreateConsultancyModal()" class="admin-btn admin-btn-primary" style="margin-top: 20px;">
+                <i class="ri-add-line"></i> Create First Service
+            </button>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Create/Edit Consultancy Modal -->
+<div id="consultancyModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; overflow-y: auto;">
+    <div style="background: white; padding: 30px; border-radius: var(--border-radius); width: 90%; max-width: 700px; margin: 20px auto;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 id="modalTitle" style="color: var(--primary); margin: 0;">Add Consultancy Service</h3>
+            <button onclick="closeConsultancyModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">
+                <i class="ri-close-line"></i>
+            </button>
+        </div>
+        
+        <form method="POST" id="consultancyForm">
+            {% csrf_token %}
+            <input type="hidden" name="service_id" id="serviceId">
+            <input type="hidden" name="action" id="modalAction" value="create">
+            
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600;">Service Name *</label>
+                <input type="text" name="name" id="serviceName" required class="form-control" style="border-radius: var(--border-radius);">
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600;">Consultancy Type *</label>
+                <select name="consultancy_type" id="serviceType" required class="form-control" style="border-radius: var(--border-radius);">
+                    <option value="">Select a type</option>
+                    <option value="business_tax">Business & Tax Consulting</option>
+                    <option value="business_strategy">Business Strategy & Planning</option>
+                    <option value="investment">Investment Facilitation</option>
+                    <option value="proposal_support">Proposal & Academic Wig Support</option>
+                    <option value="training_capacity">Training & Capacity Building</option>
+                    <option value="academic">Academic Consultancy</option>
+                    <option value="research">Research Consultancy</option>
+                    <option value="career">Career Consultancy</option>
+                    <option value="writing">Writing Consultancy</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600;">Description *</label>
+                <textarea name="description" id="serviceDescription" required class="form-control" rows="3" style="border-radius: var(--border-radius);"></textarea>
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600;">Features/Items (one per line)</label>
+                <textarea name="features" id="serviceFeatures" class="form-control" rows="4" placeholder="• Feature 1&#10;• Feature 2&#10;• Feature 3" style="border-radius: var(--border-radius);"></textarea>
+                <small style="color: #666; display: block; margin-top: 5px;">List each feature on a new line (e.g., Tax registration, Compliance, etc.)</small>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                <div>
+                    <label style="display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600;">Icon</label>
+                    <input type="text" name="icon" id="serviceIcon" class="form-control" placeholder="e.g., ri-briefcase-line" style="border-radius: var(--border-radius);">
+                    <small style="color: #666; display: block; margin-top: 5px;">Remix Icon class name</small>
+                </div>
+                <div>
+                    <label style="display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600;">Hourly Rate ($)</label>
+                    <input type="number" name="hourly_rate" id="serviceRate" step="0.01" class="form-control" style="border-radius: var(--border-radius);">
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button type="button" onclick="closeConsultancyModal()" class="admin-btn admin-btn-secondary">Cancel</button>
+                <button type="submit" class="admin-btn admin-btn-primary">Save Service</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function openCreateConsultancyModal() {
+    document.getElementById('serviceId').value = '';
+    document.getElementById('modalAction').value = 'create';
+    document.getElementById('modalTitle').textContent = 'Add Consultancy Service';
+    document.getElementById('consultancyForm').reset();
+    document.getElementById('consultancyModal').style.display = 'flex';
+}
+
+function openEditConsultancyModal(id, name, type, description, icon, rate, features) {
+    document.getElementById('serviceId').value = id;
+    document.getElementById('modalAction').value = 'update';
+    document.getElementById('modalTitle').textContent = 'Edit Consultancy Service';
+    document.getElementById('serviceName').value = name;
+    document.getElementById('serviceType').value = type;
+    document.getElementById('serviceDescription').value = description;
+    document.getElementById('serviceIcon').value = icon;
+    document.getElementById('serviceRate').value = rate;
+    document.getElementById('serviceFeatures').value = features;
+    document.getElementById('consultancyModal').style.display = 'flex';
+}
+
+function closeConsultancyModal() {
+    document.getElementById('consultancyModal').style.display = 'none';
+}
+
+window.onclick = function(event) {
+    let modal = document.getElementById('consultancyModal');
+    if (event.target == modal) {
+        modal.style.display = 'none';
+    }
+}
+</script>
+{% endblock %}

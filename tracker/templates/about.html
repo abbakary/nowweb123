@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% block title %}About Us - The Writing Hub Tz{% endblock %}
+
+{% block content %}
+<section class="hero" style="min-height: 350px;">
+    <div class="container-main text-center" style="position: relative; z-index: 2;">
+        <h1>About The Writing Hub Tz</h1>
+        <p>Empowering Excellence Through Professional Writing and Consultancy Services</p>
+    </div>
+</section>
+
+<section>
+    <div class="container-main">
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <h3 style="color: var(--primary); margin-bottom: 25px; font-size: 2rem; font-weight: 700;">Our Story</h3>
+                {% if company and company.company_story %}
+                <p style="font-size: 1.1rem; color: #666; line-height: 1.8;">{{ company.company_story|linebreaks }}</p>
+                {% else %}
+                <p style="font-size: 1.1rem; color: #666; line-height: 1.8;">
+                    The Writing Hub Tz is a multinational company engaged in providing academic, research, and business facilitation services.
+                    We have served various clients ranging from individual to organizations from various countries. We deliver results that exceed
+                    our clients' expectations, and we are committed to providing the highest level of customer service.
+                </p>
+                <p style="font-size: 1.1rem; color: #666; line-height: 1.8; margin-top: 15px;">
+                    Our expertise spans academic writing, consultancy services, research support, and professional development through workshops
+                    and training programs designed to help our clients achieve excellence in their respective fields.
+                </p>
+                {% endif %}
+            </div>
+            <div class="col-lg-6">
+                <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); color: white; padding: 50px; border-radius: var(--border-radius); text-align: center; box-shadow: 0 12px 35px rgba(26, 58, 82, 0.2);">
+                    <h3 style="margin-bottom: 35px; font-size: 1.8rem; font-weight: 700;">Our Impact</h3>
+                    <div class="row g-4">
+                        <div class="col-6">
+                            <h2 style="color: var(--accent); margin-bottom: 12px; font-size: 2.8rem;">1000+</h2>
+                            <p style="font-size: 1rem; opacity: 0.9;">Satisfied Clients</p>
+                        </div>
+                        <div class="col-6">
+                            <h2 style="color: var(--accent); margin-bottom: 12px; font-size: 2.8rem;">500+</h2>
+                            <p style="font-size: 1rem; opacity: 0.9;">Projects Completed</p>
+                        </div>
+                        <div class="col-6">
+                            <h2 style="color: var(--accent); margin-bottom: 12px; font-size: 2.8rem;">15+</h2>
+                            <p style="font-size: 1rem; opacity: 0.9;">Service Categories</p>
+                        </div>
+                        <div class="col-6">
+                            <h2 style="color: var(--accent); margin-bottom: 12px; font-size: 2.8rem;">99%</h2>
+                            <p style="font-size: 1rem; opacity: 0.9;">Client Satisfaction</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container-main">
+        <h2 style="margin-bottom: 40px; text-align: center;">Our Vision & Mission</h2>
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="service-card" style="border-top: 4px solid var(--accent); text-align: center;">
+                    <h4 style="color: var(--primary); margin-bottom: 20px; font-size: 1.3rem; font-weight: 700;">Our Vision</h4>
+                    {% if company and company.vision %}
+                    <p style="font-size: 1rem; color: #666; line-height: 1.8;">{{ company.vision }}</p>
+                    {% else %}
+                    <p style="font-size: 1rem; color: #666; line-height: 1.8;">To be the leading catalyst for academic, research and professional success by fostering exceptional writing skills and promoting impactful communication.</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="service-card" style="border-top: 4px solid var(--accent); text-align: center;">
+                    <h4 style="color: var(--primary); margin-bottom: 20px; font-size: 1.3rem; font-weight: 700;">Our Mission</h4>
+                    {% if company and company.mission %}
+                    <p style="font-size: 1rem; color: #666; line-height: 1.8;">{{ company.mission }}</p>
+                    {% else %}
+                    <p style="font-size: 1rem; color: #666; line-height: 1.8;">To provide comprehensive writing solutions and support for academic, research and business communities.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section style="background: linear-gradient(135deg, var(--light) 0%, #ffffff 100%);">
+    <div class="container-main">
+        <h2 style="margin-bottom: 50px; text-align: center;">Leadership</h2>
+        <div class="row g-4">
+            {% if company and company.founder_name %}
+            <div class="col-md-6">
+                <div class="service-card" style="text-align: center;">
+                    <div style="width: 120px; height: 120px; margin: 0 auto 20px; border-radius: 50%; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                        <i class="ri-user-line"></i>
+                    </div>
+                    <h4 style="color: var(--primary); font-size: 1.2rem; margin-bottom: 8px; font-weight: 700;">{{ company.founder_name }}</h4>
+                    <p style="color: var(--accent); font-weight: 600; margin-bottom: 8px;">{{ company.founder_title }}</p>
+                    <p style="color: #666; font-size: 0.95rem;">{{ company.founder_affiliation }}</p>
+                </div>
+            </div>
+            {% endif %}
+            {% if company and company.advisor_name %}
+            <div class="col-md-6">
+                <div class="service-card" style="text-align: center;">
+                    <div style="width: 120px; height: 120px; margin: 0 auto 20px; border-radius: 50%; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                        <i class="ri-user-line"></i>
+                    </div>
+                    <h4 style="color: var(--primary); font-size: 1.2rem; margin-bottom: 8px; font-weight: 700;">{{ company.advisor_name }}</h4>
+                    <p style="color: var(--accent); font-weight: 600; margin-bottom: 8px;">{{ company.advisor_title }}</p>
+                    <p style="color: #666; font-size: 0.95rem;">{{ company.advisor_affiliation }}</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container-main">
+        <h2 style="margin-bottom: 50px;">Why Choose Us?</h2>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="service-card" style="text-align: left; border-left: 4px solid var(--accent);">
+                    <h4 style="color: var(--primary); margin-bottom: 15px; font-size: 1.1rem;">
+                        <i class="ri-award-line" style="color: var(--accent); font-size: 1.8rem;"></i> Proven Track Record
+                    </h4>
+                    <p style="color: #666;">We are committed to providing innovative solutions that help create a better tomorrow for everyone.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="service-card" style="text-align: left; border-left: 4px solid var(--accent);">
+                    <h4 style="color: var(--primary); margin-bottom: 15px; font-size: 1.1rem;">
+                        <i class="ri-user-heart-line" style="color: var(--accent); font-size: 1.8rem;"></i> Consulting Expertise
+                    </h4>
+                    <p style="color: #666;">Personalized and compassionate support for academic writing, business consultation, and professional growth.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="service-card" style="text-align: left; border-left: 4px solid var(--accent);">
+                    <h4 style="color: var(--primary); margin-bottom: 15px; font-size: 1.1rem;">
+                        <i class="ri-lightning-flash-line" style="color: var(--accent); font-size: 1.8rem;"></i> Rapid Value Creation
+                    </h4>
+                    <p style="color: #666;">We are committed to providing innovative solutions that help create better outcomes quickly and efficiently.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="service-card" style="text-align: left; border-left: 4px solid var(--accent);">
+                    <h4 style="color: var(--primary); margin-bottom: 15px; font-size: 1.1rem;">
+                        <i class="ri-customer-service-2-line" style="color: var(--accent); font-size: 1.8rem;"></i> Dedicated Support
+                    </h4>
+                    <p style="color: #666;">Our team is available to provide assistance and answer your questions whenever you need support.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="service-card" style="text-align: left; border-left: 4px solid var(--accent);">
+                    <h4 style="color: var(--primary); margin-bottom: 15px; font-size: 1.1rem;">
+                        <i class="ri-secure-payment-line" style="color: var(--accent); font-size: 1.8rem;"></i> Competitive Pricing
+                    </h4>
+                    <p style="color: #666;">We offer high-quality services at competitive rates. Excellence should be accessible to everyone.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="service-card" style="text-align: left; border-left: 4px solid var(--accent);">
+                    <h4 style="color: var(--primary); margin-bottom: 15px; font-size: 1.1rem;">
+                        <i class="ri-refresh-line" style="color: var(--accent); font-size: 1.8rem;"></i> Client Satisfaction First
+                    </h4>
+                    <p style="color: #666;">Your satisfaction is our priority. We provide revisions and support until you're completely satisfied with the result.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); color: white; text-align: center;">
+    <div class="container-main">
+        <h2 style="color: white; margin-bottom: 20px;">Ready to Transform Your Goals?</h2>
+        <p style="font-size: 1.1rem; margin-bottom: 35px; opacity: 0.95;">
+            Get started with The Writing Hub Tz today and experience professional excellence in writing and consultancy.
+        </p>
+        <a href="{% url 'contact' %}" class="cta-button" style="background: white; color: var(--primary); font-size: 1rem; padding: 15px 40px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">
+            <i class="ri-mail-line"></i> Get In Touch
+        </a>
+    </div>
+</section>
+{% endblock %}

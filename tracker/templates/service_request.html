@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Request {{ service.name }} - ResearchHub{% endblock %}
+
+{% block content %}
+<section style="padding: 60px 20px;">
+    <div class="container-main">
+        <div style="max-width: 600px; margin: 0 auto;">
+            <h2 style="color: var(--primary); margin-bottom: 10px; text-align: center;">
+                Request {{ service.name }}
+            </h2>
+            <p style="text-align: center; color: #666; margin-bottom: 40px;">
+                Fill out the form below and we'll get back to you with a quote and timeline.
+            </p>
+
+            <form method="POST" class="form-container">
+                {% csrf_token %}
+                
+                <div style="margin-bottom: 20px; padding: 15px; background: var(--light); border-radius: var(--border-radius);">
+                    <p style="margin: 0; color: var(--primary); font-weight: 600;">
+                        <i class="ri-information-line"></i> Service: {{ service.name }}
+                    </p>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label class="form-label" style="color: var(--primary); font-weight: 600;">Project Title</label>
+                    <input type="text" name="title" class="form-control" required placeholder="e.g., Master's Thesis on Climate Change">
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label class="form-label" style="color: var(--primary); font-weight: 600;">Project Description</label>
+                    <textarea name="description" class="form-control" rows="6" required placeholder="Describe your project, requirements, and any specific details..."></textarea>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label class="form-label" style="color: var(--primary); font-weight: 600;">Deadline (Optional)</label>
+                    <input type="date" name="deadline" class="form-control">
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label class="form-label" style="color: var(--primary); font-weight: 600;">Budget/Expected Cost (Optional)</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="number" name="budget" class="form-control" placeholder="e.g., 500" min="0" step="0.01">
+                        <select style="padding: 12px 15px; border: 1px solid #ddd; border-radius: var(--border-radius); background: white; cursor: pointer;">
+                            <option>USD</option>
+                            <option>EUR</option>
+                            <option>GBP</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="cta-button" style="width: 100%; padding: 15px; margin-bottom: 15px;">
+                    <i class="ri-send-plane-line"></i> Submit Request
+                </button>
+
+                <a href="{% url 'service_detail' service.id %}" class="cta-button" style="width: 100%; text-align: center; padding: 15px; background: white; color: var(--primary); border: 2px solid var(--primary); text-decoration: none;">
+                    Cancel
+                </a>
+            </form>
+
+            <div style="margin-top: 40px; padding: 20px; background: var(--light); border-radius: var(--border-radius); text-align: center;">
+                <h5 style="color: var(--primary); margin-bottom: 15px;">Have Questions?</h5>
+                <p style="color: #666; margin-bottom: 15px;">
+                    Contact our team directly for more information or to discuss your specific needs.
+                </p>
+                <a href="{% url 'contact' %}" class="cta-button" style="font-size: 0.9rem; padding: 10px 25px;">
+                    <i class="ri-mail-line"></i> Contact Us
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

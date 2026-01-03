@@ -1,0 +1,130 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Manage Service Requests - Admin{% endblock %}
+{% block page_title %}Service Requests Management{% endblock %}
+
+{% block content %}
+<div class="admin-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div class="admin-card-title" style="margin-bottom: 0;">
+            <i class="ri-mail-line"></i> Service Requests
+        </div>
+    </div>
+    
+    <!-- Filters -->
+    <div style="margin-bottom: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+        <input type="text" placeholder="Search by title or customer..." class="form-control" style="border-radius: var(--border-radius);">
+        <select class="form-control" style="border-radius: var(--border-radius);">
+            <option value="">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="accepted">Accepted</option>
+            <option value="in_progress">In Progress</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+        </select>
+    </div>
+    
+    {% if service_requests %}
+        <div style="overflow-x: auto;">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Customer</th>
+                        <th>Service</th>
+                        <th>Status</th>
+                        <th>Deadline</th>
+                        <th>Created</th>
+                        <th style="text-align: center;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in service_requests %}
+                    <tr>
+                        <td>
+                            <strong>{{ request.title }}</strong><br>
+                            <small style="color: #999;">{{ request.description|truncatewords:15 }}</small>
+                        </td>
+                        <td>{{ request.customer.full_name }}</td>
+                        <td>{{ request.service.name|default:"—" }}</td>
+                        <td>
+                            {% if request.status == 'pending' %}
+                                <span class="admin-badge admin-badge-warning">Pending</span>
+                            {% elif request.status == 'accepted' %}
+                                <span class="admin-badge admin-badge-info">Accepted</span>
+                            {% elif request.status == 'in_progress' %}
+                                <span class="admin-badge" style="background: #e1f5fe; color: #01579b;">In Progress</span>
+                            {% elif request.status == 'completed' %}
+                                <span class="admin-badge admin-badge-success">Completed</span>
+                            {% else %}
+                                <span class="admin-badge admin-badge-danger">Cancelled</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if request.deadline %}
+                                {{ request.deadline|date:"M d, Y" }}
+                                {% if request.is_overdue %}
+                                    <br><small style="color: #e74c3c;">Overdue</small>
+                                {% endif %}
+                            {% else %}
+                                <span style="color: #999;">—</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ request.created_at|date:"M d, Y" }}</td>
+                        <td>
+                            <div class="admin-table-actions">
+                                <form method="POST" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="request_id" value="{{ request.id }}">
+                                    {% if request.status == 'pending' %}
+                                        <button type="submit" name="action" value="accept" class="admin-btn admin-btn-secondary admin-btn-small" title="Accept">
+                                            <i class="ri-check-line"></i>
+                                        </button>
+                                    {% endif %}
+                                    {% if request.status in 'pending,accepted' %}
+                                        <button type="submit" name="action" value="complete" class="admin-btn admin-btn-secondary admin-btn-small" title="Complete">
+                                            <i class="ri-check-double-line"></i>
+                                        </button>
+                                    {% endif %}
+                                    <button type="submit" name="action" value="cancel" class="admin-btn admin-btn-danger admin-btn-small" title="Cancel">
+                                        <i class="ri-close-line"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <i class="ri-mail-line"></i>
+            <p>No service requests yet</p>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Stats -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 30px;">
+    <div class="stat-card">
+        <div class="stat-label"><i class="ri-time-line"></i> Pending</div>
+        <div class="stat-value">{{ pending_count|default:"0" }}</div>
+    </div>
+    
+    <div class="stat-card accent">
+        <div class="stat-label"><i class="ri-hourglass-line"></i> In Progress</div>
+        <div class="stat-value">{{ in_progress_count|default:"0" }}</div>
+    </div>
+    
+    <div class="stat-card success">
+        <div class="stat-label"><i class="ri-check-double-line"></i> Completed</div>
+        <div class="stat-value">{{ completed_count|default:"0" }}</div>
+    </div>
+    
+    <div class="stat-card danger">
+        <div class="stat-label"><i class="ri-close-line"></i> Cancelled</div>
+        <div class="stat-value">{{ cancelled_count|default:"0" }}</div>
+    </div>
+</div>
+{% endblock %}

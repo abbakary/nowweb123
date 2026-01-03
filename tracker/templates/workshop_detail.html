@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ workshop.title }} - ResearchHub{% endblock %}
+
+{% block content %}
+<section style="padding: 60px 20px;">
+    <div class="container-main">
+        <div class="row">
+            <div class="col-lg-8">
+                <div style="margin-bottom: 30px;">
+                    {% if workshop.image %}
+                        <img src="{{ workshop.image.url }}" style="width: 100%; max-height: 400px; object-fit: cover; border-radius: var(--border-radius); margin-bottom: 20px;">
+                    {% else %}
+                        <div style="background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%); height: 300px; border-radius: var(--border-radius); display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                            <i class="ri-presentation-line" style="font-size: 3rem; color: white;"></i>
+                        </div>
+                    {% endif %}
+                    
+                    <h1 style="color: var(--primary); margin-bottom: 15px;">{{ workshop.title }}</h1>
+                    
+                    <div style="display: flex; gap: 30px; flex-wrap: wrap; margin-bottom: 20px;">
+                        <div>
+                            <p style="color: #666; margin-bottom: 5px;">
+                                <i class="ri-calendar-line" style="color: var(--accent);"></i> Date & Time
+                            </p>
+                            <p style="color: var(--primary); font-weight: 600;">{{ workshop.date|date:"F d, Y \a\t H:i" }}</p>
+                        </div>
+                        <div>
+                            <p style="color: #666; margin-bottom: 5px;">
+                                <i class="ri-time-line" style="color: var(--accent);"></i> Duration
+                            </p>
+                            <p style="color: var(--primary); font-weight: 600;">{{ workshop.duration_minutes }} minutes</p>
+                        </div>
+                        {% if workshop.is_online %}
+                        <div>
+                            <p style="color: #666; margin-bottom: 5px;">
+                                <i class="ri-video-on-line" style="color: var(--accent);"></i> Format
+                            </p>
+                            <p style="color: var(--primary); font-weight: 600;">Online</p>
+                        </div>
+                        {% else %}
+                        <div>
+                            <p style="color: #666; margin-bottom: 5px;">
+                                <i class="ri-map-pin-line" style="color: var(--accent);"></i> Location
+                            </p>
+                            <p style="color: var(--primary); font-weight: 600;">{{ workshop.location }}</p>
+                        </div>
+                        {% endif %}
+                        <div>
+                            <p style="color: #666; margin-bottom: 5px;">
+                                <i class="ri-user-line" style="color: var(--accent);"></i> Participants
+                            </p>
+                            <p style="color: var(--primary); font-weight: 600;">{{ workshop.registered_count }}/{{ workshop.max_participants }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: white; border: 1px solid #eee; border-radius: var(--border-radius); padding: 20px; margin-bottom: 30px;">
+                    <h3 style="color: var(--primary); margin-bottom: 15px;">About This Workshop</h3>
+                    <p style="color: #666; line-height: 1.8;">{{ workshop.description }}</p>
+                </div>
+
+                {% if workshop.content %}
+                <div style="background: white; border: 1px solid #eee; border-radius: var(--border-radius); padding: 20px; margin-bottom: 30px;">
+                    <h3 style="color: var(--primary); margin-bottom: 15px;">What You'll Learn</h3>
+                    <div style="color: #666; line-height: 1.8;">{{ workshop.content|safe }}</div>
+                </div>
+                {% endif %}
+
+                {% if workshop.facilitator %}
+                <div style="background: var(--light); border-radius: var(--border-radius); padding: 20px;">
+                    <h3 style="color: var(--primary); margin-bottom: 15px;">Facilitator</h3>
+                    <div style="display: flex; gap: 15px;">
+                        <div style="width: 60px; height: 60px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <i class="ri-user-line" style="font-size: 2rem; color: white;"></i>
+                        </div>
+                        <div>
+                            <p style="font-weight: 600; color: var(--primary); margin-bottom: 5px;">{{ workshop.facilitator.get_full_name }}</p>
+                            <p style="color: #666; font-size: 0.9rem;">Expert Facilitator</p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div style="background: var(--light); padding: 30px; border-radius: var(--border-radius); position: sticky; top: 100px;">
+                    <h3 style="color: var(--primary); margin-bottom: 20px;">Register for Workshop</h3>
+                    
+                    {% if workshop.price > 0 %}
+                    <p style="color: #666; margin-bottom: 10px;">Price:</p>
+                    <h2 style="color: var(--accent); margin-bottom: 20px;">${{ workshop.price }}</h2>
+                    {% else %}
+                    <p style="color: var(--accent); font-weight: 600; margin-bottom: 20px;">FREE</p>
+                    {% endif %}
+                    
+                    {% if is_registered %}
+                    <div style="background: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 15px; border-radius: var(--border-radius); margin-bottom: 15px;">
+                        <p style="margin: 0;">
+                            <i class="ri-check-line"></i> You are registered for this workshop!
+                        </p>
+                    </div>
+                    {% else %}
+                    <form method="POST" action="{% url 'register_workshop' workshop.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="cta-button" style="width: 100%; text-align: center; padding: 15px;">
+                            Register Now
+                        </button>
+                    </form>
+                    {% endif %}
+                    
+                    {% if workshop.is_online and workshop.online_link %}
+                    <a href="{{ workshop.online_link }}" target="_blank" class="cta-button" style="width: 100%; text-align: center; padding: 15px; background: white; color: var(--primary); border: 2px solid var(--primary); display: block; margin-top: 15px;">
+                        <i class="ri-video-on-line"></i> Join Meeting
+                    </a>
+                    {% endif %}
+
+                    <hr style="margin: 20px 0;">
+
+                    <div style="background: white; padding: 15px; border-radius: var(--border-radius); margin-bottom: 15px;">
+                        <h5 style="color: var(--primary); margin-bottom: 10px;">
+                            <i class="ri-time-line"></i> Timing
+                        </h5>
+                        <p style="font-size: 0.9rem; color: #666;">{{ workshop.date|date:"F d, Y" }}</p>
+                        <p style="font-size: 0.9rem; color: #666;">{{ workshop.date|date:"H:i" }} ({{ workshop.duration_minutes }} min)</p>
+                    </div>
+
+                    <div style="background: white; padding: 15px; border-radius: var(--border-radius); margin-bottom: 15px;">
+                        <h5 style="color: var(--primary); margin-bottom: 10px;">
+                            <i class="ri-group-line"></i> Attendees
+                        </h5>
+                        <p style="font-size: 0.9rem; color: #666;">{{ workshop.registered_count }} people registered</p>
+                        {% if workshop.max_participants %}
+                        <p style="font-size: 0.9rem; color: #666;">Max capacity: {{ workshop.max_participants }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div style="background: white; padding: 15px; border-radius: var(--border-radius);">
+                        <h5 style="color: var(--primary); margin-bottom: 10px;">
+                            <i class="ri-mail-line"></i> Questions?
+                        </h5>
+                        <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">Contact our team for more details</p>
+                        <a href="{% url 'contact' %}" class="cta-button" style="font-size: 0.85rem; padding: 8px 15px; display: block; text-align: center;">
+                            Get Help
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

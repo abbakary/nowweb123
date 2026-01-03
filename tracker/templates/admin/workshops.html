@@ -1,0 +1,169 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Manage Workshops - Admin{% endblock %}
+{% block page_title %}Workshops Management{% endblock %}
+
+{% block content %}
+<div class="admin-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div class="admin-card-title" style="margin-bottom: 0;">
+            <i class="ri-graduation-cap-line"></i> Workshops
+        </div>
+        <button onclick="openCreateWorkshopModal()" class="admin-btn admin-btn-primary">
+            <i class="ri-add-line"></i> Add Workshop
+        </button>
+    </div>
+    
+    {% if workshops %}
+        <div style="overflow-x: auto;">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Date</th>
+                        <th>Location</th>
+                        <th>Type</th>
+                        <th>Participants</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th style="text-align: center;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for workshop in workshops %}
+                    <tr>
+                        <td><strong>{{ workshop.title }}</strong></td>
+                        <td>{{ workshop.date|date:"M d, Y H:i" }}</td>
+                        <td>
+                            {% if workshop.is_online %}
+                                <span class="admin-badge admin-badge-info">🌐 Online</span>
+                            {% else %}
+                                {{ workshop.location }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if workshop.is_online %}
+                                <span class="admin-badge" style="background: #e1f5fe; color: #01579b;">Online</span>
+                            {% else %}
+                                <span class="admin-badge" style="background: #f3e5f5; color: #6a1b9a;">In-Person</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <strong>{{ workshop.get_registration_count }}</strong>
+                            {% if workshop.max_participants %}<br><small>/ {{ workshop.max_participants }}</small>{% endif %}
+                        </td>
+                        <td>${{ workshop.price|default:"0" }}</td>
+                        <td>
+                            {% if workshop.is_active %}
+                                <span class="admin-badge admin-badge-success">Active</span>
+                            {% else %}
+                                <span class="admin-badge admin-badge-danger">Inactive</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="admin-table-actions">
+                                <form method="POST" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="workshop_id" value="{{ workshop.id }}">
+                                    <input type="hidden" name="action" value="delete">
+                                    <button type="submit" class="admin-btn admin-btn-danger admin-btn-small" title="Delete" onclick="return confirm('Are you sure you want to delete this workshop?');">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <i class="ri-graduation-cap-line"></i>
+            <p>No workshops created yet</p>
+            <button onclick="openCreateWorkshopModal()" class="admin-btn admin-btn-primary" style="margin-top: 20px;">
+                <i class="ri-add-line"></i> Create First Workshop
+            </button>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Create Workshop Modal -->
+<div id="createWorkshopModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+    <div style="background: white; padding: 30px; border-radius: var(--border-radius); width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="color: var(--primary); margin: 0;">Add New Workshop</h3>
+            <button onclick="closeCreateWorkshopModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">
+                <i class="ri-close-line"></i>
+            </button>
+        </div>
+        
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="create">
+            
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600;">Workshop Title *</label>
+                <input type="text" name="title" required class="form-control" style="border-radius: var(--border-radius);">
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600;">Description *</label>
+                <textarea name="description" required class="form-control" rows="4" style="border-radius: var(--border-radius);"></textarea>
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600;">Date & Time *</label>
+                <input type="datetime-local" name="date" required class="form-control" style="border-radius: var(--border-radius);">
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                <div>
+                    <label style="display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600;">Type</label>
+                    <select name="is_online" class="form-control" style="border-radius: var(--border-radius);">
+                        <option value="False">In-Person</option>
+                        <option value="True">Online</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600;">Location/URL</label>
+                    <input type="text" name="location" class="form-control" placeholder="Address or Zoom link" style="border-radius: var(--border-radius);">
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                <div>
+                    <label style="display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600;">Max Participants</label>
+                    <input type="number" name="max_participants" min="1" class="form-control" style="border-radius: var(--border-radius);">
+                </div>
+                <div>
+                    <label style="display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600;">Price ($)</label>
+                    <input type="number" name="price" step="0.01" min="0" value="0" class="form-control" style="border-radius: var(--border-radius);">
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button type="button" onclick="closeCreateWorkshopModal()" class="admin-btn admin-btn-secondary">Cancel</button>
+                <button type="submit" class="admin-btn admin-btn-primary">Create Workshop</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function openCreateWorkshopModal() {
+    document.getElementById('createWorkshopModal').style.display = 'flex';
+}
+
+function closeCreateWorkshopModal() {
+    document.getElementById('createWorkshopModal').style.display = 'none';
+}
+
+window.onclick = function(event) {
+    let modal = document.getElementById('createWorkshopModal');
+    if (event.target == modal) {
+        modal.style.display = 'none';
+    }
+}
+</script>
+{% endblock %}

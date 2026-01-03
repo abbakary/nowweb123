@@ -1,0 +1,303 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Profile - ResearchHub{% endblock %}
+
+{% block extra_css %}
+<style>
+    .edit-profile-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+    }
+    
+    .edit-profile-card {
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .edit-profile-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .edit-profile-header h1 {
+        color: var(--primary);
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+    
+    .edit-profile-header p {
+        color: #666;
+    }
+    
+    .form-group {
+        margin-bottom: 25px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 10px;
+        color: var(--dark);
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+    
+    .form-control {
+        border: 2px solid #e0e0e0;
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .form-control:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.1);
+        outline: none;
+    }
+    
+    textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+    }
+    
+    .form-text {
+        font-size: 0.85rem;
+        color: #666;
+        margin-top: 6px;
+    }
+    
+    .error-message {
+        background: #f8d7da;
+        border: 1px solid #f5c6cb;
+        color: #721c24;
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 0.95rem;
+    }
+    
+    .field-error {
+        color: #dc3545;
+        font-size: 0.85rem;
+        margin-top: 6px;
+    }
+    
+    .form-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: 40px;
+    }
+    
+    .btn-primary {
+        flex: 1;
+        padding: 14px;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(30, 60, 114, 0.3);
+    }
+    
+    .btn-secondary {
+        flex: 1;
+        padding: 14px;
+        background: #f0f0f0;
+        color: var(--dark);
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .btn-secondary:hover {
+        background: #e0e0e0;
+    }
+    
+    .form-section {
+        margin-bottom: 30px;
+        padding-bottom: 30px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .form-section:last-of-type {
+        border-bottom: none;
+    }
+    
+    .form-section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--primary);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .form-section-title i {
+        margin-right: 10px;
+        font-size: 1.3rem;
+    }
+    
+    @media (max-width: 600px) {
+        .edit-profile-container {
+            margin: 20px auto;
+        }
+        
+        .edit-profile-card {
+            padding: 20px;
+        }
+        
+        .form-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="edit-profile-container">
+    <div class="edit-profile-card">
+        <div class="edit-profile-header">
+            <h1><i class="ri-edit-line"></i> Edit Profile</h1>
+            <p>Update your personal information</p>
+        </div>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="error-message">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        
+        <form method="POST" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            
+            <!-- Customer Information -->
+            <div class="form-section">
+                <div class="form-section-title">
+                    <i class="ri-user-line"></i> Personal Information
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ customer_form.full_name.id_for_label }}">
+                        {{ customer_form.full_name.label }}
+                    </label>
+                    {{ customer_form.full_name }}
+                    {% if customer_form.full_name.errors %}
+                        <div class="field-error">{{ customer_form.full_name.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ customer_form.email.id_for_label }}">
+                        {{ customer_form.email.label }}
+                    </label>
+                    {{ customer_form.email }}
+                    <small class="form-text">Your email address cannot be changed</small>
+                    {% if customer_form.email.errors %}
+                        <div class="field-error">{{ customer_form.email.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ customer_form.phone.id_for_label }}">
+                        {{ customer_form.phone.label }}
+                    </label>
+                    {{ customer_form.phone }}
+                    {% if customer_form.phone.errors %}
+                        <div class="field-error">{{ customer_form.phone.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ customer_form.organization.id_for_label }}">
+                        {{ customer_form.organization.label }}
+                    </label>
+                    {{ customer_form.organization }}
+                    {% if customer_form.organization.errors %}
+                        <div class="field-error">{{ customer_form.organization.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ customer_form.customer_type.id_for_label }}">
+                        {{ customer_form.customer_type.label }}
+                    </label>
+                    {{ customer_form.customer_type }}
+                    {% if customer_form.customer_type.errors %}
+                        <div class="field-error">{{ customer_form.customer_type.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- User Profile -->
+            <div class="form-section">
+                <div class="form-section-title">
+                    <i class="ri-profile-line"></i> Profile Details
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ user_profile_form.avatar.id_for_label }}">
+                        {{ user_profile_form.avatar.label }}
+                    </label>
+                    {{ user_profile_form.avatar }}
+                    <small class="form-text">Accepted formats: JPG, PNG, GIF (Max 5MB)</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ user_profile_form.bio.id_for_label }}">
+                        {{ user_profile_form.bio.label }}
+                    </label>
+                    {{ user_profile_form.bio }}
+                    <small class="form-text">Tell us about yourself in a few words</small>
+                    {% if user_profile_form.bio.errors %}
+                        <div class="field-error">{{ user_profile_form.bio.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Preferences -->
+            <div class="form-section">
+                <div class="form-section-title">
+                    <i class="ri-notification-line"></i> Preferences
+                </div>
+                
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 0;">
+                        {{ user_profile_form.newsletter_subscribed }}
+                        <span>Subscribe to our newsletter</span>
+                    </label>
+                    <small class="form-text">Receive updates about new services and workshops</small>
+                </div>
+            </div>
+            
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">
+                    <i class="ri-check-line"></i> Save Changes
+                </button>
+                <a href="{% url 'user_profile' %}" class="btn-secondary">
+                    <i class="ri-close-line"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

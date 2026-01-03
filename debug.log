@@ -1,0 +1,163 @@
+INFO 2025-12-20 10:04:58,681 autoreload 914 139809304192832 Watching for file changes with StatReloader
+INFO 2025-12-20 10:22:02,652 autoreload 914 139809304192832 /root/app/code/tracker/models.py changed, reloading.
+INFO 2025-12-20 10:22:03,029 autoreload 1011 140697779517248 Watching for file changes with StatReloader
+INFO 2025-12-20 10:26:11,632 autoreload 1011 140697779517248 /root/app/code/tracker/models.py changed, reloading.
+INFO 2025-12-20 10:26:11,993 autoreload 1199 139705212114752 Watching for file changes with StatReloader
+INFO 2025-12-20 10:26:29,222 autoreload 1199 139705212114752 /root/app/code/tracker/admin.py changed, reloading.
+INFO 2025-12-20 10:26:29,570 autoreload 1239 139982121744192 Watching for file changes with StatReloader
+INFO 2025-12-20 10:26:39,741 autoreload 1239 139982121744192 /root/app/code/tracker/admin.py changed, reloading.
+INFO 2025-12-20 10:26:40,103 autoreload 1247 140574107694912 Watching for file changes with StatReloader
+INFO 2025-12-20 10:43:37,828 autoreload 923 139949989459776 Watching for file changes with StatReloader
+INFO 2025-12-20 10:46:47,342 autoreload 923 139949989459776 /root/app/code/tracker/models.py changed, reloading.
+INFO 2025-12-20 10:46:47,830 autoreload 1010 139913568495424 Watching for file changes with StatReloader
+INFO 2025-12-20 10:47:40,433 autoreload 1010 139913568495424 /root/app/code/tracker/urls.py changed, reloading.
+INFO 2025-12-20 10:47:40,922 autoreload 1057 139947859105600 Watching for file changes with StatReloader
+INFO 2025-12-20 10:48:00,280 autoreload 1057 139947859105600 /root/app/code/tracker/views.py changed, reloading.
+INFO 2025-12-20 10:48:00,812 autoreload 1067 140130512525120 Watching for file changes with StatReloader
+INFO 2025-12-20 10:48:15,145 autoreload 1067 140130512525120 /root/app/code/tracker/admin.py changed, reloading.
+INFO 2025-12-20 10:48:15,689 autoreload 1077 139660479211328 Watching for file changes with StatReloader
+INFO 2025-12-20 10:49:52,741 autoreload 1077 139660479211328 /root/app/code/pos_tracker/settings.py changed, reloading.
+INFO 2025-12-20 10:49:53,275 autoreload 1155 139874072352576 Watching for file changes with StatReloader
+INFO 2025-12-20 19:38:20,231 autoreload 926 140142915602240 Watching for file changes with StatReloader
+INFO 2025-12-20 19:54:33,666 autoreload 926 140142915602240 /root/app/code/tracker/forms.py changed, reloading.
+INFO 2025-12-20 19:54:34,222 autoreload 1058 140028343703360 Watching for file changes with StatReloader
+INFO 2025-12-20 19:54:37,572 autoreload 1058 140028343703360 /root/app/code/tracker/forms.py changed, reloading.
+INFO 2025-12-20 19:54:38,113 autoreload 1066 140022412625728 Watching for file changes with StatReloader
+INFO 2025-12-21 09:35:47,897 autoreload 778 139951039723328 Watching for file changes with StatReloader
+INFO 2025-12-21 10:12:02,847 autoreload 778 139951039723328 /root/app/code/tracker/forms.py changed, reloading.
+INFO 2025-12-21 10:12:03,397 autoreload 1433 140225429030720 Watching for file changes with StatReloader
+INFO 2025-12-22 10:55:44,462 autoreload 924 140604166739776 Watching for file changes with StatReloader
+INFO 2025-12-22 11:11:35,341 autoreload 924 140604166739776 /root/app/code/tracker/models.py changed, reloading.
+INFO 2025-12-22 11:11:35,971 autoreload 1027 139720966006592 Watching for file changes with StatReloader
+INFO 2025-12-22 11:11:41,414 autoreload 1027 139720966006592 /root/app/code/tracker/views.py changed, reloading.
+INFO 2025-12-22 11:11:41,964 autoreload 1035 140336892667712 Watching for file changes with StatReloader
+INFO 2025-12-22 11:14:33,045 autoreload 1035 140336892667712 /root/app/code/tracker/views_frontend.py changed, reloading.
+INFO 2025-12-22 11:14:33,609 autoreload 1354 139992607344448 Watching for file changes with StatReloader
+INFO 2025-12-22 11:23:33,676 autoreload 1354 139992607344448 /root/app/code/tracker/models.py changed, reloading.
+INFO 2025-12-22 11:23:34,252 autoreload 1513 140501871777600 Watching for file changes with StatReloader
+INFO 2025-12-22 11:23:58,903 autoreload 1513 140501871777600 /root/app/code/tracker/views_frontend.py changed, reloading.
+INFO 2025-12-22 11:23:59,469 autoreload 1527 140614094620480 Watching for file changes with StatReloader
+INFO 2025-12-22 11:32:33,959 autoreload 917 139981036062528 Watching for file changes with StatReloader
+INFO 2025-12-22 11:44:42,184 autoreload 917 139981036062528 /root/app/code/tracker/models.py changed, reloading.
+INFO 2025-12-22 11:44:42,563 autoreload 1033 139662117295936 Watching for file changes with StatReloader
+INFO 2025-12-22 11:44:47,893 autoreload 1033 139662117295936 /root/app/code/tracker/admin.py changed, reloading.
+INFO 2025-12-22 11:44:48,305 autoreload 1059 140553665120064 Watching for file changes with StatReloader
+INFO 2025-12-22 11:44:55,685 autoreload 1059 140553665120064 /root/app/code/tracker/admin.py changed, reloading.
+INFO 2025-12-22 11:44:56,069 autoreload 1088 140056210585408 Watching for file changes with StatReloader
+INFO 2025-12-22 11:45:30,759 autoreload 1088 140056210585408 /root/app/code/pos_tracker/settings.py changed, reloading.
+INFO 2025-12-22 11:45:31,156 autoreload 1186 139634768967488 Watching for file changes with StatReloader
+INFO 2025-12-22 11:57:53,855 autoreload 1186 139634768967488 /root/app/code/tracker/views_frontend.py changed, reloading.
+INFO 2025-12-22 11:57:54,270 autoreload 1794 140494344746816 Watching for file changes with StatReloader
+INFO 2025-12-22 11:58:02,669 autoreload 1794 140494344746816 /root/app/code/tracker/views_frontend.py changed, reloading.
+INFO 2025-12-22 11:58:03,111 autoreload 1802 140167522301760 Watching for file changes with StatReloader
+INFO 2025-12-22 12:13:56,000 autoreload 11740 17432 Watching for file changes with StatReloader
+WARNING 2025-12-22 12:28:55,152 log 11740 2748 Method Not Allowed (GET): /accounts/logout/
+WARNING 2025-12-22 12:29:06,118 log 11740 2748 Method Not Allowed (GET): /accounts/logout/
+WARNING 2025-12-22 13:38:45,100 log 11740 14048 Method Not Allowed (GET): /accounts/logout/
+WARNING 2025-12-22 14:09:52,206 log 11740 15128 Method Not Allowed (GET): /accounts/logout/
+WARNING 2025-12-22 14:09:55,151 log 11740 15128 Method Not Allowed (GET): /accounts/logout/
+WARNING 2025-12-22 14:09:56,601 log 11740 15128 Method Not Allowed (GET): /accounts/logout/
+INFO 2025-12-22 14:10:44,973 autoreload 11740 17432 C:\New folder\neww\webapp12345\tracker\views.py changed, reloading.
+INFO 2025-12-22 14:10:47,138 autoreload 12872 17032 Watching for file changes with StatReloader
+INFO 2025-12-22 14:15:32,931 autoreload 12872 17032 C:\New folder\neww\webapp12345\pos_tracker\urls.py changed, reloading.
+INFO 2025-12-22 14:15:35,307 autoreload 20248 21476 Watching for file changes with StatReloader
+INFO 2025-12-22 14:15:41,832 autoreload 20248 21476 C:\New folder\neww\webapp12345\tracker\views.py changed, reloading.
+INFO 2025-12-22 14:15:44,233 autoreload 13060 20476 Watching for file changes with StatReloader
+WARNING 2025-12-22 14:15:59,177 log 13060 10696 Method Not Allowed (GET): /accounts/logout/
+WARNING 2025-12-22 14:18:32,918 log 13060 18656 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-12-22 14:18:54,715 log 13060 15596 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+ERROR 2025-12-22 14:56:39,820 log 13060 18056 Internal Server Error: /tracker/password-reset/
+Traceback (most recent call last):
+  File "C:\New folder\neww\webapp12345\tracker\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\New folder\neww\webapp12345\tracker\venv\Lib\site-packages\django\core\handlers\base.py", line 221, in _get_response
+    response = response.render()
+  File "C:\New folder\neww\webapp12345\tracker\venv\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\New folder\neww\webapp12345\tracker\venv\Lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "C:\New folder\neww\webapp12345\tracker\venv\Lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "C:\New folder\neww\webapp12345\tracker\venv\Lib\site-packages\django\template\loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: password_reset.html
+INFO 2025-12-22 14:57:26,381 autoreload 13368 3408 Watching for file changes with StatReloader
+INFO 2025-12-22 14:58:04,487 autoreload 4544 19720 Watching for file changes with StatReloader
+WARNING 2025-12-22 14:58:22,971 log 4544 21220 Not Found: /favicon.ico
+INFO 2025-12-29 19:19:25,717 autoreload 13232 17728 Watching for file changes with StatReloader
+WARNING 2025-12-29 19:19:44,340 log 13232 14496 Not Found: /favicon.ico
+DEBUG 2025-12-29 19:23:04,978 PngImagePlugin 13232 6836 STREAM b'IHDR' 16 13
+DEBUG 2025-12-29 19:23:04,978 PngImagePlugin 13232 6836 STREAM b'IDAT' 41 65536
+DEBUG 2025-12-29 19:23:04,979 Image 13232 6836 Importing AvifImagePlugin
+DEBUG 2025-12-29 19:23:05,066 Image 13232 6836 Importing BlpImagePlugin
+DEBUG 2025-12-29 19:23:05,071 Image 13232 6836 Importing BmpImagePlugin
+DEBUG 2025-12-29 19:23:05,072 Image 13232 6836 Importing BufrStubImagePlugin
+DEBUG 2025-12-29 19:23:05,074 Image 13232 6836 Importing CurImagePlugin
+DEBUG 2025-12-29 19:23:05,077 Image 13232 6836 Importing DcxImagePlugin
+DEBUG 2025-12-29 19:23:05,085 Image 13232 6836 Importing DdsImagePlugin
+DEBUG 2025-12-29 19:23:05,095 Image 13232 6836 Importing EpsImagePlugin
+DEBUG 2025-12-29 19:23:05,100 Image 13232 6836 Importing FitsImagePlugin
+DEBUG 2025-12-29 19:23:05,102 Image 13232 6836 Importing FliImagePlugin
+DEBUG 2025-12-29 19:23:05,104 Image 13232 6836 Importing FpxImagePlugin
+DEBUG 2025-12-29 19:23:05,107 Image 13232 6836 Image: failed to import FpxImagePlugin: No module named 'olefile'
+DEBUG 2025-12-29 19:23:05,108 Image 13232 6836 Importing FtexImagePlugin
+DEBUG 2025-12-29 19:23:05,110 Image 13232 6836 Importing GbrImagePlugin
+DEBUG 2025-12-29 19:23:05,114 Image 13232 6836 Importing GifImagePlugin
+DEBUG 2025-12-29 19:23:05,115 Image 13232 6836 Importing GribStubImagePlugin
+DEBUG 2025-12-29 19:23:05,117 Image 13232 6836 Importing Hdf5StubImagePlugin
+DEBUG 2025-12-29 19:23:05,118 Image 13232 6836 Importing IcnsImagePlugin
+DEBUG 2025-12-29 19:23:05,124 Image 13232 6836 Importing IcoImagePlugin
+DEBUG 2025-12-29 19:23:05,127 Image 13232 6836 Importing ImImagePlugin
+DEBUG 2025-12-29 19:23:05,132 Image 13232 6836 Importing ImtImagePlugin
+DEBUG 2025-12-29 19:23:05,134 Image 13232 6836 Importing IptcImagePlugin
+DEBUG 2025-12-29 19:23:05,136 Image 13232 6836 Importing JpegImagePlugin
+DEBUG 2025-12-29 19:23:05,136 Image 13232 6836 Importing Jpeg2KImagePlugin
+DEBUG 2025-12-29 19:23:05,136 Image 13232 6836 Importing McIdasImagePlugin
+DEBUG 2025-12-29 19:23:05,138 Image 13232 6836 Importing MicImagePlugin
+DEBUG 2025-12-29 19:23:05,141 Image 13232 6836 Image: failed to import MicImagePlugin: No module named 'olefile'
+DEBUG 2025-12-29 19:23:05,141 Image 13232 6836 Importing MpegImagePlugin
+DEBUG 2025-12-29 19:23:05,145 Image 13232 6836 Importing MpoImagePlugin
+DEBUG 2025-12-29 19:23:05,154 Image 13232 6836 Importing MspImagePlugin
+DEBUG 2025-12-29 19:23:05,157 Image 13232 6836 Importing PalmImagePlugin
+DEBUG 2025-12-29 19:23:05,165 Image 13232 6836 Importing PcdImagePlugin
+DEBUG 2025-12-29 19:23:05,168 Image 13232 6836 Importing PcxImagePlugin
+DEBUG 2025-12-29 19:23:05,168 Image 13232 6836 Importing PdfImagePlugin
+DEBUG 2025-12-29 19:23:05,184 Image 13232 6836 Importing PixarImagePlugin
+DEBUG 2025-12-29 19:23:05,187 Image 13232 6836 Importing PngImagePlugin
+DEBUG 2025-12-29 19:23:05,187 Image 13232 6836 Importing PpmImagePlugin
+DEBUG 2025-12-29 19:23:05,187 Image 13232 6836 Importing PsdImagePlugin
+DEBUG 2025-12-29 19:23:05,189 Image 13232 6836 Importing QoiImagePlugin
+DEBUG 2025-12-29 19:23:05,192 Image 13232 6836 Importing SgiImagePlugin
+DEBUG 2025-12-29 19:23:05,194 Image 13232 6836 Importing SpiderImagePlugin
+DEBUG 2025-12-29 19:23:05,199 Image 13232 6836 Importing SunImagePlugin
+DEBUG 2025-12-29 19:23:05,200 Image 13232 6836 Importing TgaImagePlugin
+DEBUG 2025-12-29 19:23:05,202 Image 13232 6836 Importing TiffImagePlugin
+DEBUG 2025-12-29 19:23:05,202 Image 13232 6836 Importing WebPImagePlugin
+DEBUG 2025-12-29 19:23:05,260 Image 13232 6836 Importing WmfImagePlugin
+DEBUG 2025-12-29 19:23:05,267 Image 13232 6836 Importing XbmImagePlugin
+DEBUG 2025-12-29 19:23:05,270 Image 13232 6836 Importing XpmImagePlugin
+DEBUG 2025-12-29 19:23:05,274 Image 13232 6836 Importing XVThumbImagePlugin
+INFO 2025-12-30 15:08:25,327 autoreload 13132 18644 Watching for file changes with StatReloader
+WARNING 2025-12-30 15:08:36,889 log 13132 14372 Not Found: /favicon.ico
+INFO 2026-01-02 12:12:49,444 autoreload 12740 21884 Watching for file changes with StatReloader
+INFO 2026-01-02 12:14:42,076 autoreload 12740 21884 C:\New folder\neww\webapp12345\tracker\urls.py changed, reloading.
+INFO 2026-01-02 12:14:46,962 autoreload 21660 1436 Watching for file changes with StatReloader
+INFO 2026-01-02 12:15:07,952 autoreload 21660 1436 C:\New folder\neww\webapp12345\tracker\views_frontend.py changed, reloading.
+INFO 2026-01-02 12:15:17,355 autoreload 5360 21124 Watching for file changes with StatReloader
+INFO 2026-01-02 12:16:49,598 autoreload 5360 21124 C:\New folder\neww\webapp12345\tracker\views.py changed, reloading.
+INFO 2026-01-02 12:16:57,481 autoreload 14260 11740 Watching for file changes with StatReloader
+INFO 2026-01-02 12:18:15,162 autoreload 14260 11740 C:\New folder\neww\webapp12345\tracker\models.py changed, reloading.
+INFO 2026-01-02 12:18:17,657 autoreload 11928 9480 Watching for file changes with StatReloader
+INFO 2026-01-02 12:18:51,152 autoreload 24344 19632 Watching for file changes with StatReloader
+INFO 2026-01-03 11:12:21,076 autoreload 19080 18476 Watching for file changes with StatReloader
+INFO 2026-01-03 11:16:09,792 autoreload 19080 18476 C:\New folder\neww\webapp12345\tracker\forms.py changed, reloading.
+INFO 2026-01-03 11:16:13,632 autoreload 19172 14184 Watching for file changes with StatReloader
+INFO 2026-01-03 11:16:47,691 autoreload 19172 14184 C:\New folder\neww\webapp12345\tracker\views.py changed, reloading.
+INFO 2026-01-03 11:16:51,146 autoreload 6096 20116 Watching for file changes with StatReloader
+WARNING 2026-01-03 11:26:09,203 log 6096 14284 Method Not Allowed (GET): /tracker/logout/
+WARNING 2026-01-03 11:27:03,012 log 6096 14284 Method Not Allowed (GET): /tracker/logout/
+INFO 2026-01-03 11:30:52,725 autoreload 6096 20116 C:\New folder\neww\webapp12345\tracker\urls.py changed, reloading.
+INFO 2026-01-03 11:30:55,215 autoreload 10980 7996 Watching for file changes with StatReloader
+INFO 2026-01-03 11:31:05,066 autoreload 10980 7996 C:\New folder\neww\webapp12345\tracker\views.py changed, reloading.
+INFO 2026-01-03 11:31:07,697 autoreload 20168 19440 Watching for file changes with StatReloader

@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ service.name }} - ResearchHub{% endblock %}
+
+{% block content %}
+<section>
+    <div class="container-main">
+        <div class="row">
+            <div class="col-lg-8">
+                <div style="margin-bottom: 30px;">
+                    {% if service.image %}
+                        <img src="{{ service.image.url }}" style="width: 100%; max-height: 400px; object-fit: cover; border-radius: var(--border-radius); margin-bottom: 20px;">
+                    {% endif %}
+                    <h1 style="color: var(--primary); margin-bottom: 15px;">{{ service.name }}</h1>
+                    <p style="font-size: 1.1rem; color: #666;">{{ service.description }}</p>
+                </div>
+
+                <div style="background: var(--light); padding: 30px; border-radius: var(--border-radius); margin-bottom: 30px;">
+                    <h3 style="color: var(--primary); margin-bottom: 20px;">Service Details</h3>
+                    {{ service.detailed_description|safe }}
+                </div>
+
+                <div style="background: white; padding: 30px; border: 1px solid #eee; border-radius: var(--border-radius); margin-bottom: 30px;">
+                    <h3 style="color: var(--primary); margin-bottom: 20px;">What's Included</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 8px 0; border-bottom: 1px solid #eee;">
+                            <i class="ri-check-line" style="color: var(--accent); font-weight: bold;"></i> Professional research and writing
+                        </li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #eee;">
+                            <i class="ri-check-line" style="color: var(--accent); font-weight: bold;"></i> Unlimited revisions until satisfaction
+                        </li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #eee;">
+                            <i class="ri-check-line" style="color: var(--accent); font-weight: bold;"></i> Plagiarism-free guarantee
+                        </li>
+                        <li style="padding: 8px 0;">
+                            <i class="ri-check-line" style="color: var(--accent); font-weight: bold;"></i> Expert feedback and guidance
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Related Services -->
+                {% if related_services %}
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: var(--primary); margin-bottom: 20px;">Related Services</h3>
+                    <div class="row g-3">
+                        {% for related in related_services %}
+                        <div class="col-md-6">
+                            <div class="service-card" style="cursor: pointer;" onclick="window.location.href='{% url 'service_detail' related.id %}'">
+                                <h5 style="color: var(--primary); margin-bottom: 10px;">{{ related.name }}</h5>
+                                <p style="font-size: 0.9rem;">{{ related.description|truncatewords:15 }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Testimonials for this service -->
+                {% if testimonials %}
+                <div>
+                    <h3 style="color: var(--primary); margin-bottom: 20px;">Client Testimonials</h3>
+                    <div class="row g-3">
+                        {% for testimonial in testimonials %}
+                        <div class="col-md-6">
+                            <div style="background: var(--light); padding: 20px; border-radius: var(--border-radius);">
+                                <div style="color: var(--accent); margin-bottom: 10px;">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= testimonial.rating %}<i class="ri-star-fill"></i>{% else %}<i class="ri-star-line"></i>{% endif %}
+                                    {% endfor %}
+                                </div>
+                                <p><em>"{{ testimonial.quote|truncatewords:20 }}"</em></p>
+                                <p style="color: var(--primary); font-weight: 600; font-size: 0.9rem;">— {{ testimonial.customer.full_name }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div style="background: var(--light); padding: 30px; border-radius: var(--border-radius); position: sticky; top: 100px;">
+                    <h3 style="color: var(--primary); margin-bottom: 20px;">Request This Service</h3>
+                    
+                    {% if service.price %}
+                    <p style="color: #666; margin-bottom: 10px;">Starting from:</p>
+                    <h2 style="color: var(--accent); margin-bottom: 20px;">${{ service.price }}</h2>
+                    {% endif %}
+                    
+                    {% if service.duration %}
+                    <p style="color: #666; margin-bottom: 20px;">
+                        <i class="ri-time-line"></i> {{ service.duration }}
+                    </p>
+                    {% endif %}
+                    
+                    <a href="{% url 'service_request' service.id %}" class="cta-button" style="width: 100%; text-align: center; display: block; margin-bottom: 15px;">
+                        Request Service
+                    </a>
+                    
+                    <a href="{% url 'contact' %}" class="cta-button" style="width: 100%; text-align: center; display: block; background: white; color: var(--primary); border: 2px solid var(--primary);">
+                        Ask a Question
+                    </a>
+
+                    <hr style="margin: 20px 0;">
+
+                    <div style="background: white; padding: 15px; border-radius: var(--border-radius); margin-bottom: 15px;">
+                        <h5 style="color: var(--primary); margin-bottom: 10px;">
+                            <i class="ri-shield-check-line"></i> Quality Guarantee
+                        </h5>
+                        <p style="font-size: 0.9rem; color: #666;">100% original work with full satisfaction guarantee</p>
+                    </div>
+
+                    <div style="background: white; padding: 15px; border-radius: var(--border-radius); margin-bottom: 15px;">
+                        <h5 style="color: var(--primary); margin-bottom: 10px;">
+                            <i class="ri-time-line"></i> Fast Delivery
+                        </h5>
+                        <p style="font-size: 0.9rem; color: #666;">On-time delivery guaranteed or your money back</p>
+                    </div>
+
+                    <div style="background: white; padding: 15px; border-radius: var(--border-radius);">
+                        <h5 style="color: var(--primary); margin-bottom: 10px;">
+                            <i class="ri-user-line"></i> Expert Support
+                        </h5>
+                        <p style="font-size: 0.9rem; color: #666;">24/7 customer support and revisions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

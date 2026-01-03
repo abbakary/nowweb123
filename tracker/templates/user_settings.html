@@ -1,0 +1,577 @@
+{% extends 'base.html' %}
+
+{% block title %}Account Settings - ResearchHub{% endblock %}
+
+{% block extra_css %}
+<style>
+    .settings-container {
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 20px;
+    }
+    
+    .settings-header {
+        margin-bottom: 40px;
+    }
+    
+    .settings-header h1 {
+        color: var(--primary);
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+    
+    .settings-header p {
+        color: #666;
+        font-size: 1.05rem;
+    }
+    
+    .settings-grid {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        gap: 30px;
+    }
+    
+    .settings-sidebar {
+        background: white;
+        border-radius: 12px;
+        padding: 20px 0;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        height: fit-content;
+    }
+    
+    .settings-nav {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .settings-nav li {
+        margin: 0;
+    }
+    
+    .settings-nav a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 15px 20px;
+        color: #666;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+    }
+    
+    .settings-nav a:hover {
+        background: var(--light);
+        color: var(--primary);
+        border-left-color: var(--primary);
+    }
+    
+    .settings-nav a.active {
+        background: var(--light);
+        color: var(--primary);
+        border-left-color: var(--primary);
+        font-weight: 600;
+    }
+    
+    .settings-nav i {
+        font-size: 1.2rem;
+    }
+    
+    .settings-content {
+        background: white;
+        border-radius: 12px;
+        padding: 40px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    .settings-section {
+        margin-bottom: 40px;
+    }
+    
+    .settings-section:last-child {
+        margin-bottom: 0;
+    }
+    
+    .settings-section-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--primary);
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid var(--light);
+        display: flex;
+        align-items: center;
+    }
+    
+    .settings-section-title i {
+        margin-right: 10px;
+        font-size: 1.4rem;
+    }
+    
+    .settings-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .settings-item:last-child {
+        border-bottom: none;
+    }
+    
+    .settings-item-info h4 {
+        color: var(--dark);
+        margin: 0 0 5px 0;
+        font-size: 1rem;
+    }
+    
+    .settings-item-info p {
+        color: #666;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+    
+    .settings-item-action {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+    
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 28px;
+    }
+    
+    .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 28px;
+    }
+    
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 21px;
+        width: 21px;
+        left: 3.5px;
+        bottom: 3.5px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+    }
+    
+    input:checked + .slider {
+        background-color: var(--primary);
+    }
+    
+    input:checked + .slider:before {
+        transform: translateX(22px);
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 0;
+        color: var(--dark);
+        font-weight: 500;
+        cursor: pointer;
+    }
+    
+    .form-control {
+        border: 2px solid #e0e0e0;
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .form-control:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.1);
+        outline: none;
+    }
+    
+    .btn-save {
+        padding: 12px 30px;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(30, 60, 114, 0.3);
+    }
+    
+    .btn-danger {
+        padding: 12px 30px;
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-danger:hover {
+        background: #f5c6cb;
+    }
+    
+    .success-message {
+        background: #d4edda;
+        border: 1px solid #c3e6cb;
+        color: #155724;
+        padding: 15px 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    
+    .warning-box {
+        background: #fff3cd;
+        border: 1px solid #ffc107;
+        color: #856404;
+        padding: 15px 20px;
+        border-radius: 8px;
+        margin-top: 20px;
+    }
+    
+    @media (max-width: 768px) {
+        .settings-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .settings-sidebar {
+            display: flex;
+            flex-direction: row;
+            overflow-x: auto;
+        }
+        
+        .settings-nav {
+            display: flex;
+            flex-direction: row;
+        }
+        
+        .settings-nav a {
+            padding: 10px 15px;
+            white-space: nowrap;
+        }
+        
+        .settings-content {
+            padding: 20px;
+        }
+        
+        .settings-item {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .settings-item-action {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="settings-container">
+    <div class="settings-header">
+        <h1><i class="ri-settings-4-line"></i> Account Settings</h1>
+        <p>Manage your account preferences and security settings</p>
+    </div>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="success-message">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    
+    <div class="settings-grid">
+        <!-- Sidebar Navigation -->
+        <div class="settings-sidebar">
+            <ul class="settings-nav">
+                <li>
+                    <a href="#notifications" class="active" onclick="switchTab('notifications')">
+                        <i class="ri-notification-line"></i> Notifications
+                    </a>
+                </li>
+                <li>
+                    <a href="#privacy" onclick="switchTab('privacy')">
+                        <i class="ri-eye-off-line"></i> Privacy
+                    </a>
+                </li>
+                <li>
+                    <a href="#security" onclick="switchTab('security')">
+                        <i class="ri-shield-check-line"></i> Security
+                    </a>
+                </li>
+                <li>
+                    <a href="#preferences" onclick="switchTab('preferences')">
+                        <i class="ri-slider-line"></i> Preferences
+                    </a>
+                </li>
+                <li>
+                    <a href="#danger" onclick="switchTab('danger')">
+                        <i class="ri-alert-line"></i> Danger Zone
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Settings Content -->
+        <div class="settings-content">
+            <!-- Notifications Settings -->
+            <div id="notifications-tab" class="settings-tab active">
+                <div class="settings-section">
+                    <div class="settings-section-title">
+                        <i class="ri-notification-4-line"></i> Notification Preferences
+                    </div>
+                    
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="newsletter">
+                        
+                        <div class="settings-item">
+                            <div class="settings-item-info">
+                                <h4>Newsletter</h4>
+                                <p>Receive updates about new services and workshops</p>
+                            </div>
+                            <div class="settings-item-action">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" name="newsletter" 
+                                        {% if user_profile.newsletter_subscribed %}checked{% endif %}>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-item">
+                            <div class="settings-item-info">
+                                <h4>Service Updates</h4>
+                                <p>Get notified when your service requests are updated</p>
+                            </div>
+                            <div class="settings-item-action">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked disabled>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-item">
+                            <div class="settings-item-info">
+                                <h4>Workshop Reminders</h4>
+                                <p>Receive reminders for upcoming workshops you registered for</p>
+                            </div>
+                            <div class="settings-item-action">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked disabled>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 30px;">
+                            <button type="submit" class="btn-save">
+                                <i class="ri-save-line"></i> Save Preferences
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Privacy Settings -->
+            <div id="privacy-tab" class="settings-tab" style="display: none;">
+                <div class="settings-section">
+                    <div class="settings-section-title">
+                        <i class="ri-eye-off-2-line"></i> Privacy Settings
+                    </div>
+                    
+                    <div class="settings-item">
+                        <div class="settings-item-info">
+                            <h4>Profile Visibility</h4>
+                            <p>Allow others to see your profile information</p>
+                        </div>
+                        <div class="settings-item-action">
+                            <label class="toggle-switch">
+                                <input type="checkbox" disabled>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-item">
+                        <div class="settings-item-info">
+                            <h4>Show Activity</h4>
+                            <p>Let others see your activity and testimonials</p>
+                        </div>
+                        <div class="settings-item-action">
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked disabled>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Security Settings -->
+            <div id="security-tab" class="settings-tab" style="display: none;">
+                <div class="settings-section">
+                    <div class="settings-section-title">
+                        <i class="ri-lock-2-line"></i> Security Settings
+                    </div>
+                    
+                    <div class="settings-item">
+                        <div class="settings-item-info">
+                            <h4>Password</h4>
+                            <p>Change your account password regularly</p>
+                        </div>
+                        <div class="settings-item-action">
+                            <a href="{% url 'change_password' %}" class="btn-save">
+                                Change Password
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-item">
+                        <div class="settings-item-info">
+                            <h4>Two-Factor Authentication</h4>
+                            <p>Add an extra layer of security to your account</p>
+                        </div>
+                        <div class="settings-item-action">
+                            <label class="toggle-switch">
+                                <input type="checkbox" disabled>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-item">
+                        <div class="settings-item-info">
+                            <h4>Login Activity</h4>
+                            <p>Monitor your recent login activity</p>
+                        </div>
+                        <div class="settings-item-action">
+                            <button class="btn-save" disabled>View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Preferences Settings -->
+            <div id="preferences-tab" class="settings-tab" style="display: none;">
+                <div class="settings-section">
+                    <div class="settings-section-title">
+                        <i class="ri-slider-3-line"></i> General Preferences
+                    </div>
+                    
+                    <div class="settings-item">
+                        <div class="settings-item-info">
+                            <h4>Language</h4>
+                            <p>Select your preferred language</p>
+                        </div>
+                        <div class="settings-item-action">
+                            <select class="form-control" style="width: auto; max-width: 150px;">
+                                <option>English</option>
+                                <option>Spanish</option>
+                                <option>French</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-item">
+                        <div class="settings-item-info">
+                            <h4>Time Zone</h4>
+                            <p>Set your local time zone</p>
+                        </div>
+                        <div class="settings-item-action">
+                            <select class="form-control" style="width: auto; max-width: 200px;">
+                                <option>UTC</option>
+                                <option>GMT +3 (Arabia)</option>
+                                <option>EST (US Eastern)</option>
+                                <option>PST (US Pacific)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Danger Zone -->
+            <div id="danger-tab" class="settings-tab" style="display: none;">
+                <div class="settings-section">
+                    <div class="settings-section-title">
+                        <i class="ri-alarm-warning-line"></i> Danger Zone
+                    </div>
+                    
+                    <div class="warning-box">
+                        <p>These actions are permanent and cannot be undone.</p>
+                    </div>
+                    
+                    <div class="settings-item">
+                        <div class="settings-item-info">
+                            <h4>Delete Account</h4>
+                            <p>Permanently delete your account and all associated data</p>
+                        </div>
+                        <div class="settings-item-action">
+                            <button class="btn-danger" disabled>Delete Account</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function switchTab(tabName) {
+        // Hide all tabs
+        document.querySelectorAll('.settings-tab').forEach(tab => {
+            tab.style.display = 'none';
+        });
+        
+        // Remove active class from all nav items
+        document.querySelectorAll('.settings-nav a').forEach(link => {
+            link.classList.remove('active');
+        });
+        
+        // Show selected tab
+        const tabElement = document.getElementById(tabName + '-tab');
+        if (tabElement) {
+            tabElement.style.display = 'block';
+        }
+        
+        // Add active class to clicked nav item
+        event.target.closest('a').classList.add('active');
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,147 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Overview - Admin{% endblock %}
+{% block page_title %}Dashboard Overview{% endblock %}
+
+{% block content %}
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-label"><i class="ri-user-3-line"></i> Total Clients</div>
+        <div class="stat-value">{{ total_clients|default:"0" }}</div>
+    </div>
+    
+    <div class="stat-card accent">
+        <div class="stat-label"><i class="ri-time-line"></i> Pending Requests</div>
+        <div class="stat-value">{{ pending_requests|default:"0" }}</div>
+    </div>
+    
+    <div class="stat-card success">
+        <div class="stat-label"><i class="ri-check-double-line"></i> Completed This Month</div>
+        <div class="stat-value">{{ completed_this_month|default:"0" }}</div>
+    </div>
+    
+    <div class="stat-card danger">
+        <div class="stat-label"><i class="ri-calendar-line"></i> Upcoming Workshops</div>
+        <div class="stat-value">{{ upcoming_workshops|default:"0" }}</div>
+    </div>
+</div>
+
+<!-- Recent Requests -->
+<div class="admin-card">
+    <div class="admin-card-title">
+        <i class="ri-inbox-line"></i> Recent Service Requests
+    </div>
+    
+    {% if recent_requests %}
+        <div style="overflow-x: auto;">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Customer</th>
+                        <th>Service</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th style="text-align: center;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in recent_requests %}
+                    <tr>
+                        <td>
+                            <strong>{{ request.title }}</strong><br>
+                            <small style="color: #999;">{{ request.description|truncatewords:15 }}</small>
+                        </td>
+                        <td>{{ request.customer.full_name }}</td>
+                        <td>{{ request.service.name|default:"—" }}</td>
+                        <td>
+                            {% if request.status == 'pending' %}
+                                <span class="admin-badge admin-badge-warning">Pending</span>
+                            {% elif request.status == 'accepted' %}
+                                <span class="admin-badge admin-badge-info">Accepted</span>
+                            {% elif request.status == 'in_progress' %}
+                                <span class="admin-badge admin-badge-warning">In Progress</span>
+                            {% elif request.status == 'completed' %}
+                                <span class="admin-badge admin-badge-success">Completed</span>
+                            {% else %}
+                                <span class="admin-badge admin-badge-danger">{{ request.get_status_display }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ request.created_at|date:"M d, Y" }}</td>
+                        <td style="text-align: center;">
+                            <a href="{% url 'admin_requests' %}" class="admin-btn admin-btn-secondary admin-btn-small">
+                                <i class="ri-arrow-right-line"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <i class="ri-inbox-line"></i>
+            <p>No recent requests</p>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Upcoming Workshops -->
+<div class="admin-card" style="margin-top: 30px;">
+    <div class="admin-card-title">
+        <i class="ri-calendar-event-line"></i> Upcoming Workshops
+    </div>
+    
+    {% if upcoming_workshops_list %}
+        <div style="overflow-x: auto;">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Date</th>
+                        <th>Location</th>
+                        <th>Type</th>
+                        <th>Participants</th>
+                        <th style="text-align: center;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for workshop in upcoming_workshops_list %}
+                    <tr>
+                        <td><strong>{{ workshop.title }}</strong></td>
+                        <td>{{ workshop.date|date:"M d, Y H:i" }}</td>
+                        <td>
+                            {% if workshop.is_online %}
+                                <span class="admin-badge admin-badge-info">🌐 Online</span>
+                            {% else %}
+                                {{ workshop.location }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if workshop.is_online %}
+                                <span class="admin-badge admin-badge-info">Online</span>
+                            {% else %}
+                                <span class="admin-badge">In-Person</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ workshop.get_registration_count }}{% if workshop.max_participants %}/{{ workshop.max_participants }}{% endif %}
+                        </td>
+                        <td style="text-align: center;">
+                            <a href="{% url 'admin_workshops' %}" class="admin-btn admin-btn-secondary admin-btn-small">
+                                <i class="ri-arrow-right-line"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <i class="ri-calendar-line"></i>
+            <p>No upcoming workshops</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

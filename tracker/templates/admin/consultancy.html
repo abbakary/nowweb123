@@ -1,0 +1,147 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Manage Consultancy - Admin{% endblock %}
+{% block page_title %}Consultancy Services Management{% endblock %}
+
+{% block content %}
+<div class="admin-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div class="admin-card-title" style="margin-bottom: 0;">
+            <i class="ri-discuss-line"></i> Consultancy Services
+        </div>
+        <button onclick="openCreateConsultancyModal()" class="admin-btn admin-btn-primary">
+            <i class="ri-add-line"></i> Add Service
+        </button>
+    </div>
+    
+    {% if consultancy_services %}
+        <div style="overflow-x: auto;">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Service Name</th>
+                        <th>Type</th>
+                        <th>Hourly Rate</th>
+                        <th>Status</th>
+                        <th style="text-align: center;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for service in consultancy_services %}
+                    <tr>
+                        <td>
+                            <strong>{{ service.name }}</strong><br>
+                            <small style="color: #999;">{{ service.description|truncatewords:10 }}</small>
+                        </td>
+                        <td>
+                            <span class="admin-badge" style="background: #f3e5f5; color: #6a1b9a;">
+                                {{ service.get_consultancy_type_display }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if service.hourly_rate %}
+                                ${{ service.hourly_rate }}/hr
+                            {% else %}
+                                <span style="color: #999;">—</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if service.is_active %}
+                                <span class="admin-badge admin-badge-success">Active</span>
+                            {% else %}
+                                <span class="admin-badge admin-badge-danger">Inactive</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="admin-table-actions">
+                                <form method="POST" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="service_id" value="{{ service.id }}">
+                                    <input type="hidden" name="action" value="delete">
+                                    <button type="submit" class="admin-btn admin-btn-danger admin-btn-small" title="Delete" onclick="return confirm('Are you sure you want to delete this service?');">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <i class="ri-discuss-line"></i>
+            <p>No consultancy services created yet</p>
+            <button onclick="openCreateConsultancyModal()" class="admin-btn admin-btn-primary" style="margin-top: 20px;">
+                <i class="ri-add-line"></i> Create First Service
+            </button>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Create Consultancy Modal -->
+<div id="createConsultancyModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+    <div style="background: white; padding: 30px; border-radius: var(--border-radius); width: 90%; max-width: 600px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="color: var(--primary); margin: 0;">Add Consultancy Service</h3>
+            <button onclick="closeCreateConsultancyModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">
+                <i class="ri-close-line"></i>
+            </button>
+        </div>
+        
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="create">
+            
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600;">Service Name *</label>
+                <input type="text" name="name" required class="form-control" style="border-radius: var(--border-radius);">
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600;">Consultancy Type *</label>
+                <select name="consultancy_type" required class="form-control" style="border-radius: var(--border-radius);">
+                    <option value="">Select a type</option>
+                    <option value="academic">Academic Consultancy</option>
+                    <option value="research">Research Consultancy</option>
+                    <option value="career">Career Consultancy</option>
+                    <option value="writing">Writing Consultancy</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600;">Description *</label>
+                <textarea name="description" required class="form-control" rows="4" style="border-radius: var(--border-radius);"></textarea>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600;">Hourly Rate ($)</label>
+                <input type="number" name="hourly_rate" step="0.01" class="form-control" style="border-radius: var(--border-radius);">
+            </div>
+
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button type="button" onclick="closeCreateConsultancyModal()" class="admin-btn admin-btn-secondary">Cancel</button>
+                <button type="submit" class="admin-btn admin-btn-primary">Create Service</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function openCreateConsultancyModal() {
+    document.getElementById('createConsultancyModal').style.display = 'flex';
+}
+
+function closeCreateConsultancyModal() {
+    document.getElementById('createConsultancyModal').style.display = 'none';
+}
+
+window.onclick = function(event) {
+    let modal = document.getElementById('createConsultancyModal');
+    if (event.target == modal) {
+        modal.style.display = 'none';
+    }
+}
+</script>
+{% endblock %}
