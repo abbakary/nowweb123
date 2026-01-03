@@ -819,12 +819,18 @@
             }, 1500);
         } else {
             const email = document.getElementById('authEmail').value.trim();
+            const phone = document.getElementById('authPhone').value.trim();
             const password = document.getElementById('authRegisterPassword').value.trim();
             const passwordConfirm = document.getElementById('authRegisterPasswordConfirm').value.trim();
 
             if (!email) {
                 showAuthError('Please enter your email address');
                 document.getElementById('authEmail').classList.add('error');
+                return;
+            }
+            if (!phone) {
+                showAuthError('Please enter your phone number');
+                document.getElementById('authPhone').classList.add('error');
                 return;
             }
             if (!password) {
