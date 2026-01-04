@@ -318,4 +318,33 @@
         </div>
     </div>
 </section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize map
+        const map = L.map('map').setView([-6.7924, 39.2083], 16);
+
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors',
+            maxZoom: 19
+        }).addTo(map);
+
+        // Add marker for Elite Towers
+        const marker = L.marker([-6.7924, 39.2083], {
+            title: 'The Writing Hub TZ - Elite Towers'
+        }).addTo(map);
+
+        // Popup content
+        marker.bindPopup(
+            '<div style="font-size: 14px;"><strong>The Writing Hub TZ</strong><br>' +
+            '9 Floor, Elite Towers<br>' +
+            'Azikiwe Street<br>' +
+            'Dar es Salaam, Tanzania<br>' +
+            '<a href="tel:+255717313797" style="color: var(--primary);">+255 717 313 797</a></div>',
+            { maxWidth: 250 }
+        ).openPopup();
+    });
+</script>
 {% endblock %}
