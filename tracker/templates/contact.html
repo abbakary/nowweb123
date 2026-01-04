@@ -263,6 +263,52 @@
                 </div>
             </div>
         </div>
+
+        <!-- Interactive Google Map Section -->
+        <div class="google-map-container">
+            <div class="map-header">
+                <i class="ri-map-pin-line"></i>
+                <h3>Visit Us - Find Our Location</h3>
+            </div>
+            <div class="map-wrapper">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3970.9473719851146!2d39.208301699999996!3d-6.792368699999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x185c4d5e8e8e8e8f%3A0x8e8e8e8e8e8e8e8e!2sElite%20Towers%2C%20Azikiwe%20Street%2C%20Dar%20es%20Salaam!5e0!3m2!1sen!2stz!4v1672831234567" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <div class="map-footer">
+                <div class="map-info">
+                    <div class="map-info-item">
+                        <i class="ri-map-pin-2-line"></i>
+                        <div class="map-info-text">
+                            <span class="map-info-label">Address</span>
+                            <span class="map-info-value">
+                                {% if company and company.address %}
+                                    {% for line in company.address|linebreaks|safe %}{% endfor %}
+                                    {{ company.address }}
+                                {% else %}
+                                    9 Floor, Elite Towers<br>Azikiwe St, Dar es Salaam, Tanzania
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="map-info-item">
+                        <i class="ri-phone-line"></i>
+                        <div class="map-info-text">
+                            <span class="map-info-label">Phone</span>
+                            <span class="map-info-value">{% if company %}{{ company.phone }}{% else %}+255 717 313 797{% endif %}</span>
+                        </div>
+                    </div>
+                    <div class="map-info-item">
+                        <i class="ri-time-line"></i>
+                        <div class="map-info-text">
+                            <span class="map-info-label">Hours</span>
+                            <span class="map-info-value">Mon-Fri: 9 AM - 6 PM<br>Sat: 10 AM - 4 PM</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="https://www.google.com/maps/search/The+Writing+Hub+TZ+Elite+Towers+Dar+es+Salaam/@-6.7924,39.2083" target="_blank" rel="noopener noreferrer" class="directions-button">
+                    <i class="ri-navigation-line" style="margin-right: 8px;"></i> Open in Google Maps
+                </a>
+            </div>
+        </div>
     </div>
 </section>
 {% endblock %}
