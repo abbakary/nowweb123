@@ -47,22 +47,52 @@ def _auto_generate_testimonials():
 
 
 def home(request):
-    """Home page with featured services and testimonials"""
+    """Home page with featured services, process steps, and testimonials"""
+    # Get featured services
     featured_services = ResearchService.objects.filter(
-        is_active=True,
-        category__in=['concept_proposal', 'thesis', 'articles']
+        is_active=True
     ).order_by('display_order')[:6]
 
     # Auto-generate testimonials from completed service requests
     _auto_generate_testimonials()
 
+    # Get published testimonials
     testimonials = ClientTestimonial.objects.filter(
         is_published=True
-    ).order_by('-created_at')[:6]
+    ).order_by('-created_at')[:8]
+
+    # Define process steps
+    process_steps = [
+        {
+            'title': 'Consultation & Planning',
+            'description': 'We begin with a detailed consultation to understand your requirements, objectives, and expectations for the project.'
+        },
+        {
+            'title': 'Expert Assignment',
+            'description': 'Your project is assigned to the most qualified expert in the field, ensuring subject matter expertise and quality.'
+        },
+        {
+            'title': 'Execution & Quality Check',
+            'description': 'Our expert works on your project while our quality team ensures adherence to standards and requirements.'
+        },
+        {
+            'title': 'Delivery & Support',
+            'description': 'Your completed project is delivered on time, followed by comprehensive support and revision services.'
+        }
+    ]
+
+    # Get company profile
+    from .models import CompanyProfile
+    try:
+        company = CompanyProfile.objects.get(pk=1)
+    except CompanyProfile.DoesNotExist:
+        company = None
 
     context = {
         'featured_services': featured_services,
         'testimonials': testimonials,
+        'process_steps': process_steps,
+        'company': company,
     }
     return render(request, 'home.html', context)
 
