@@ -1333,3 +1333,17 @@ django.db.utils.OperationalError: no such table: tracker_leadership
 INFO 2026-01-03 19:51:56,130 autoreload 930 140290343397184 Watching for file changes with StatReloader
 INFO 2026-01-03 19:51:59,487 autoreload 930 140290343397184 /root/app/code/tracker/admin.py changed, reloading.
 INFO 2026-01-03 19:51:59,888 autoreload 939 140564093269824 Watching for file changes with StatReloader
+INFO 2026-01-03 19:57:38,832 autoreload 916 139907260761920 Watching for file changes with StatReloader
+INFO 2026-01-03 20:03:02,416 autoreload 916 139907260761920 /root/app/code/tracker/admin.py changed, reloading.
+INFO 2026-01-03 20:03:02,827 autoreload 1219 139664079542080 Watching for file changes with StatReloader
+INFO 2026-01-03 20:03:09,100 autoreload 1219 139664079542080 /root/app/code/tracker/views_frontend.py changed, reloading.
+INFO 2026-01-03 20:03:09,499 autoreload 1234 140646547347264 Watching for file changes with StatReloader
+INFO 2026-01-03 20:03:15,867 autoreload 1234 140646547347264 /root/app/code/tracker/views_frontend.py changed, reloading.
+INFO 2026-01-03 20:03:16,264 autoreload 1243 139635630114624 Watching for file changes with StatReloader
+INFO 2026-01-03 20:03:21,604 autoreload 1243 139635630114624 /root/app/code/tracker/views_frontend.py changed, reloading.
+INFO 2026-01-03 20:03:21,996 autoreload 1264 139724622620480 Watching for file changes with StatReloader
+INFO 2026-01-04 09:08:53,764 autoreload 777 140081192810304 Watching for file changes with StatReloader
+INFO 2026-01-04 10:21:04,378 autoreload 778 140086104389440 Watching for file changes with StatReloader
+INFO 2026-01-04 12:19:47,280 autoreload 778 140206840883008 Watching for file changes with StatReloader
+INFO 2026-01-04 12:23:40,168 autoreload 778 140206840883008 /root/app/code/tracker/views_frontend.py changed, reloading.
+INFO 2026-01-04 12:23:40,540 autoreload 982 139801971889984 Watching for file changes with StatReloader

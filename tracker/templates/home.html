@@ -1,120 +1,233 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Home - The Writing Hub Tz{% endblock %}
+{% block title %}Premium Writing & Research Services - The Writing Hub Tz{% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
 <style>
     :root {
-        --primary: #2563eb; /* Vibrant blue */
-        --primary-light: #3b82f6;
-        --secondary: #7c3aed; /* Purple */
-        --accent: #f59e0b; /* Amber */
-        --accent-light: #fbbf24;
-        --success: #10b981; /* Emerald */
-        --dark: #1e293b; /* Dark blue-gray */
-        --light: #f8fafc; /* Light gray */
-        --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-        --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.08);
+        /* Professional Color Palette */
+        --primary-dark: #0a2540;
+        --primary: #1e3c72;
+        --primary-light: #2a5298;
+        --secondary: #635bff;
+        --accent: #ff6b42;
+        --accent-light: #ff8566;
+        --success: #00c9a7;
+        --warning: #ffb347;
+        --danger: #ff6b6b;
+        --dark: #1a1a2e;
+        --light: #f8fafc;
+        --gray-light: #f1f5f9;
+        --gray: #64748b;
+        --gray-dark: #334155;
+        
+        /* Gradients */
+        --gradient-primary: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        --gradient-accent: linear-gradient(135deg, #ff6b42 0%, #ff8566 100%);
+        --gradient-dark: linear-gradient(135deg, #0a2540 0%, #1a1a2e 100%);
+        
+        /* Shadows */
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
         --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.12);
         --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.15);
+        --shadow-xl: 0 30px 80px rgba(0, 0, 0, 0.2);
+        
+        /* Transitions */
+        --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        
+        /* Border Radius */
+        --radius-sm: 8px;
+        --radius-md: 16px;
+        --radius-lg: 24px;
+        --radius-xl: 32px;
     }
 
     /* Hero Section */
-    .hero {
+    .hero-section {
+        min-height: 100vh;
         position: relative;
-        padding: 120px 0 100px;
-        background: var(--gradient-1);
-        color: white;
         overflow: hidden;
-        text-align: center;
+        display: flex;
+        align-items: center;
+        background: var(--gradient-dark);
+        padding: 120px 0;
     }
 
-    .hero::before {
-        content: '';
+    .hero-background {
         position: absolute;
         top: 0;
         left: 0;
-        right: 0;
-        bottom: 0;
-        background: 
-            radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);
-        animation: float 20s infinite linear;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
     }
 
+    .floating-shapes {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+
+    .shape {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .shape-1 { width: 300px; height: 300px; top: 10%; right: 10%; animation-delay: 0s; }
+    .shape-2 { width: 200px; height: 200px; bottom: 20%; left: 5%; animation-delay: 2s; }
+    .shape-3 { width: 150px; height: 150px; top: 40%; left: 15%; animation-delay: 4s; }
+
     @keyframes float {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(180deg); }
     }
 
     .hero-content {
         position: relative;
-        z-index: 2;
-        max-width: 800px;
+        z-index: 3;
+        max-width: 1200px;
         margin: 0 auto;
-        animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        padding: 0 20px;
+        text-align: center;
+        color: white;
     }
 
-    .hero h1 {
-        font-size: 3.5rem;
+    .hero-badge {
+        display: inline-block;
+        padding: 10px 24px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 30px;
+        color: var(--accent);
+        letter-spacing: 1px;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(255, 107, 66, 0.4); }
+        50% { box-shadow: 0 0 0 10px rgba(255, 107, 66, 0); }
+    }
+
+    .hero-title {
+        font-size: 4.5rem;
         font-weight: 800;
-        margin-bottom: 20px;
-        line-height: 1.2;
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%);
+        line-height: 1.1;
+        margin-bottom: 24px;
+        background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
     }
 
-    .hero p {
-        font-size: 1.25rem;
-        margin-bottom: 40px;
-        opacity: 0.95;
-        line-height: 1.6;
-        max-width: 600px;
-        margin-left: auto;
-        margin-right: auto;
+    .hero-title .highlight {
+        position: relative;
+        display: inline-block;
     }
 
-    .cta-buttons {
+    .hero-title .highlight::after {
+        content: '';
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        width: 100%;
+        height: 12px;
+        background: linear-gradient(135deg, var(--accent) 0%, rgba(255, 107, 66, 0.2) 100%);
+        z-index: -1;
+        border-radius: 4px;
+        opacity: 0.7;
+    }
+
+    .hero-subtitle {
+        font-size: 1.4rem;
+        opacity: 0.9;
+        max-width: 700px;
+        margin: 0 auto 50px;
+        line-height: 1.6;
+        font-weight: 300;
+    }
+
+    .hero-stats {
+        display: flex;
+        justify-content: center;
+        gap: 60px;
+        margin: 60px 0;
+        flex-wrap: wrap;
+    }
+
+    .stat-item {
+        text-align: center;
+        position: relative;
+    }
+
+    .stat-number {
+        font-size: 3.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--accent) 0%, #fff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        display: block;
+        line-height: 1;
+    }
+
+    .stat-label {
+        font-size: 1rem;
+        opacity: 0.8;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 8px;
+    }
+
+    .cta-group {
         display: flex;
         gap: 20px;
         justify-content: center;
         flex-wrap: wrap;
-        margin-top: 40px;
     }
 
     .cta-button {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 10px;
-        padding: 16px 36px;
+        gap: 12px;
+        padding: 18px 40px;
         font-size: 1.1rem;
         font-weight: 600;
-        border-radius: 12px;
+        border-radius: var(--radius-lg);
         text-decoration: none;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all var(--transition-base);
         position: relative;
         overflow: hidden;
         z-index: 1;
+        border: none;
+        cursor: pointer;
     }
 
     .cta-button.primary {
-        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-        color: var(--dark);
-        box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
+        background: var(--gradient-accent);
+        color: white;
+        box-shadow: 0 10px 40px rgba(255, 107, 66, 0.3);
     }
 
     .cta-button.secondary {
-        background: rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.1);
         backdrop-filter: blur(10px);
         color: white;
-        border: 2px solid rgba(255, 255, 255, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.2);
     }
 
     .cta-button::before {
@@ -124,7 +237,7 @@
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
         transition: left 0.7s ease;
         z-index: -1;
     }
@@ -133,50 +246,38 @@
         left: 100%;
     }
 
-    .cta-button.primary:hover {
+    .cta-button:hover {
         transform: translateY(-3px);
-        box-shadow: 0 15px 40px rgba(245, 158, 11, 0.4);
+        box-shadow: 0 20px 50px rgba(255, 107, 66, 0.4);
     }
 
     .cta-button.secondary:hover {
-        background: rgba(255, 255, 255, 0.25);
-        border-color: rgba(255, 255, 255, 0.5);
-        transform: translateY(-2px);
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.4);
     }
 
-    /* Services Section */
-    .services-section {
-        padding: 100px 0;
+    /* Services Showcase */
+    .services-showcase {
+        padding: 120px 0;
         background: var(--light);
         position: relative;
     }
 
-    .services-section::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 150px;
-        background: linear-gradient(to bottom, var(--primary), transparent);
-        opacity: 0.05;
-    }
-
     .section-header {
         text-align: center;
-        margin-bottom: 60px;
+        margin-bottom: 80px;
     }
 
-    .section-header h2 {
-        font-size: 2.5rem;
+    .section-title {
+        font-size: 3rem;
         font-weight: 800;
-        color: var(--dark);
-        margin-bottom: 15px;
+        color: var(--primary-dark);
+        margin-bottom: 20px;
         position: relative;
         display: inline-block;
     }
 
-    .section-header h2::after {
+    .section-title::after {
         content: '';
         position: absolute;
         bottom: -10px;
@@ -184,28 +285,33 @@
         transform: translateX(-50%);
         width: 80px;
         height: 4px;
-        background: var(--accent);
+        background: var(--gradient-accent);
         border-radius: 2px;
     }
 
-    .section-header p {
-        font-size: 1.1rem;
-        color: #64748b;
+    .section-subtitle {
+        font-size: 1.2rem;
+        color: var(--gray);
         max-width: 700px;
         margin: 20px auto 0;
         line-height: 1.6;
     }
 
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 30px;
+        margin-top: 50px;
+    }
+
     .service-card {
         background: white;
-        border-radius: 20px;
-        padding: 40px 30px;
-        text-align: center;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        position: relative;
+        transition: all var(--transition-base);
         border: 1px solid #e2e8f0;
         height: 100%;
-        position: relative;
-        overflow: hidden;
     }
 
     .service-card::before {
@@ -215,155 +321,299 @@
         left: 0;
         right: 0;
         height: 5px;
-        background: var(--gradient-1);
-        border-radius: 20px 20px 0 0;
+        background: var(--gradient-primary);
     }
 
     .service-card:hover {
-        transform: translateY(-10px);
-        box-shadow: var(--shadow-lg);
+        transform: translateY(-15px);
+        box-shadow: var(--shadow-xl);
+        border-color: var(--accent);
+    }
+
+    .service-header {
+        padding: 30px 30px 0;
+        display: flex;
+        align-items: center;
+        gap: 20px;
     }
 
     .service-icon {
-        width: 80px;
-        height: 80px;
-        margin: 0 auto 25px;
-        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-        border-radius: 50%;
+        width: 70px;
+        height: 70px;
+        background: var(--gradient-primary);
+        border-radius: var(--radius-lg);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 2rem;
         color: white;
-        transition: transform 0.3s ease;
+        font-size: 1.8rem;
+        flex-shrink: 0;
+        transition: all var(--transition-base);
     }
 
     .service-card:hover .service-icon {
         transform: scale(1.1) rotate(5deg);
+        background: var(--gradient-accent);
     }
 
-    .service-card h3 {
+    .service-title {
         font-size: 1.4rem;
         font-weight: 700;
-        color: var(--dark);
-        margin-bottom: 15px;
+        color: var(--primary-dark);
+        margin: 0;
         line-height: 1.3;
     }
 
-    .service-card p {
-        color: #64748b;
-        line-height: 1.6;
+    .service-content {
+        padding: 30px;
+    }
+
+    .service-description {
+        color: var(--gray);
+        line-height: 1.7;
+        margin-bottom: 25px;
+        font-size: 1rem;
+    }
+
+    .service-features {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
         margin-bottom: 25px;
     }
 
-    /* Why Choose Us */
-    .features-section {
-        padding: 100px 0;
-        background: white;
-        position: relative;
+    .feature-tag {
+        background: rgba(30, 60, 114, 0.1);
+        color: var(--primary);
+        padding: 6px 14px;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 500;
     }
 
-    .features-section::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 150px;
-        background: linear-gradient(to bottom, var(--light), transparent);
+    .service-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 20px;
     }
 
-    .feature-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 30px;
-        margin-top: 50px;
+    .service-btn {
+        padding: 12px 24px;
+        border-radius: var(--radius-md);
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-decoration: none;
+        transition: all var(--transition-base);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: none;
+        cursor: pointer;
     }
 
-    .feature-item {
-        background: white;
-        padding: 40px;
-        border-radius: 20px;
+    .service-btn.primary {
+        background: var(--gradient-primary);
+        color: white;
+    }
+
+    .service-btn.outline {
+        background: transparent;
+        color: var(--primary);
+        border: 2px solid var(--primary);
+    }
+
+    .service-btn:hover {
+        transform: translateY(-2px);
         box-shadow: var(--shadow-md);
-        transition: all 0.3s ease;
+    }
+
+    /* Process Timeline */
+    .process-section {
+        padding: 120px 0;
+        background: var(--gradient-dark);
+        color: white;
         position: relative;
         overflow: hidden;
     }
 
-    .feature-item::before {
+    .process-timeline {
+        max-width: 1000px;
+        margin: 60px auto 0;
+        position: relative;
+    }
+
+    .process-timeline::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 2px;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .process-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 80px;
+        position: relative;
+    }
+
+    .process-item:nth-child(odd) {
+        flex-direction: row;
+    }
+
+    .process-item:nth-child(even) {
+        flex-direction: row-reverse;
+    }
+
+    .process-content {
+        width: 45%;
+        padding: 40px;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border-radius: var(--radius-lg);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .process-number {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60px;
+        height: 60px;
+        background: var(--gradient-accent);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+        z-index: 2;
+        box-shadow: 0 10px 30px rgba(255, 107, 66, 0.3);
+    }
+
+    .process-content h4 {
+        font-size: 1.4rem;
+        margin-bottom: 15px;
+        color: white;
+    }
+
+    .process-content p {
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.7;
+    }
+
+    /* Features Grid */
+    .features-section {
+        padding: 120px 0;
+        background: white;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 40px;
+        margin-top: 60px;
+    }
+
+    .feature-card {
+        text-align: center;
+        padding: 40px 30px;
+        border-radius: var(--radius-lg);
+        background: var(--light);
+        border: 1px solid #e2e8f0;
+        transition: all var(--transition-base);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .feature-card::before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        background: var(--gradient-primary);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform var(--transition-base);
     }
 
-    .feature-item:hover {
-        transform: translateY(-5px);
+    .feature-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
         box-shadow: var(--shadow-lg);
+        border-color: var(--accent);
     }
 
-    .feature-icon {
-        font-size: 2.5rem;
-        margin-bottom: 20px;
-        display: inline-block;
-        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+    .feature-icon-wrapper {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 25px;
+        background: var(--gradient-primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: white;
+        transition: all var(--transition-base);
     }
 
-    .feature-item h4 {
+    .feature-card:hover .feature-icon-wrapper {
+        background: var(--gradient-accent);
+        transform: scale(1.1);
+    }
+
+    .feature-card h4 {
         font-size: 1.3rem;
         font-weight: 700;
-        color: var(--dark);
+        color: var(--primary-dark);
         margin-bottom: 15px;
     }
 
-    .feature-item p {
-        color: #64748b;
-        line-height: 1.6;
+    .feature-card p {
+        color: var(--gray);
+        line-height: 1.7;
+        font-size: 0.95rem;
     }
 
-    /* Testimonials */
+    /* Testimonials Section */
     .testimonials-section {
-        padding: 100px 0;
+        padding: 120px 0;
         background: var(--light);
         position: relative;
-    }
-
-    .testimonials-section::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 150px;
-        background: linear-gradient(to bottom, rgba(255,255,255,0.9), transparent);
     }
 
     .testimonials-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
         gap: 30px;
-        margin-top: 50px;
+        margin-top: 60px;
     }
 
     .testimonial-card {
         background: white;
         padding: 40px;
-        border-radius: 20px;
+        border-radius: var(--radius-lg);
         box-shadow: var(--shadow-md);
         position: relative;
-        transition: all 0.3s ease;
+        transition: all var(--transition-base);
         border: 1px solid #e2e8f0;
     }
 
     .testimonial-card:hover {
-        transform: translateY(-5px);
-        box-shadow: var(--shadow-lg);
+        transform: translateY(-10px);
+        box-shadow: var(--shadow-xl);
     }
 
     .testimonial-card::before {
@@ -371,26 +621,26 @@
         position: absolute;
         top: 20px;
         right: 30px;
-        font-size: 5rem;
-        color: var(--primary);
-        opacity: 0.1;
+        font-size: 8rem;
+        color: var(--gray-light);
         font-family: Georgia, serif;
         line-height: 1;
+        opacity: 0.3;
     }
 
-    .rating {
+    .testimonial-rating {
         color: var(--accent);
         font-size: 1.2rem;
         margin-bottom: 20px;
         display: flex;
-        gap: 2px;
+        gap: 4px;
     }
 
-    .testimonial-text {
+    .testimonial-content {
         font-size: 1.1rem;
-        line-height: 1.7;
-        color: var(--dark);
-        margin-bottom: 25px;
+        line-height: 1.8;
+        color: var(--gray-dark);
+        margin-bottom: 30px;
         font-style: italic;
         position: relative;
         z-index: 1;
@@ -400,14 +650,22 @@
         display: flex;
         align-items: center;
         gap: 15px;
-        padding-top: 20px;
-        border-top: 2px solid #f1f5f9;
+        padding-top: 25px;
+        border-top: 1px solid #e2e8f0;
     }
 
     .author-avatar {
-        width: 50px;
-        height: 50px;
-        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--accent);
+    }
+
+    .author-avatar-placeholder {
+        width: 60px;
+        height: 60px;
+        background: var(--gradient-accent);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -418,328 +676,366 @@
     }
 
     .author-info h5 {
-        margin: 0;
         font-size: 1.1rem;
         font-weight: 700;
-        color: var(--dark);
+        color: var(--primary-dark);
+        margin: 0;
     }
 
     .author-info p {
-        margin: 5px 0 0;
-        color: #64748b;
+        color: var(--gray);
         font-size: 0.9rem;
+        margin: 5px 0 0;
     }
 
     /* CTA Section */
     .cta-section {
-        padding: 100px 0;
-        background: var(--gradient-2);
-        color: white;
-        text-align: center;
+        padding: 120px 0;
+        background: var(--gradient-dark);
         position: relative;
         overflow: hidden;
     }
 
-    .cta-section::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%);
-        animation: pulse 15s infinite linear;
-    }
-
-    @keyframes pulse {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
     .cta-content {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+        color: white;
         position: relative;
         z-index: 2;
-        max-width: 700px;
-        margin: 0 auto;
     }
 
-    .cta-content h2 {
-        font-size: 2.8rem;
+    .cta-title {
+        font-size: 3.5rem;
         font-weight: 800;
         margin-bottom: 20px;
         line-height: 1.2;
     }
 
-    .cta-content p {
-        font-size: 1.2rem;
-        opacity: 0.95;
+    .cta-subtitle {
+        font-size: 1.3rem;
+        opacity: 0.9;
         margin-bottom: 40px;
         line-height: 1.6;
     }
 
-    .cta-button.large {
-        padding: 18px 45px;
-        font-size: 1.2rem;
-        background: white;
-        color: var(--secondary);
-        border-radius: 15px;
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    .cta-stats {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        margin-top: 60px;
+        flex-wrap: wrap;
     }
 
-    .cta-button.large:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-    }
-
-    /* Stats Section */
-    .stats-section {
-        padding: 80px 0;
-        background: white;
-    }
-
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 30px;
+    .cta-stat {
         text-align: center;
     }
 
-    .stat-item {
-        padding: 30px;
-        position: relative;
-    }
-
-    .stat-number {
-        font-size: 3rem;
+    .cta-stat-number {
+        font-size: 2.5rem;
         font-weight: 800;
-        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        color: var(--accent);
+        display: block;
         line-height: 1;
-        margin-bottom: 10px;
     }
 
-    .stat-label {
-        font-size: 1.1rem;
-        color: var(--dark);
-        font-weight: 600;
+    .cta-stat-label {
+        font-size: 0.9rem;
+        opacity: 0.8;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 8px;
     }
 
     /* Responsive Design */
+    @media (max-width: 1200px) {
+        .hero-title { font-size: 3.5rem; }
+        .process-timeline::before { left: 30px; }
+        .process-item { flex-direction: row !important; }
+        .process-content { width: calc(100% - 120px); margin-left: 90px; }
+        .process-number { left: 30px; }
+    }
+
     @media (max-width: 992px) {
-        .hero h1 {
-            font-size: 2.8rem;
-        }
-        
-        .cta-buttons {
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .cta-button {
-            width: 100%;
-            max-width: 300px;
-        }
+        .hero-title { font-size: 2.8rem; }
+        .section-title { font-size: 2.5rem; }
+        .services-grid { grid-template-columns: 1fr; }
+        .cta-group { flex-direction: column; align-items: center; }
+        .cta-button { width: 100%; max-width: 300px; }
     }
 
     @media (max-width: 768px) {
-        .hero {
-            padding: 80px 0 60px;
+        .hero-section { min-height: 80vh; }
+        .hero-title { font-size: 2.2rem; }
+        .hero-subtitle { font-size: 1.1rem; }
+        .section-title { font-size: 2rem; }
+        .hero-stats, .cta-stats { gap: 30px; }
+        .stat-number, .cta-stat-number { font-size: 2.5rem; }
+        .services-showcase, .features-section, .testimonials-section, .cta-section {
+            padding: 80px 0;
         }
-        
-        .hero h1 {
-            font-size: 2.2rem;
-        }
-        
-        .hero p {
-            font-size: 1.1rem;
-        }
-        
-        .section-header h2 {
-            font-size: 2rem;
-        }
-        
-        .services-section,
-        .features-section,
-        .testimonials-section,
-        .cta-section {
-            padding: 60px 0;
-        }
-        
-        .testimonials-grid {
-            grid-template-columns: 1fr;
-        }
+        .process-content { padding: 30px 20px; }
     }
 
     @media (max-width: 480px) {
-        .hero h1 {
-            font-size: 1.8rem;
+        .hero-title { font-size: 1.8rem; }
+        .cta-button { padding: 15px 30px; font-size: 1rem; }
+        .service-card, .feature-card, .testimonial-card { padding: 25px 20px; }
+        .process-content {
+            width: calc(100% - 80px);
+            margin-left: 60px;
+            padding: 25px 20px;
         }
-        
-        .cta-button {
-            padding: 14px 25px;
-            font-size: 1rem;
-        }
-        
-        .service-card,
-        .feature-item,
-        .testimonial-card {
-            padding: 30px 20px;
-        }
+        .process-number { width: 40px; height: 40px; font-size: 1.2rem; }
     }
 </style>
 {% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
-<section class="hero">
-    <div class="container-main">
-        <div class="hero-content">
-            <h1>Transform Your Ideas into Exceptional Results</h1>
-            <p>Professional writing, research, and consultancy services for academic excellence and business success. Trusted by students, professionals, and organizations worldwide.</p>
-            <div class="cta-buttons">
-                <a href="{% url 'services' %}" class="cta-button primary">
-                    <i class="ri-rocket-line"></i> Explore Services
-                </a>
-                <a href="{% url 'contact' %}" class="cta-button secondary">
-                    <i class="ri-calendar-check-line"></i> Free Consultation
-                </a>
+<section class="hero-section" id="hero">
+    <div class="hero-background">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+    </div>
+    
+    <div class="hero-content">
+        <span class="hero-badge">
+            <i class="ri-star-line"></i> TRUSTED BY 500+ CLIENTS
+        </span>
+        
+        <h1 class="hero-title">
+            Transform Your <span class="highlight">Academic Journey</span> 
+            with Professional Excellence
+        </h1>
+        
+        <p class="hero-subtitle">
+            Premium writing, research, and consultancy services delivered by PhD experts. 
+            From dissertations to business proposals – we turn complex ideas into exceptional results.
+        </p>
+        
+        <div class="hero-stats">
+            <div class="stat-item">
+                <span class="stat-number" data-count="500">0</span>
+                <span class="stat-label">Projects Delivered</span>
             </div>
+            <div class="stat-item">
+                <span class="stat-number" data-count="98">0</span>
+                <span class="stat-label">Success Rate</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-count="50">0</span>
+                <span class="stat-label">Expert Consultants</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-count="100">0</span>
+                <span class="stat-label">% Confidential</span>
+            </div>
+        </div>
+        
+        <div class="cta-group">
+            <a href="{% url 'services' %}" class="cta-button primary">
+                <i class="ri-rocket-line"></i> Explore Services
+            </a>
+            <a href="{% url 'contact' %}" class="cta-button secondary">
+                <i class="ri-calendar-check-line"></i> Free Consultation
+            </a>
         </div>
     </div>
 </section>
 
-<!-- Stats Section -->
-<section class="stats-section">
+<!-- Services Showcase -->
+<section class="services-showcase" id="services">
     <div class="container-main">
-        <div class="stats-grid">
-            <div class="stat-item">
-                <div class="stat-number">500+</div>
-                <div class="stat-label">Projects Completed</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">98%</div>
-                <div class="stat-label">Client Satisfaction</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">50+</div>
-                <div class="stat-label">Expert Consultants</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">24/7</div>
-                <div class="stat-label">Support Available</div>
-            </div>
+        <div class="section-header" data-aos="fade-up">
+            <h2 class="section-title">Premium Professional Services</h2>
+            <p class="section-subtitle">
+                Comprehensive solutions tailored to your academic and business needs, 
+                delivered with excellence and precision.
+            </p>
         </div>
-    </div>
-</section>
-
-<!-- Services Section -->
-<section class="services-section">
-    <div class="container-main">
-        <div class="section-header">
-            <h2>Our Premium Services</h2>
-            <p>Comprehensive solutions tailored to your academic and professional needs</p>
-        </div>
-        <div class="row g-4">
+        
+        <div class="services-grid">
             {% for service in featured_services %}
-            <div class="col-md-6 col-lg-4">
-                <div class="service-card">
+            <div class="service-card" data-aos="fade-up">
+                <div class="service-header">
                     <div class="service-icon">
-                        <i class="ri-file-text-line"></i>
+                        <i class="{{ service.icon|default:'ri-file-text-line' }}"></i>
                     </div>
-                    <h3>{{ service.name }}</h3>
-                    <p>{{ service.description|truncatewords:20 }}</p>
-                    <a href="{% url 'service_detail' service.id %}" class="cta-button" style="
-                        font-size: 0.9rem; 
-                        padding: 12px 28px; 
-                        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); 
-                        color: white; 
-                        text-decoration: none;
-                        border-radius: 10px;
-                        font-weight: 600;
-                        display: inline-block;
-                    ">
-                        Learn More <i class="ri-arrow-right-line"></i>
-                    </a>
+                    <h3 class="service-title">{{ service.name }}</h3>
+                </div>
+                
+                <div class="service-content">
+                    <p class="service-description">
+                        {{ service.description|truncatechars:180|default:"Professional service with expert handling and guaranteed quality." }}
+                    </p>
+                    
+                    <div class="service-features">
+                        <span class="feature-tag">Expert Team</span>
+                        <span class="feature-tag">Quality Assured</span>
+                        <span class="feature-tag">On-Time Delivery</span>
+                    </div>
+                    
+                    <div class="service-actions">
+                        <a href="{% url 'service_detail' service.id %}" 
+                           class="service-btn primary">
+                            <i class="ri-eye-line"></i> View Details
+                        </a>
+                        <a href="{% url 'contact' %}" 
+                           class="service-btn outline">
+                            <i class="ri-question-line"></i> Enquire
+                        </a>
+                    </div>
                 </div>
             </div>
             {% empty %}
-            <div class="col-12 text-center">
-                <p style="color: #64748b; font-size: 1.1rem;">No services available at the moment.</p>
+            <div class="service-card" data-aos="fade-up">
+                <div class="service-header">
+                    <div class="service-icon">
+                        <i class="ri-file-text-line"></i>
+                    </div>
+                    <h3 class="service-title">Academic Writing</h3>
+                </div>
+                <div class="service-content">
+                    <p class="service-description">
+                        Professional academic writing services including essays, research papers, 
+                        and dissertations written by subject matter experts.
+                    </p>
+                    <div class="service-features">
+                        <span class="feature-tag">PhD Writers</span>
+                        <span class="feature-tag">Plagiarism-Free</span>
+                        <span class="feature-tag">Timely Delivery</span>
+                    </div>
+                    <div class="service-actions">
+                        <a href="{% url 'services' %}" class="service-btn primary">
+                            <i class="ri-eye-line"></i> View Services
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div style="text-align: center; margin-top: 50px;" data-aos="fade-up">
+            <a href="{% url 'services' %}" class="cta-button secondary">
+                <i class="ri-arrow-right-line"></i> View All Services
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Process Timeline -->
+<section class="process-section" id="process">
+    <div class="container-main">
+        <div class="section-header" data-aos="fade-up">
+            <h2 class="section-title" style="color: white;">Our 4-Step Success Process</h2>
+            <p class="section-subtitle" style="color: rgba(255,255,255,0.8);">
+                A systematic approach that guarantees quality, consistency, and client satisfaction
+            </p>
+        </div>
+        
+        <div class="process-timeline">
+            {% for step in process_steps %}
+            <div class="process-item" data-aos="fade-{% if forloop.counter|divisibleby:2 %}left{% else %}right{% endif %}">
+                <div class="process-content">
+                    <h4>{{ step.title }}</h4>
+                    <p>{{ step.description }}</p>
+                </div>
+                <div class="process-number">{{ forloop.counter }}</div>
             </div>
             {% endfor %}
         </div>
     </div>
 </section>
 
-<!-- Why Choose Us -->
-<section class="features-section">
+<!-- Features Grid -->
+<section class="features-section" id="features">
     <div class="container-main">
-        <div class="section-header">
-            <h2>Why Choose The Writing Hub?</h2>
-            <p>Experience the difference with our commitment to excellence and client success</p>
+        <div class="section-header" data-aos="fade-up">
+            <h2 class="section-title">Why Choose The Writing Hub?</h2>
+            <p class="section-subtitle">
+                Experience the difference with our commitment to excellence, quality, and client satisfaction
+            </p>
         </div>
         
-        <div class="feature-grid">
-            <div class="feature-item">
-                <i class="ri-award-line feature-icon"></i>
+        <div class="features-grid">
+            <div class="feature-card" data-aos="fade-up">
+                <div class="feature-icon-wrapper">
+                    <i class="ri-award-line"></i>
+                </div>
                 <h4>Proven Excellence</h4>
-                <p>Over 500 successful projects delivered with a 98% client satisfaction rate. We consistently exceed expectations.</p>
+                <p>500+ successful projects with a 98% client satisfaction rate and industry-leading quality standards.</p>
             </div>
             
-            <div class="feature-item">
-                <i class="ri-team-line feature-icon"></i>
-                <h4>Expert Team</h4>
-                <p>PhD holders and industry professionals with 10+ years of experience in academic writing and business consultancy.</p>
+            <div class="feature-card" data-aos="fade-up">
+                <div class="feature-icon-wrapper">
+                    <i class="ri-user-graduation-line"></i>
+                </div>
+                <h4>PhD Experts</h4>
+                <p>All projects handled by PhD holders and subject matter experts with 10+ years of experience.</p>
             </div>
             
-            <div class="feature-item">
-                <i class="ri-shield-check-line feature-icon"></i>
+            <div class="feature-card" data-aos="fade-up">
+                <div class="feature-icon-wrapper">
+                    <i class="ri-shield-check-line"></i>
+                </div>
                 <h4>100% Confidential</h4>
-                <p>Your privacy is our priority. All projects are handled with strict confidentiality and secure data protection.</p>
+                <p>Enterprise-grade security and confidentiality protocols to protect your data and privacy.</p>
             </div>
             
-            <div class="feature-item">
-                <i class="ri-time-line feature-icon"></i>
+            <div class="feature-card" data-aos="fade-up">
+                <div class="feature-icon-wrapper">
+                    <i class="ri-time-line"></i>
+                </div>
                 <h4>On-Time Delivery</h4>
-                <p>We respect deadlines. Get your work delivered promptly, every time, with quality assurance built-in.</p>
+                <p>We respect deadlines. Projects are delivered promptly with built-in quality assurance.</p>
             </div>
             
-            <div class="feature-item">
-                <i class="ri-customer-service-2-line feature-icon"></i>
+            <div class="feature-card" data-aos="fade-up">
+                <div class="feature-icon-wrapper">
+                    <i class="ri-customer-service-2-line"></i>
+                </div>
                 <h4>24/7 Support</h4>
-                <p>Round-the-clock assistance for urgent queries and project updates. We're always here when you need us.</p>
+                <p>Round-the-clock assistance for urgent queries, updates, and project management.</p>
             </div>
             
-            <div class="feature-item">
-                <i class="ri-refresh-line feature-icon"></i>
+            <div class="feature-card" data-aos="fade-up">
+                <div class="feature-icon-wrapper">
+                    <i class="ri-refresh-line"></i>
+                </div>
                 <h4>Unlimited Revisions</h4>
-                <p>Complete satisfaction guaranteed with free revisions until your work meets all your requirements.</p>
+                <p>Complete satisfaction guaranteed with free revisions until your work meets all requirements.</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Testimonials -->
-<section class="testimonials-section">
+<!-- Testimonials Section -->
+<section class="testimonials-section" id="testimonials">
     <div class="container-main">
-        <div class="section-header">
-            <h2>Client Success Stories</h2>
-            <p>See what our satisfied clients have to say about their experience</p>
+        <div class="section-header" data-aos="fade-up">
+            <h2 class="section-title">Client Success Stories</h2>
+            <p class="section-subtitle">
+                Hear from students, professionals, and organizations who transformed their projects with our help
+            </p>
         </div>
         
         <div class="testimonials-grid">
             {% for testimonial in testimonials %}
-            <div class="testimonial-card">
-                <div class="rating">
-                    {% for i in "12345" %}
-                        <i class="ri-star-fill"></i>
-                    {% endfor %}
+            <div class="testimonial-card" data-aos="fade-up">
+                <div class="testimonial-rating">
+                    <i class="ri-star-fill"></i>
+                    <i class="ri-star-fill"></i>
+                    <i class="ri-star-fill"></i>
+                    <i class="ri-star-fill"></i>
+                    <i class="ri-star-fill"></i>
                 </div>
-                <p class="testimonial-text">"{{ testimonial.quote }}"</p>
+                <p class="testimonial-content">"{{ testimonial.quote }}"</p>
                 <div class="testimonial-author">
-                    <div class="author-avatar">
+                    <div class="author-avatar-placeholder">
                         {{ testimonial.customer.full_name|slice:":1"|upper }}
                     </div>
                     <div class="author-info">
@@ -749,12 +1045,10 @@
                 </div>
             </div>
             {% empty %}
-            <div class="col-12 text-center">
-                <div style="background: white; padding: 40px; border-radius: 20px; box-shadow: var(--shadow-md);">
-                    <i class="ri-chat-quote-line" style="font-size: 3rem; color: var(--primary); margin-bottom: 20px; opacity: 0.3;"></i>
-                    <h4 style="color: var(--dark); margin-bottom: 10px;">Be the First to Review!</h4>
-                    <p style="color: #64748b;">No testimonials yet. Your feedback could be featured here!</p>
-                </div>
+            <div style="grid-column: 1/-1; background: white; padding: 60px 40px; border-radius: 20px; box-shadow: var(--shadow-md); text-align: center;">
+                <i class="ri-chat-quote-line" style="font-size: 3rem; color: var(--primary); margin-bottom: 20px; opacity: 0.3;"></i>
+                <h4 style="color: var(--primary-dark); margin-bottom: 10px; font-size: 1.3rem;">Be the First to Review!</h4>
+                <p style="color: var(--gray);">No testimonials yet. Your feedback could be featured here!</p>
             </div>
             {% endfor %}
         </div>
@@ -762,93 +1056,116 @@
 </section>
 
 <!-- CTA Section -->
-<section class="cta-section">
-    <div class="container-main">
-        <div class="cta-content">
-            <h2>Ready to Achieve Your Goals?</h2>
-            <p>Join thousands of successful students and professionals who trust us with their most important projects. Let's create something amazing together.</p>
-            <a href="{% url 'contact' %}" class="cta-button large">
-                <i class="ri-calendar-check-line"></i> Start Your Project Now
+<section class="cta-section" id="cta">
+    <div class="cta-content">
+        <h2 class="cta-title" data-aos="fade-up">Ready to Transform Your Project?</h2>
+        <p class="cta-subtitle" data-aos="fade-up" data-aos-delay="100">
+            Join thousands of successful students and professionals who trust us with their most important work. 
+            Let's create something exceptional together.
+        </p>
+        
+        <div class="cta-group" data-aos="fade-up" data-aos-delay="200">
+            <a href="{% url 'contact' %}" class="cta-button primary">
+                <i class="ri-calendar-check-line"></i> Start Your Project
             </a>
-            <p style="margin-top: 30px; font-size: 0.9rem; opacity: 0.8;">
-                <i class="ri-shield-check-line"></i> Free consultation • No commitment • 100% confidential
-            </p>
+            <a href="{% if company and company.phone %}tel:{{ company.phone }}{% else %}tel:+255717313797{% endif %}" class="cta-button secondary">
+                <i class="ri-phone-line"></i> Call Now
+            </a>
+        </div>
+        
+        <div class="cta-stats" data-aos="fade-up" data-aos-delay="300">
+            <div class="cta-stat">
+                <span class="cta-stat-number">24/7</span>
+                <span class="cta-stat-label">Support Available</span>
+            </div>
+            <div class="cta-stat">
+                <span class="cta-stat-number">Free</span>
+                <span class="cta-stat-label">Consultation</span>
+            </div>
+            <div class="cta-stat">
+                <span class="cta-stat-number">100%</span>
+                <span class="cta-stat-label">Confidential</span>
+            </div>
         </div>
     </div>
 </section>
 {% endblock %}
 
 {% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Animate stats counting
-        function animateCounters() {
-            const statNumbers = document.querySelectorAll('.stat-number');
-            statNumbers.forEach(stat => {
-                const target = parseInt(stat.textContent);
-                let current = 0;
-                const increment = target / 50;
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= target) {
-                        stat.textContent = target + (stat.textContent.includes('+') ? '+' : stat.textContent.includes('%') ? '%' : '');
-                        clearInterval(timer);
-                    } else {
-                        stat.textContent = Math.floor(current) + (stat.textContent.includes('+') ? '+' : stat.textContent.includes('%') ? '%' : '');
-                    }
-                }, 30);
-            });
-        }
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize AOS (Animate On Scroll)
+    AOS.init({
+        duration: 1000,
+        once: true,
+        offset: 100,
+        easing: 'ease-out-cubic'
+    });
 
-        // Intersection Observer for animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
+    // Animated Counter
+    function animateCounter(element, target, suffix = '') {
+        let current = 0;
+        const increment = target / 50;
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                element.textContent = target + suffix;
+                clearInterval(timer);
+            } else {
+                element.textContent = Math.floor(current) + suffix;
+            }
+        }, 30);
+    }
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    if (entry.target.classList.contains('stats-section')) {
-                        animateCounters();
-                    }
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        // Observe sections for animation
-        const sections = document.querySelectorAll('.services-section, .features-section, .testimonials-section');
-        sections.forEach(section => {
-            section.style.opacity = '0';
-            section.style.transform = 'translateY(20px)';
-            section.style.transition = 'all 0.6s ease-out';
-            observer.observe(section);
+    // Initialize counters when in viewport
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const counters = entry.target.querySelectorAll('[data-count]');
+                counters.forEach(counter => {
+                    const target = parseInt(counter.getAttribute('data-count'));
+                    const suffix = counter.textContent.includes('%') ? '%' : 
+                                  counter.textContent.includes('+') ? '+' : '';
+                    animateCounter(counter, target, suffix);
+                });
+                observer.unobserve(entry.target);
+            }
         });
+    }, { threshold: 0.5 });
 
-        // Initialize stats animation
-        const statsSection = document.querySelector('.stats-section');
-        if (statsSection) {
-            statsSection.style.opacity = '0';
-            statsSection.style.transform = 'translateY(20px)';
-            statsSection.style.transition = 'all 0.6s ease-out';
-            observer.observe(statsSection);
-        }
+    // Observe hero section for counters
+    const heroSection = document.getElementById('hero');
+    if (heroSection) observer.observe(heroSection);
 
-        // Add hover effects to cards
-        const cards = document.querySelectorAll('.service-card, .feature-item, .testimonial-card');
-        cards.forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-10px)';
-            });
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
             
-            card.addEventListener('mouseleave', function() {
-                if (!this.classList.contains('hover')) {
-                    this.style.transform = 'translateY(0)';
-                }
-            });
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
         });
     });
+
+    // Add hover effects to cards
+    const cards = document.querySelectorAll('.service-card, .feature-card, .testimonial-card');
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+});
 </script>
 {% endblock %}

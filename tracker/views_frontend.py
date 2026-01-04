@@ -7,7 +7,8 @@ from django.utils import timezone
 from django.db.models import Count, Q
 from .models import (
     ResearchService, ConsultancySubService, ServiceRequest, ClientTestimonial,
-    Workshop, WorkshopRegistration, Customer, ZoomAppointment
+    Workshop, WorkshopRegistration, Customer, ZoomAppointment, ServiceImage,
+    TutorialVideo, ServiceFAQ
 )
 
 
@@ -46,36 +47,81 @@ def _auto_generate_testimonials():
 
 
 def home(request):
-    """Home page with featured services and testimonials"""
+    """Home page with featured services, process steps, and testimonials"""
+    # Get featured services
     featured_services = ResearchService.objects.filter(
-        is_active=True,
-        category__in=['concept_proposal', 'thesis', 'articles']
+        is_active=True
     ).order_by('display_order')[:6]
 
     # Auto-generate testimonials from completed service requests
     _auto_generate_testimonials()
 
+    # Get published testimonials
     testimonials = ClientTestimonial.objects.filter(
         is_published=True
-    ).order_by('-created_at')[:6]
+    ).order_by('-created_at')[:8]
+
+    # Define process steps
+    process_steps = [
+        {
+            'title': 'Consultation & Planning',
+            'description': 'We begin with a detailed consultation to understand your requirements, objectives, and expectations for the project.'
+        },
+        {
+            'title': 'Expert Assignment',
+            'description': 'Your project is assigned to the most qualified expert in the field, ensuring subject matter expertise and quality.'
+        },
+        {
+            'title': 'Execution & Quality Check',
+            'description': 'Our expert works on your project while our quality team ensures adherence to standards and requirements.'
+        },
+        {
+            'title': 'Delivery & Support',
+            'description': 'Your completed project is delivered on time, followed by comprehensive support and revision services.'
+        }
+    ]
+
+    # Get company profile
+    from .models import CompanyProfile
+    try:
+        company = CompanyProfile.objects.get(pk=1)
+    except CompanyProfile.DoesNotExist:
+        company = None
 
     context = {
         'featured_services': featured_services,
         'testimonials': testimonials,
+        'process_steps': process_steps,
+        'company': company,
     }
     return render(request, 'home.html', context)
 
 
 def services(request):
     """Services listing page"""
+    # Default placeholder images for services
+    default_images = {
+        'concept_proposal': 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop',
+        'thesis': 'https://images.unsplash.com/photo-1507842217343-583f20270319?w=600&h=400&fit=crop',
+        'articles': 'https://images.unsplash.com/photo-1455390883262-7f6f25510923?w=600&h=400&fit=crop',
+        'data_analysis': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
+        'research_design': 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&h=400&fit=crop',
+        'training_capacity': 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop',
+        'default': 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=600&h=400&fit=crop',
+    }
+
     # Separate Academic Writing Services and Training & Capacity Building
     academic_services = ResearchService.objects.filter(
         is_active=True
-    ).exclude(category__in=['consultancy', 'training_capacity']).order_by('display_order')
+    ).exclude(category__in=['consultancy', 'training_capacity']).prefetch_related(
+        'images', 'tutorial_videos', 'faqs'
+    ).order_by('display_order')
 
     training_services = ResearchService.objects.filter(
         is_active=True,
         category='training_capacity'
+    ).prefetch_related(
+        'images', 'tutorial_videos', 'faqs'
     ).order_by('display_order')
 
     consultancy_services = ConsultancySubService.objects.filter(
@@ -87,17 +133,57 @@ def services(request):
         date__gte=timezone.now()
     ).order_by('date')[:6]
 
+    # Get FAQs that are published
+    all_services_list = list(academic_services) + list(training_services)
+    service_faqs = {}
+    for service in all_services_list:
+        service_faqs[service.id] = service.faqs.filter(is_published=True).order_by('display_order')
+
+    # Get published tutorial videos
+    service_videos = {}
+    for service in all_services_list:
+        service_videos[service.id] = service.tutorial_videos.filter(is_published=True).order_by('display_order')
+
+    # Get featured images with fallbacks
+    service_images = {}
+    service_image_urls = {}
+    for service in all_services_list:
+        featured = service.images.filter(is_featured=True).first()
+        service_images[service.id] = featured
+
+        # Set image URL with fallback
+        if featured:
+            service_image_urls[service.id] = featured.image.url
+        else:
+            # Use default image based on category
+            service_image_urls[service.id] = default_images.get(service.category, default_images['default'])
+
     context = {
         'research_services': academic_services,
         'training_services': training_services,
         'consultancy_services': consultancy_services,
         'workshops': workshops,
+        'service_faqs': service_faqs,
+        'service_videos': service_videos,
+        'service_images': service_images,
+        'service_image_urls': service_image_urls,
     }
     return render(request, 'services.html', context)
 
 
 def service_detail(request, pk):
     """Service detail page"""
+    # Default placeholder images for services
+    default_images = {
+        'concept_proposal': 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop',
+        'thesis': 'https://images.unsplash.com/photo-1507842217343-583f20270319?w=600&h=400&fit=crop',
+        'articles': 'https://images.unsplash.com/photo-1455390883262-7f6f25510923?w=600&h=400&fit=crop',
+        'data_analysis': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
+        'research_design': 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&h=400&fit=crop',
+        'training_capacity': 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop',
+        'default': 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=600&h=400&fit=crop',
+    }
+
     service = get_object_or_404(ResearchService, pk=pk, is_active=True)
 
     _auto_generate_testimonials()
@@ -114,10 +200,28 @@ def service_detail(request, pk):
         is_published=True
     ).order_by('-created_at')[:4]
 
+    # Get service images
+    featured_image = service.images.filter(is_featured=True).first()
+    all_images = service.images.all().order_by('display_order')
+
+    # Get featured image URL with fallback
+    featured_image_url = featured_image.image.url if featured_image else default_images.get(service.category, default_images['default'])
+
+    # Get tutorial videos
+    tutorial_videos = service.tutorial_videos.filter(is_published=True).order_by('display_order')
+
+    # Get FAQs
+    faqs = service.faqs.filter(is_published=True).order_by('display_order')
+
     context = {
         'service': service,
         'related_services': related_services,
         'testimonials': testimonials,
+        'featured_image': featured_image,
+        'featured_image_url': featured_image_url,
+        'all_images': all_images,
+        'tutorial_videos': tutorial_videos,
+        'faqs': faqs,
     }
     return render(request, 'service_detail.html', context)
 

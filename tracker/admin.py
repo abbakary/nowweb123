@@ -296,3 +296,94 @@ class LeadershipAdmin(admin.ModelAdmin):
             )
         return "No photo"
     photo_preview.short_description = "Photo Preview"
+
+
+@admin.register(ServiceImage)
+class ServiceImageAdmin(admin.ModelAdmin):
+    list_display = ('service', 'title', 'image_preview', 'is_featured', 'display_order')
+    list_filter = ('is_featured', 'service', 'created_at')
+    search_fields = ('service__name', 'title', 'description')
+    readonly_fields = ('created_at', 'updated_at', 'image_preview')
+    fieldsets = (
+        ('Image Information', {
+            'fields': ('service', 'title', 'image', 'image_preview')
+        }),
+        ('Details', {
+            'fields': ('description', 'is_featured')
+        }),
+        ('Display', {
+            'fields': ('display_order',)
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html(
+                '<img src="{}" width="150" height="100" style="object-fit: cover; border-radius: 4px;" />',
+                obj.image.url
+            )
+        return "No image"
+    image_preview.short_description = "Preview"
+
+
+@admin.register(TutorialVideo)
+class TutorialVideoAdmin(admin.ModelAdmin):
+    list_display = ('service', 'title', 'duration', 'published_status', 'display_order', 'created_at')
+    list_filter = ('is_published', 'service', 'created_at')
+    search_fields = ('service__name', 'title', 'description')
+    readonly_fields = ('created_at', 'updated_at')
+    fieldsets = (
+        ('Video Information', {
+            'fields': ('service', 'title', 'description')
+        }),
+        ('Video Details', {
+            'fields': ('video_url', 'duration', 'thumbnail')
+        }),
+        ('Publishing', {
+            'fields': ('is_published', 'display_order')
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
+    def published_status(self, obj):
+        if obj.is_published:
+            return format_html('<span style="color: green;">✓ Published</span>')
+        return format_html('<span style="color: orange;">⊘ Draft</span>')
+    published_status.short_description = "Status"
+
+
+@admin.register(ServiceFAQ)
+class ServiceFAQAdmin(admin.ModelAdmin):
+    list_display = ('service', 'question_preview', 'published_status', 'display_order')
+    list_filter = ('is_published', 'service', 'created_at')
+    search_fields = ('service__name', 'question', 'answer')
+    readonly_fields = ('created_at', 'updated_at')
+    fieldsets = (
+        ('FAQ Information', {
+            'fields': ('service', 'question', 'answer')
+        }),
+        ('Publishing', {
+            'fields': ('is_published', 'display_order')
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
+    def question_preview(self, obj):
+        return obj.question[:75] + '...' if len(obj.question) > 75 else obj.question
+    question_preview.short_description = "Question"
+
+    def published_status(self, obj):
+        if obj.is_published:
+            return format_html('<span style="color: green;">✓ Published</span>')
+        return format_html('<span style="color: orange;">⊘ Draft</span>')
+    published_status.short_description = "Status"

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load custom_filters %}
 
 {% block title %}Services - The Writing Hub Tz{% endblock %}
 
@@ -29,136 +30,351 @@
         font-size: 2.2rem;
         color: var(--accent);
     }
-    
-    .service-card-wrapper {
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        height: 100%;
-    }
-    
-    .service-card-wrapper:hover {
-        transform: translateY(-8px);
-    }
-    
-    .service-card {
+
+    /* Professional Service Card Layout */
+    .service-card-horizontal {
         background: white;
         border-radius: 12px;
         overflow: hidden;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        display: flex;
-        flex-direction: column;
-        height: 100%;
+        margin-bottom: 40px;
         border: 1px solid rgba(0, 0, 0, 0.05);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
     }
-    
-    .service-card:hover {
+
+    .service-card-horizontal:hover {
         box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
         border-color: var(--primary);
+        transform: translateY(-4px);
     }
-    
-    .service-card-image {
+
+    .service-card-horizontal.reverse {
+        direction: rtl;
+    }
+
+    .service-card-horizontal.reverse > * {
+        direction: ltr;
+    }
+
+    .service-image-container {
         width: 100%;
-        height: 200px;
+        height: 350px;
         overflow: hidden;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 3.5rem;
         position: relative;
-        background-color: #f8f9fa;
     }
-    
-    .service-card-image i {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 3.5rem;
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+
+    .service-image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
-    
+
+    .service-image-placeholder {
+        font-size: 4rem;
+        color: white;
+        opacity: 0.8;
+    }
+
     .service-card-content {
-        padding: 25px;
-        flex-grow: 1;
+        padding: 40px 35px;
         display: flex;
         flex-direction: column;
+        gap: 20px;
     }
-    
+
     .service-card-title {
         color: var(--primary);
-        margin-bottom: 12px;
-        font-size: 1.2rem;
+        font-size: 1.6rem;
         font-weight: 700;
+        margin: 0;
+        line-height: 1.3;
     }
-    
+
     .service-card-description {
         color: #666;
         font-size: 0.95rem;
-        line-height: 1.6;
-        margin-bottom: 15px;
-        flex-grow: 1;
+        line-height: 1.8;
+        margin: 0;
     }
-    
-    .service-card-meta {
+
+    .service-meta-tags {
         display: flex;
-        flex-direction: column;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .meta-tag {
+        background: linear-gradient(135deg, rgba(30, 60, 114, 0.1) 0%, rgba(255, 107, 42, 0.1) 100%);
+        padding: 8px 14px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        color: var(--primary);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .meta-tag i {
+        color: var(--accent);
+    }
+
+    .service-actions {
+        display: flex;
         gap: 10px;
-        margin-bottom: 15px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid #f0f0f0;
+        margin-top: 10px;
     }
-    
-    .service-card-meta-item {
-        color: #666;
-        font-size: 0.9rem;
-        display: flex;
+
+    .service-btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
         align-items: center;
         gap: 8px;
     }
-    
-    .service-card-meta-item i {
-        color: var(--accent);
-        font-size: 1rem;
-    }
-    
-    .service-card-price {
-        color: var(--accent);
-        font-weight: 700;
-        font-size: 1.1rem;
-        margin-bottom: 15px;
-    }
-    
-    .service-card-button {
-        display: inline-block;
-        padding: 12px 20px;
+
+    .service-btn-primary {
         background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
         color: white;
-        text-decoration: none;
-        border-radius: 6px;
-        text-align: center;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        border: none;
-        cursor: pointer;
-        font-size: 0.95rem;
         box-shadow: 0 4px 12px rgba(30, 60, 114, 0.2);
     }
-    
-    .service-card-button:hover {
+
+    .service-btn-primary:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 18px rgba(30, 60, 114, 0.3);
-        text-decoration: none;
         color: white;
+        text-decoration: none;
     }
-    
-    .service-card-button.secondary {
-        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-        box-shadow: 0 4px 12px rgba(255, 107, 42, 0.2);
+
+    .service-btn-secondary {
+        background: white;
+        color: var(--primary);
+        border: 2px solid var(--primary);
     }
-    
-    .service-card-button.secondary:hover {
-        box-shadow: 0 6px 18px rgba(255, 107, 42, 0.3);
+
+    .service-btn-secondary:hover {
+        background: var(--primary);
+        color: white;
+        transform: translateY(-2px);
     }
-    
+
+    /* Video Section Styles */
+    .video-section {
+        margin-top: 40px;
+        padding: 30px;
+        background: rgba(30, 60, 114, 0.05);
+        border-radius: 12px;
+        border-left: 4px solid var(--accent);
+    }
+
+    .video-section-title {
+        color: var(--primary);
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .video-section-title i {
+        color: var(--accent);
+        font-size: 1.5rem;
+    }
+
+    .videos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+    }
+
+    .video-card {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .video-card:hover {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        transform: translateY(-4px);
+    }
+
+    .video-thumbnail {
+        width: 100%;
+        height: 150px;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .video-thumbnail img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .video-play-icon {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 107, 42, 0.9);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .video-card:hover .video-play-icon {
+        background: var(--accent);
+        transform: scale(1.1);
+    }
+
+    .video-info {
+        padding: 15px;
+    }
+
+    .video-title {
+        color: var(--primary);
+        font-weight: 700;
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+        line-height: 1.4;
+        min-height: 2.8em;
+    }
+
+    .video-duration {
+        color: var(--accent);
+        font-size: 0.85rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    /* FAQ Section Styles */
+    .faq-section {
+        margin-top: 40px;
+        padding: 30px;
+        background: rgba(255, 107, 42, 0.05);
+        border-radius: 12px;
+        border-left: 4px solid var(--primary);
+    }
+
+    .faq-section-title {
+        color: var(--primary);
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .faq-section-title i {
+        color: var(--primary);
+        font-size: 1.5rem;
+    }
+
+    .faq-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .faq-item {
+        background: white;
+        border-radius: 10px;
+        border: 1px solid #e0e0e0;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .faq-item:hover {
+        border-color: var(--primary);
+        box-shadow: 0 2px 8px rgba(30, 60, 114, 0.1);
+    }
+
+    .faq-question {
+        padding: 18px 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: white;
+        border: none;
+        width: 100%;
+        text-align: left;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--primary);
+        transition: all 0.3s ease;
+    }
+
+    .faq-question:hover {
+        background: rgba(30, 60, 114, 0.02);
+    }
+
+    .faq-question.active {
+        background: linear-gradient(135deg, rgba(30, 60, 114, 0.08) 0%, rgba(255, 107, 42, 0.08) 100%);
+        color: var(--primary);
+    }
+
+    .faq-icon {
+        color: var(--accent);
+        font-size: 1.2rem;
+        transition: transform 0.3s ease;
+        display: flex;
+        align-items: center;
+    }
+
+    .faq-question.active .faq-icon {
+        transform: rotate(180deg);
+    }
+
+    .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    .faq-answer.active {
+        max-height: 500px;
+        padding: 20px;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .faq-answer-text {
+        color: #666;
+        font-size: 0.95rem;
+        line-height: 1.8;
+        margin: 0;
+    }
+
     .hero {
         background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
         color: white;
@@ -203,6 +419,20 @@
         color: #666;
         font-size: 1rem;
     }
+
+    @media (max-width: 1024px) {
+        .service-card-horizontal {
+            grid-template-columns: 1fr;
+        }
+
+        .service-image-container {
+            height: 280px;
+        }
+
+        .videos-grid {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
+    }
     
     @media (max-width: 768px) {
         .section-title {
@@ -220,14 +450,38 @@
         .hero p {
             font-size: 1rem;
         }
-        
-        .service-card-image {
-            height: 150px;
-            font-size: 2.5rem;
+
+        .service-card-horizontal {
+            grid-template-columns: 1fr;
         }
-        
-        .service-card-image i {
-            font-size: 2.5rem;
+
+        .service-image-container {
+            height: 250px;
+        }
+
+        .service-card-content {
+            padding: 25px 20px;
+        }
+
+        .service-card-title {
+            font-size: 1.3rem;
+        }
+
+        .videos-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .video-thumbnail {
+            height: 200px;
+        }
+
+        .faq-question {
+            padding: 15px 16px;
+            font-size: 0.95rem;
+        }
+
+        .faq-answer.active {
+            padding: 15px;
         }
     }
 </style>
@@ -247,46 +501,96 @@
         <h2 class="section-title">
             <i class="ri-book-open-line"></i> Academic Writing Services
         </h2>
-        <div class="row g-4">
-            {% for service in research_services %}
-            <div class="col-md-6 col-lg-4">
-                <div class="service-card-wrapper">
-                    <div class="service-card">
-                        <div class="service-card-image" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);">
-                            <i class="ri-file-text-line" style="color: white;"></i>
-                        </div>
-                        <div class="service-card-content">
-                            <h3 class="service-card-title">{{ service.name }}</h3>
-                            <p class="service-card-description">{{ service.description }}</p>
-                            <div class="service-card-meta">
-                                {% if service.price_from %}
-                                <div class="service-card-price">
-                                    <i class="ri-money-dollar-circle-line"></i> From ${{ service.price_from }}
-                                </div>
-                                {% endif %}
-                                {% if service.turnaround_time %}
-                                <div class="service-card-meta-item">
-                                    <i class="ri-time-line"></i> {{ service.turnaround_time }}
-                                </div>
-                                {% endif %}
-                            </div>
-                            <a href="{% url 'service_detail' service.id %}" class="service-card-button">
-                                <i class="ri-arrow-right-line"></i> View Details
-                            </a>
+        
+        {% for service in research_services %}
+        <div class="service-card-horizontal {% cycle 'reverse' '' %}">
+            <div class="service-image-container">
+                <img src="{{ service_image_urls|get_item:service.id }}" alt="{{ service.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div class="service-card-content">
+                <h3 class="service-card-title">{{ service.name }}</h3>
+                <p class="service-card-description">{{ service.description }}</p>
+                
+                <div class="service-meta-tags">
+                    {% if service.price_from %}
+                    <span class="meta-tag">
+                        <i class="ri-money-dollar-circle-line"></i> From ${{ service.price_from }}
+                    </span>
+                    {% endif %}
+                    {% if service.turnaround_time %}
+                    <span class="meta-tag">
+                        <i class="ri-time-line"></i> {{ service.turnaround_time }}
+                    </span>
+                    {% endif %}
+                </div>
+
+                <div class="service-actions">
+                    <a href="{% url 'service_detail' service.id %}" class="service-btn service-btn-primary">
+                        <i class="ri-arrow-right-line"></i> View Details
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video Section for this Service -->
+        {% if service_videos|get_item:service.id %}
+        <div class="video-section">
+            <div class="video-section-title">
+                <i class="ri-video-line"></i> Tutorial Videos
+            </div>
+            <div class="videos-grid">
+                {% for video in service_videos|get_item:service.id %}
+                <div class="video-card" onclick="openVideoModal('{{ video.video_url|escapejs }}', '{{ video.title|escapejs }}')">
+                    <div class="video-thumbnail">
+                        {% if video.thumbnail %}
+                            <img src="{{ video.thumbnail.url }}" alt="{{ video.title }}">
+                        {% endif %}
+                        <div class="video-play-icon">
+                            <i class="ri-play-fill"></i>
                         </div>
                     </div>
+                    <div class="video-info">
+                        <div class="video-title">{{ video.title }}</div>
+                        {% if video.duration %}
+                        <div class="video-duration">
+                            <i class="ri-time-line"></i> {{ video.duration }}
+                        </div>
+                        {% endif %}
+                    </div>
                 </div>
+                {% endfor %}
             </div>
-            {% empty %}
-            <div class="col-12">
-                <div class="coming-soon">
-                    <i class="ri-book-2-line"></i>
-                    <h3>No Services Available</h3>
-                    <p>Check back soon for our academic writing services.</p>
-                </div>
-            </div>
-            {% endfor %}
         </div>
+        {% endif %}
+
+        <!-- FAQ Section for this Service -->
+        {% if service_faqs|get_item:service.id %}
+        <div class="faq-section">
+            <div class="faq-section-title">
+                <i class="ri-question-line"></i> Frequently Asked Questions
+            </div>
+            <div class="faq-list">
+                {% for faq in service_faqs|get_item:service.id %}
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(event)">
+                        <span>{{ faq.question }}</span>
+                        <span class="faq-icon"><i class="ri-add-line"></i></span>
+                    </button>
+                    <div class="faq-answer">
+                        <p class="faq-answer-text">{{ faq.answer }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        {% empty %}
+        <div class="coming-soon">
+            <i class="ri-book-2-line"></i>
+            <h3>No Services Available</h3>
+            <p>Check back soon for our academic writing services.</p>
+        </div>
+        {% endfor %}
     </div>
 </section>
 
@@ -296,46 +600,96 @@
         <h2 class="section-title">
             <i class="ri-graduation-cap-line"></i> Training & Capacity Building
         </h2>
-        <div class="row g-4">
-            {% for service in training_services %}
-            <div class="col-md-6 col-lg-4">
-                <div class="service-card-wrapper">
-                    <div class="service-card">
-                        <div class="service-card-image" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-                            <i class="ri-graduation-cap-line" style="color: white;"></i>
-                        </div>
-                        <div class="service-card-content">
-                            <h3 class="service-card-title">{{ service.name }}</h3>
-                            <p class="service-card-description">{{ service.description }}</p>
-                            <div class="service-card-meta">
-                                {% if service.price_from %}
-                                <div class="service-card-price">
-                                    <i class="ri-money-dollar-circle-line"></i> From ${{ service.price_from }}
-                                </div>
-                                {% endif %}
-                                {% if service.turnaround_time %}
-                                <div class="service-card-meta-item">
-                                    <i class="ri-calendar-line"></i> {{ service.turnaround_time }}
-                                </div>
-                                {% endif %}
-                            </div>
-                            <a href="{% url 'service_detail' service.id %}" class="service-card-button">
-                                <i class="ri-arrow-right-line"></i> View Details
-                            </a>
+        
+        {% for service in training_services %}
+        <div class="service-card-horizontal {% cycle 'reverse' '' %}">
+            <div class="service-image-container">
+                <img src="{{ service_image_urls|get_item:service.id }}" alt="{{ service.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div class="service-card-content">
+                <h3 class="service-card-title">{{ service.name }}</h3>
+                <p class="service-card-description">{{ service.description }}</p>
+                
+                <div class="service-meta-tags">
+                    {% if service.price_from %}
+                    <span class="meta-tag">
+                        <i class="ri-money-dollar-circle-line"></i> From ${{ service.price_from }}
+                    </span>
+                    {% endif %}
+                    {% if service.turnaround_time %}
+                    <span class="meta-tag">
+                        <i class="ri-calendar-line"></i> {{ service.turnaround_time }}
+                    </span>
+                    {% endif %}
+                </div>
+
+                <div class="service-actions">
+                    <a href="{% url 'service_detail' service.id %}" class="service-btn service-btn-primary">
+                        <i class="ri-arrow-right-line"></i> View Details
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video Section for this Service -->
+        {% if service_videos|get_item:service.id %}
+        <div class="video-section">
+            <div class="video-section-title">
+                <i class="ri-video-line"></i> Tutorial Videos
+            </div>
+            <div class="videos-grid">
+                {% for video in service_videos|get_item:service.id %}
+                <div class="video-card" onclick="openVideoModal('{{ video.video_url|escapejs }}', '{{ video.title|escapejs }}')">
+                    <div class="video-thumbnail">
+                        {% if video.thumbnail %}
+                            <img src="{{ video.thumbnail.url }}" alt="{{ video.title }}">
+                        {% endif %}
+                        <div class="video-play-icon">
+                            <i class="ri-play-fill"></i>
                         </div>
                     </div>
+                    <div class="video-info">
+                        <div class="video-title">{{ video.title }}</div>
+                        {% if video.duration %}
+                        <div class="video-duration">
+                            <i class="ri-time-line"></i> {{ video.duration }}
+                        </div>
+                        {% endif %}
+                    </div>
                 </div>
+                {% endfor %}
             </div>
-            {% empty %}
-            <div class="col-12">
-                <div class="coming-soon">
-                    <i class="ri-inbox-archive-line"></i>
-                    <h3>Training Programs Coming Soon!</h3>
-                    <p>We're preparing exciting training and capacity building programs for you. Stay tuned!</p>
-                </div>
-            </div>
-            {% endfor %}
         </div>
+        {% endif %}
+
+        <!-- FAQ Section for this Service -->
+        {% if service_faqs|get_item:service.id %}
+        <div class="faq-section">
+            <div class="faq-section-title">
+                <i class="ri-question-line"></i> Frequently Asked Questions
+            </div>
+            <div class="faq-list">
+                {% for faq in service_faqs|get_item:service.id %}
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(event)">
+                        <span>{{ faq.question }}</span>
+                        <span class="faq-icon"><i class="ri-add-line"></i></span>
+                    </button>
+                    <div class="faq-answer">
+                        <p class="faq-answer-text">{{ faq.answer }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        {% empty %}
+        <div class="coming-soon">
+            <i class="ri-inbox-archive-line"></i>
+            <h3>Training Programs Coming Soon!</h3>
+            <p>We're preparing exciting training and capacity building programs for you. Stay tuned!</p>
+        </div>
+        {% endfor %}
     </div>
 </section>
 
@@ -348,39 +702,33 @@
         <div class="row g-4">
             {% for consultancy in consultancy_services %}
             <div class="col-md-6 col-lg-4">
-                <div class="service-card-wrapper">
-                    <div class="service-card">
-                        <div class="service-card-image" style="background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);">
-                            <i class="ri-briefcase-2-line" style="color: white;"></i>
-                        </div>
-                        <div class="service-card-content">
-                            <h3 class="service-card-title">{{ consultancy.name }}</h3>
-                            <p class="service-card-description">{{ consultancy.description }}</p>
-                            <div class="service-card-meta">
-                                {% if consultancy.hourly_rate %}
-                                <div class="service-card-price">
-                                    <i class="ri-money-dollar-circle-line"></i> ${{ consultancy.hourly_rate }}/hr
-                                </div>
-                                {% endif %}
-                                <div class="service-card-meta-item">
-                                    <i class="ri-information-line"></i> {{ consultancy.get_consultancy_type_display }}
-                                </div>
-                            </div>
-                            {% if consultancy.features %}
-                            <div style="font-size: 0.85rem; color: #666; margin-bottom: 15px;">
-                                <strong>Features:</strong>
-                                <ul style="margin-top: 8px; padding-left: 20px; list-style: none;">
-                                {% for feature in consultancy.get_features_list %}
-                                    <li style="margin-bottom: 4px;"><i class="ri-check-line" style="color: var(--accent); margin-right: 5px;"></i>{{ feature }}</li>
-                                {% endfor %}
-                                </ul>
-                            </div>
-                            {% endif %}
-                            <button class="service-card-button secondary" onclick="requestConsultancy('{{ consultancy.id }}')">
-                                <i class="ri-mail-line"></i> Request Consultation
-                            </button>
-                        </div>
+                <div class="consultancy-card" style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); border: 1px solid rgba(0, 0, 0, 0.05); padding: 25px; transition: all 0.3s ease; height: 100%;">
+                    <div style="background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%); width: 60px; height: 60px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                        <i class="ri-briefcase-2-line" style="color: white; font-size: 1.5rem;"></i>
                     </div>
+                    <h3 style="color: var(--primary); margin-bottom: 12px; font-size: 1.2rem; font-weight: 700;">{{ consultancy.name }}</h3>
+                    <p style="color: #666; font-size: 0.95rem; line-height: 1.6; margin-bottom: 15px;">{{ consultancy.description }}</p>
+                    
+                    {% if consultancy.hourly_rate %}
+                    <div style="color: var(--accent); font-weight: 700; font-size: 1.1rem; margin-bottom: 15px;">
+                        <i class="ri-money-dollar-circle-line"></i> ${{ consultancy.hourly_rate }}/hr
+                    </div>
+                    {% endif %}
+                    
+                    {% if consultancy.features %}
+                    <div style="font-size: 0.85rem; color: #666; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #f0f0f0;">
+                        <strong>Features:</strong>
+                        <ul style="margin-top: 8px; padding-left: 20px; list-style: none;">
+                        {% for feature in consultancy.get_features_list %}
+                            <li style="margin-bottom: 4px;"><i class="ri-check-line" style="color: var(--accent); margin-right: 5px;"></i>{{ feature }}</li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    
+                    <button class="service-btn service-btn-primary" onclick="requestConsultancy('{{ consultancy.id }}')" style="width: 100%; justify-content: center;">
+                        <i class="ri-mail-line"></i> Request Consultation
+                    </button>
                 </div>
             </div>
             {% empty %}
@@ -405,38 +753,38 @@
         <div class="row g-4">
             {% for workshop in workshops %}
             <div class="col-md-6 col-lg-4">
-                <div class="service-card-wrapper">
-                    <div class="service-card">
-                        <div class="service-card-image" style="background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);">
-                            <i class="ri-presentation-line" style="color: white;"></i>
-                        </div>
-                        <div class="service-card-content">
-                            <h3 class="service-card-title">{{ workshop.title }}</h3>
-                            <p class="service-card-description">{{ workshop.description }}</p>
-                            <div class="service-card-meta">
-                                <div class="service-card-meta-item">
-                                    <i class="ri-calendar-line"></i> {{ workshop.date|date:"M d, Y H:i" }}
-                                </div>
-                                <div class="service-card-meta-item">
-                                    {% if workshop.is_online %}
-                                    <i class="ri-video-on-line"></i> Online
-                                    {% else %}
-                                    <i class="ri-map-pin-line"></i> {{ workshop.location }}
-                                    {% endif %}
-                                </div>
-                                <div class="service-card-meta-item">
-                                    <i class="ri-user-line"></i> {{ workshop.get_registration_count }}/{{ workshop.max_participants|default:"∞" }} registered
-                                </div>
-                                {% if workshop.price %}
-                                <div class="service-card-price">
-                                    <i class="ri-money-dollar-circle-line"></i> ${{ workshop.price }}
-                                </div>
+                <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); border: 1px solid rgba(0, 0, 0, 0.05); display: flex; flex-direction: column; height: 100%; transition: all 0.3s ease;">
+                    <div style="height: 150px; background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); display: flex; align-items: center; justify-content: center;">
+                        <i class="ri-presentation-line" style="color: white; font-size: 3rem;"></i>
+                    </div>
+                    <div style="padding: 25px; flex-grow: 1; display: flex; flex-direction: column;">
+                        <h3 style="color: var(--primary); margin-bottom: 10px; font-size: 1.2rem; font-weight: 700;">{{ workshop.title }}</h3>
+                        <p style="color: #666; font-size: 0.95rem; line-height: 1.6; margin-bottom: 15px;">{{ workshop.description }}</p>
+                        
+                        <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #f0f0f0;">
+                            <div style="color: #666; font-size: 0.9rem; display: flex; align-items: center; gap: 8px;">
+                                <i class="ri-calendar-line" style="color: var(--accent);"></i> {{ workshop.date|date:"M d, Y H:i" }}
+                            </div>
+                            <div style="color: #666; font-size: 0.9rem; display: flex; align-items: center; gap: 8px;">
+                                {% if workshop.is_online %}
+                                <i class="ri-video-on-line" style="color: var(--accent);"></i> Online
+                                {% else %}
+                                <i class="ri-map-pin-line" style="color: var(--accent);"></i> {{ workshop.location }}
                                 {% endif %}
                             </div>
-                            <a href="{% url 'workshop_detail' workshop.id %}" class="service-card-button secondary">
-                                <i class="ri-check-line"></i> Register Now
-                            </a>
+                            <div style="color: #666; font-size: 0.9rem; display: flex; align-items: center; gap: 8px;">
+                                <i class="ri-user-line" style="color: var(--accent);"></i> {{ workshop.get_registration_count }}/{{ workshop.max_participants|default:"∞" }} registered
+                            </div>
+                            {% if workshop.price %}
+                            <div style="color: var(--accent); font-weight: 700;">
+                                <i class="ri-money-dollar-circle-line"></i> ${{ workshop.price }}
+                            </div>
+                            {% endif %}
                         </div>
+                        
+                        <a href="{% url 'workshop_detail' workshop.id %}" class="service-btn service-btn-primary" style="width: 100%; justify-content: center; margin-top: auto;">
+                            <i class="ri-check-line"></i> Register Now
+                        </a>
                     </div>
                 </div>
             </div>
@@ -460,5 +808,85 @@
 function requestConsultancy(consultancyId) {
     window.location.href = '/contact/?service=' + consultancyId;
 }
+
+function toggleFAQ(event) {
+    const faqItem = event.currentTarget.closest('.faq-item');
+    const answer = faqItem.querySelector('.faq-answer');
+    const question = faqItem.querySelector('.faq-question');
+    
+    // Close other FAQs in the same section
+    const faqList = faqItem.closest('.faq-list');
+    faqList.querySelectorAll('.faq-item').forEach(item => {
+        if (item !== faqItem) {
+            item.querySelector('.faq-question').classList.remove('active');
+            item.querySelector('.faq-answer').classList.remove('active');
+        }
+    });
+    
+    // Toggle current FAQ
+    question.classList.toggle('active');
+    answer.classList.toggle('active');
+}
+
+function openVideoModal(videoUrl, title) {
+    // Extract YouTube video ID if it's a YouTube URL
+    let embedUrl = videoUrl;
+    if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+        const videoId = videoUrl.includes('youtu.be') 
+            ? videoUrl.split('youtu.be/')[1].split('?')[0]
+            : videoUrl.split('v=')[1].split('&')[0];
+        embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+    }
+    
+    // Create modal
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+    `;
+    
+    modal.innerHTML = `
+        <div style="position: relative; width: 90%; max-width: 900px; aspect-ratio: 16 / 9;">
+            <button onclick="this.closest('div').parentElement.remove()" style="
+                position: absolute;
+                top: -40px;
+                right: 0;
+                background: none;
+                border: none;
+                color: white;
+                font-size: 2rem;
+                cursor: pointer;
+                z-index: 10000;
+            ">
+                <i class="ri-close-line"></i>
+            </button>
+            <iframe width="100%" height="100%" src="${embedUrl}" 
+                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen="" style="border-radius: 8px;">
+            </iframe>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    modal.onclick = function(e) {
+        if (e.target === this) this.remove();
+    };
+}
+</script>
+
+<!-- Add custom filter for dictionary get -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // This is a workaround since Django doesn't have a direct dictionary.get filter
+    // The backend already handles this in the context
+});
 </script>
 {% endblock %}
